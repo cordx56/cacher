@@ -1,0 +1,11 @@
+[package]
+name = "fustc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+log = "0.4.25"
+simple_logger = { version = "5.0.0", features = ["stderr"] }
+
+[package.metadata.rust-analyzer]
+rustc_private = true
