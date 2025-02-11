@@ -27,6 +27,7 @@ use rustc_middle::{
     util::Providers,
 };
 use rustc_session::{config, EarlyDiagCtxt};
+use std::cell::RefCell;
 use std::collections::HashMap;
 use std::env;
 use std::fs::{File, OpenOptions};
@@ -42,6 +43,21 @@ thread_local! {
 }
 static MIR_CACHE: LazyLock<RwLock<HashMap<String, String>>> =
     LazyLock::new(|| RwLock::new(HashMap::new()));
+
+thread_local! {
+    static STAT_LOG: RefCell<Box<dyn Fn(&str)>> = RefCell::new(
+        if env::var("FUSTC_STAT").map(|v| 0 < v.len()).unwrap_or(false) {
+            Box::new(|message: &str| {
+                use std::time::{SystemTime, UNIX_EPOCH};
+                let now = SystemTime::now();
+                let nanos = now.duration_since(UNIX_EPOCH).unwrap().as_nanos();
+                println!("{nanos},{message}");
+            })
+        } else {
+            Box::new(|_mes| {})
+        },
+    );
+}
 
 pub struct RustcCallback;
 impl Callbacks for RustcCallback {}
@@ -81,9 +97,12 @@ fn mir_borrowck<'tcx>(
     def_id: LocalDefId,
 ) -> queries::mir_borrowck::ProvidedValue<'tcx> {
     log::info!("start borrowck of {def_id:?}");
+    STAT_LOG.with(|f| f.borrow()(&format!("{def_id:?},start")));
 
     if tcx.hir().body_const_context(def_id.to_def_id()).is_some() {
-        return default_mir_borrowck(tcx, def_id);
+        let result = default_mir_borrowck(tcx, def_id);
+        STAT_LOG.with(|f| f.borrow()(&format!("{def_id:?},no_cache")));
+        return result;
     }
 
     let empty_result = BorrowCheckResult {
@@ -112,6 +131,7 @@ fn mir_borrowck<'tcx>(
                 if let Some(cached_mir) = cache.get(&format!("{def_id:?}")) {
                     if cached_mir.as_bytes() == &compiling_mir {
                         log::info!("{def_id:?} cache hit");
+                        STAT_LOG.with(|f| f.borrow()(&format!("{def_id:?},cache_hit")));
                         return tcx.arena.alloc(empty_result);
                     }
                 }
@@ -133,10 +153,12 @@ fn mir_borrowck<'tcx>(
                 format!("{def_id:?}"),
                 String::from_utf8_lossy(&compiling_mir).to_string(),
             );
+            STAT_LOG.with(|f| f.borrow()(&format!("{def_id:?},cached")));
         }
     } else {
         log::info!("{def_id:?} cannot be cached due to its mir_borrowck result")
     }
+    STAT_LOG.with(|f| f.borrow()(&format!("{def_id:?},no_cache")));
     result
 }
 fn check_liveness<'tcx>(_tcx: TyCtxt<'tcx>, _def_id: LocalDefId) {}
@@ -144,11 +166,7 @@ fn check_liveness<'tcx>(_tcx: TyCtxt<'tcx>, _def_id: LocalDefId) {}
 pub struct AnalyzerCallback;
 impl Callbacks for AnalyzerCallback {
     fn config(&mut self, config: &mut interface::Config) {
-        config.opts.unstable_opts.mir_opt_level = Some(0);
-        config.opts.unstable_opts.polonius = config::Polonius::Next;
-        config.opts.incremental = None;
         config.override_queries = Some(override_queries);
-        config.make_codegen_backend = None;
     }
 }
 
@@ -188,6 +206,7 @@ fn main() {
         .with_level(env::var("FUSTC_LOG").map_or(log::LevelFilter::Error, |v| {
             v.parse().unwrap_or(log::LevelFilter::Error)
         }))
+        .with_colors(true)
         .init()
         .unwrap();
 
@@ -196,7 +215,9 @@ fn main() {
             let mut json = Vec::with_capacity(1024);
             file.read_to_end(&mut json).unwrap();
             if let Ok(mut cache) = MIR_CACHE.write() {
-                *cache = serde_json::from_slice(&json).unwrap();
+                if let Ok(data) = serde_json::from_slice(&json) {
+                    *cache = data;
+                }
             }
         }
     });
@@ -208,7 +229,12 @@ fn main() {
     };
 
     MIR_JSON_PATH.with(|json_path| {
-        if let Ok(mut file) = OpenOptions::new().create(true).write(true).open(json_path) {
+        if let Ok(mut file) = OpenOptions::new()
+            .create(true)
+            .write(true)
+            .truncate(true)
+            .open(json_path)
+        {
             if let Ok(cache) = MIR_CACHE.read() {
                 let json = serde_json::to_string(&*cache).unwrap();
                 file.write_all(json.as_bytes()).unwrap();
