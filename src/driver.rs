@@ -28,7 +28,6 @@ use rustc_middle::{
 };
 use rustc_session::{config, EarlyDiagCtxt};
 use std::cell::RefCell;
-use std::collections::HashMap;
 use std::env;
 use std::fs::{File, OpenOptions};
 use std::io::{Read, Write};
@@ -41,8 +40,7 @@ thread_local! {
         .unwrap_or(env::current_dir().unwrap())
         .join(".mir.json");
 }
-static MIR_CACHE: LazyLock<RwLock<HashMap<String, String>>> =
-    LazyLock::new(|| RwLock::new(HashMap::new()));
+static MIR_CACHE: LazyLock<RwLock<Vec<String>>> = LazyLock::new(|| RwLock::new(Vec::new()));
 
 thread_local! {
     static STAT_LOG: RefCell<Box<dyn Fn(&str)>> = RefCell::new(
@@ -96,12 +94,14 @@ fn mir_borrowck<'tcx>(
     tcx: TyCtxt<'tcx>,
     def_id: LocalDefId,
 ) -> queries::mir_borrowck::ProvidedValue<'tcx> {
+    //let key = tcx.def_path_str(def_id.to_def_id());
+
     log::info!("start borrowck of {def_id:?}");
-    STAT_LOG.with(|f| f.borrow()(&format!("{def_id:?},start")));
+    //STAT_LOG.with(|f| f.borrow()(&format!("{key},start")));
 
     if tcx.hir().body_const_context(def_id.to_def_id()).is_some() {
         let result = default_mir_borrowck(tcx, def_id);
-        STAT_LOG.with(|f| f.borrow()(&format!("{def_id:?},no_cache")));
+        //STAT_LOG.with(|f| f.borrow()(&format!("{key},no_cache")));
         return result;
     }
 
@@ -113,6 +113,7 @@ fn mir_borrowck<'tcx>(
     };
 
     let mut compiling_mir = Vec::with_capacity(1024);
+    let mut compiling_mir_str = String::new();
     let body = tcx.mir_built(def_id);
     if !body.is_stolen() {
         write_mir_fn(
@@ -127,13 +128,13 @@ fn mir_borrowck<'tcx>(
         .unwrap();
 
         if 0 < compiling_mir.len() {
+            compiling_mir_str = unsafe { String::from_utf8_unchecked(compiling_mir) };
+            //compiling_hash = format!("{:x}", md5::compute(&compiling_mir));
             if let Ok(cache) = MIR_CACHE.read() {
-                if let Some(cached_mir) = cache.get(&format!("{def_id:?}")) {
-                    if cached_mir.as_bytes() == &compiling_mir {
-                        log::info!("{def_id:?} cache hit");
-                        STAT_LOG.with(|f| f.borrow()(&format!("{def_id:?},cache_hit")));
-                        return tcx.arena.alloc(empty_result);
-                    }
+                if cache.contains(&compiling_mir_str) {
+                    log::info!("{def_id:?} cache hit");
+                    //STAT_LOG.with(|f| f.borrow()(&format!("{key},cache_hit")));
+                    return tcx.arena.alloc(empty_result);
                 }
             }
         }
@@ -146,14 +147,11 @@ fn mir_borrowck<'tcx>(
         && result.closure_requirements.is_none()
         && result.used_mut_upvars.is_empty()
         &&*/ result.tainted_by_errors.is_none()
-        && 0 < compiling_mir.len();
+        && 0 < compiling_mir_str.len();
     if can_cache {
         if let Ok(mut cache) = MIR_CACHE.write() {
-            cache.insert(
-                format!("{def_id:?}"),
-                String::from_utf8_lossy(&compiling_mir).to_string(),
-            );
-            STAT_LOG.with(|f| f.borrow()(&format!("{def_id:?},cached")));
+            cache.push(compiling_mir_str);
+            //STAT_LOG.with(|f| f.borrow()(&format!("{key},cached")));
         }
     } else {
         log::info!("{def_id:?} cannot be cached due to its mir_borrowck result")
