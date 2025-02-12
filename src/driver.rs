@@ -28,6 +28,7 @@ use rustc_middle::{
 };
 use rustc_session::{config, EarlyDiagCtxt};
 use std::cell::RefCell;
+use std::collections::BTreeSet;
 use std::env;
 use std::fs::{File, OpenOptions};
 use std::io::{Read, Write};
@@ -40,7 +41,8 @@ thread_local! {
         .unwrap_or(env::current_dir().unwrap())
         .join(".mir.json");
 }
-static MIR_CACHE: LazyLock<RwLock<Vec<String>>> = LazyLock::new(|| RwLock::new(Vec::new()));
+static MIR_CACHE: LazyLock<RwLock<BTreeSet<String>>> =
+    LazyLock::new(|| RwLock::new(BTreeSet::new()));
 
 thread_local! {
     static STAT_LOG: RefCell<Box<dyn Fn(&str)>> = RefCell::new(
@@ -150,7 +152,7 @@ fn mir_borrowck<'tcx>(
         && 0 < compiling_mir_str.len();
     if can_cache {
         if let Ok(mut cache) = MIR_CACHE.write() {
-            cache.push(compiling_mir_str);
+            cache.insert(compiling_mir_str);
             //STAT_LOG.with(|f| f.borrow()(&format!("{key},cached")));
         }
     } else {

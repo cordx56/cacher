@@ -19,3 +19,8 @@ path = "src/driver.rs"
 [[bin]]
 name = "fustc"
 path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
