@@ -14,7 +14,7 @@ pub extern crate rustc_session;
 pub extern crate rustc_span;
 pub extern crate smallvec;
 
-use rustc_driver::{Callbacks, RunCompiler};
+use rustc_driver::{Callbacks, Compilation, RunCompiler};
 use rustc_hir::{def_id::LocalDefId, hir_id::OwnerId};
 use rustc_interface::interface;
 use rustc_middle::{
@@ -34,6 +34,10 @@ use std::fs::{File, OpenOptions};
 use std::io::{Read, Write};
 use std::path::PathBuf;
 use std::sync::{atomic::AtomicBool, Arc, LazyLock, RwLock};
+use tokio::{
+    runtime::{Builder, Handle, Runtime},
+    task::JoinSet,
+};
 
 thread_local! {
     static MIR_JSON_PATH: PathBuf = env::var("FUSTC_CWD")
@@ -43,6 +47,10 @@ thread_local! {
 }
 static MIR_CACHE: LazyLock<RwLock<BTreeSet<String>>> =
     LazyLock::new(|| RwLock::new(BTreeSet::new()));
+static RUNTIME: LazyLock<RwLock<Runtime>> =
+    LazyLock::new(|| RwLock::new(Builder::new_multi_thread().enable_all().build().unwrap()));
+static HANDLE: LazyLock<Handle> = LazyLock::new(|| RUNTIME.read().unwrap().handle().clone());
+static TASKS: LazyLock<RwLock<JoinSet<()>>> = LazyLock::new(|| RwLock::new(JoinSet::new()));
 
 thread_local! {
     static STAT_LOG: RefCell<Box<dyn Fn(&str)>> = RefCell::new(
@@ -130,7 +138,7 @@ fn mir_borrowck<'tcx>(
         .unwrap();
 
         if 0 < compiling_mir.len() {
-            compiling_mir_str = unsafe { String::from_utf8_unchecked(compiling_mir) };
+            compiling_mir_str = String::from_utf8(compiling_mir).unwrap();
             //compiling_hash = format!("{:x}", md5::compute(&compiling_mir));
             if let Ok(cache) = MIR_CACHE.read() {
                 if cache.contains(&compiling_mir_str) {
@@ -145,10 +153,10 @@ fn mir_borrowck<'tcx>(
     log::info!("{def_id:?} no cache; start mir_borrowck");
 
     let result = default_mir_borrowck(tcx, def_id);
-    let can_cache = /*result.concrete_opaque_types.is_empty()
+    let can_cache = result.concrete_opaque_types.is_empty()
         && result.closure_requirements.is_none()
         && result.used_mut_upvars.is_empty()
-        &&*/ result.tainted_by_errors.is_none()
+        && result.tainted_by_errors.is_none()
         && 0 < compiling_mir_str.len();
     if can_cache {
         if let Ok(mut cache) = MIR_CACHE.write() {
@@ -163,10 +171,60 @@ fn mir_borrowck<'tcx>(
 }
 fn check_liveness<'tcx>(_tcx: TyCtxt<'tcx>, _def_id: LocalDefId) {}
 
-pub struct AnalyzerCallback;
-impl Callbacks for AnalyzerCallback {
+pub struct FustcCallback;
+impl Callbacks for FustcCallback {
     fn config(&mut self, config: &mut interface::Config) {
         config.override_queries = Some(override_queries);
+
+        TASKS.write().unwrap().spawn_on(
+            async {
+                MIR_JSON_PATH.with(|json_path| {
+                    if let Ok(mut file) = File::open(json_path) {
+                        let mut json = Vec::with_capacity(1024);
+                        file.read_to_end(&mut json).unwrap();
+                        if let Ok(mut cache) = MIR_CACHE.write() {
+                            if let Ok(data) = serde_json::from_slice(&json) {
+                                *cache = data;
+                            }
+                        }
+                    }
+                });
+            },
+            &HANDLE,
+        );
+    }
+    fn after_expansion<'tcx>(
+        &mut self,
+        _compiler: &interface::Compiler,
+        _queries: &'tcx rustc_interface::Queries<'tcx>,
+    ) -> Compilation {
+        HANDLE.block_on(async { while let Some(_) = TASKS.write().unwrap().join_next().await {} });
+        Compilation::Continue
+    }
+    fn after_analysis<'tcx>(
+        &mut self,
+        _compiler: &interface::Compiler,
+        _queries: &'tcx rustc_interface::Queries<'tcx>,
+    ) -> Compilation {
+        TASKS.write().unwrap().spawn_on(
+            async {
+                MIR_JSON_PATH.with(|json_path| {
+                    if let Ok(mut file) = OpenOptions::new()
+                        .create(true)
+                        .write(true)
+                        .truncate(true)
+                        .open(json_path)
+                    {
+                        if let Ok(cache) = MIR_CACHE.read() {
+                            let json = serde_json::to_string(&*cache).unwrap();
+                            file.write_all(json.as_bytes()).unwrap();
+                        }
+                    }
+                });
+            },
+            &HANDLE,
+        );
+        Compilation::Continue
     }
 }
 
@@ -191,7 +249,7 @@ pub fn run_compiler(compiler: Compiler) -> i32 {
             return rustc_driver::catch_with_exit_code(|| runner.run());
         }
     }
-    let mut callback = AnalyzerCallback;
+    let mut callback = FustcCallback;
     let mut runner = RunCompiler::new(&args, &mut callback);
     runner.set_make_codegen_backend(None);
     rustc_driver::catch_with_exit_code(|| {
@@ -210,37 +268,13 @@ fn main() {
         .init()
         .unwrap();
 
-    MIR_JSON_PATH.with(|json_path| {
-        if let Ok(mut file) = File::open(json_path) {
-            let mut json = Vec::with_capacity(1024);
-            file.read_to_end(&mut json).unwrap();
-            if let Ok(mut cache) = MIR_CACHE.write() {
-                if let Ok(data) = serde_json::from_slice(&json) {
-                    *cache = data;
-                }
-            }
-        }
-    });
-
     let fast_result = std::panic::catch_unwind(|| run_compiler(Compiler::Fast));
     let code = match fast_result {
         Ok(0) => 0,
         _ => run_compiler(Compiler::Normal),
     };
 
-    MIR_JSON_PATH.with(|json_path| {
-        if let Ok(mut file) = OpenOptions::new()
-            .create(true)
-            .write(true)
-            .truncate(true)
-            .open(json_path)
-        {
-            if let Ok(cache) = MIR_CACHE.read() {
-                let json = serde_json::to_string(&*cache).unwrap();
-                file.write_all(json.as_bytes()).unwrap();
-            }
-        }
-    });
+    HANDLE.block_on(async { while let Some(_) = TASKS.write().unwrap().join_next().await {} });
 
     std::process::exit(code);
 }
