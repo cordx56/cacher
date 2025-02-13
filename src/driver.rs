@@ -28,7 +28,7 @@ use rustc_middle::{
 };
 use rustc_session::{config, EarlyDiagCtxt};
 use std::cell::RefCell;
-use std::collections::BTreeSet;
+use std::collections::HashSet;
 use std::env;
 use std::path::PathBuf;
 use std::sync::{atomic::AtomicBool, LazyLock, RwLock};
@@ -45,8 +45,8 @@ thread_local! {
         .unwrap_or(env::current_dir().unwrap())
         .join(".mir.json");
 }
-static MIR_CACHE: LazyLock<RwLock<BTreeSet<String>>> =
-    LazyLock::new(|| RwLock::new(BTreeSet::new()));
+static MIR_CACHE: LazyLock<RwLock<HashSet<String>>> =
+    LazyLock::new(|| RwLock::new(HashSet::new()));
 static RUNTIME: LazyLock<RwLock<Runtime>> =
     LazyLock::new(|| RwLock::new(Builder::new_multi_thread().enable_all().build().unwrap()));
 static HANDLE: LazyLock<Handle> = LazyLock::new(|| RUNTIME.read().unwrap().handle().clone());
