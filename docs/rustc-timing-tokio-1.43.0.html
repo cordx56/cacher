@@ -1,7 +1,7 @@
 
 <html>
 <head>
-  <title>Cargo Build Timings — tokio-test 0.4.4, tokio-util 0.7.13, tokio 1.43.0, tokio-stream 0.1.17, tests-build 0.1.0, tests-integration 0.1.0, tokio-macros 2.5.0</title>
+  <title>Cargo Build Timings — tests-build 0.1.0, tests-integration 0.1.0, tokio-stream 0.1.17, tokio 1.43.0, tokio-test 0.4.4, tokio-util 0.7.13, tokio-macros 2.5.0</title>
   <meta charset="utf-8">
 <style type="text/css">
 :root {
@@ -169,7 +169,7 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
 
 <table class="my-table summary-table">
   <tr>
-    <td>Targets:</td><td>tokio-test 0.4.4 (lib)<br>tokio-util 0.7.13 (lib)<br>tokio 1.43.0 (lib)<br>tokio-stream 0.1.17 (lib)<br>tests-build 0.1.0 (lib)<br>tests-integration 0.1.0 (lib, bin "test-cat")<br>tokio-macros 2.5.0 (lib)</td>
+    <td>Targets:</td><td>tests-build 0.1.0 (lib)<br>tests-integration 0.1.0 (lib, bin "test-cat")<br>tokio-stream 0.1.17 (lib)<br>tokio 1.43.0 (lib)<br>tokio-test 0.4.4 (lib)<br>tokio-util 0.7.13 (lib)<br>tokio-macros 2.5.0 (lib)</td>
   </tr>
   <tr>
     <td>Profile:</td><td>dev</td>
@@ -187,13 +187,13 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
     <td>Max concurrency:</td><td>10 (jobs=10 ncpu=10)</td>
   </tr>
   <tr>
-    <td>Build start:</td><td>2025-02-13T08:37:57Z</td>
+    <td>Build start:</td><td>2025-02-13T11:25:11Z</td>
   </tr>
   <tr>
-    <td>Total time:</td><td>6.3s</td>
+    <td>Total time:</td><td>5.9s</td>
   </tr>
   <tr>
-    <td>rustc:</td><td>rustc 1.84.0-nightly (759e07f06 2024-10-30)<br>Host: aarch64-apple-darwin<br>Target: aarch64-apple-darwin</td>
+    <td>rustc:</td><td>rustc 1.86.0-nightly (92bedea1c 2025-02-11)<br>Host: aarch64-apple-darwin<br>Target: aarch64-apple-darwin</td>
   </tr>
 
 </table>
@@ -236,15 +236,15 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
 <tr>
   <td>1.</td>
   <td>tokio v1.43.0</td>
-  <td>3.7s</td>
-  <td>1.0s (26%)</td>
+  <td>3.4s</td>
+  <td>0.8s (25%)</td>
   <td>bytes, default, fs, full, io-std, io-util, libc, macros, mio, net, parking_lot, process, rt, rt-multi-thread, signal, signal-hook-registry, socket2, sync, test-util, time, tokio-macros</td>
 </tr>
 
 <tr>
   <td>2.</td>
   <td>futures-util v0.3.31</td>
-  <td>1.5s</td>
+  <td>1.4s</td>
   <td>0.1s (4%)</td>
   <td>alloc, async-await, async-await-macro, channel, futures-channel, futures-io, futures-macro, futures-sink, io, memchr, sink, slab, std</td>
 </tr>
@@ -253,24 +253,24 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
   <td>3.</td>
   <td>syn v2.0.98</td>
   <td>1.3s</td>
-  <td>0.2s (16%)</td>
+  <td>0.2s (14%)</td>
   <td>clone-impls, default, derive, full, parsing, printing, proc-macro, visit-mut</td>
 </tr>
 
 <tr>
   <td>4.</td>
-  <td>slab v0.4.9 build script (run)</td>
+  <td>lock_api v0.4.12 build script (run)</td>
   <td>0.7s</td>
   <td></td>
-  <td>default, std</td>
+  <td>atomic_usize, default</td>
 </tr>
 
 <tr>
   <td>5.</td>
-  <td>lock_api v0.4.12 build script (run)</td>
-  <td>0.5s</td>
+  <td>slab v0.4.9 build script (run)</td>
+  <td>0.6s</td>
   <td></td>
-  <td>atomic_usize, default</td>
+  <td>default, std</td>
 </tr>
 
 <tr>
@@ -301,36 +301,28 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
   <td>9.</td>
   <td>bytes v1.10.0</td>
   <td>0.3s</td>
-  <td>0.1s (16%)</td>
+  <td>0.0s (14%)</td>
   <td>default, std</td>
 </tr>
 
 <tr>
   <td>10.</td>
-  <td>tokio-stream v0.1.17</td>
-  <td>0.3s</td>
-  <td>0.0s (13%)</td>
-  <td>default, time</td>
-</tr>
-
-<tr>
-  <td>11.</td>
   <td>memchr v2.7.4</td>
   <td>0.3s</td>
-  <td>0.1s (28%)</td>
+  <td>0.1s (22%)</td>
   <td>alloc, default, std</td>
 </tr>
 
 <tr>
-  <td>12.</td>
-  <td>mio v1.0.3</td>
+  <td>11.</td>
+  <td>tokio-stream v0.1.17</td>
   <td>0.3s</td>
-  <td>0.1s (28%)</td>
-  <td>net, os-ext, os-poll</td>
+  <td>0.0s (15%)</td>
+  <td>default, time</td>
 </tr>
 
 <tr>
-  <td>13.</td>
+  <td>12.</td>
   <td>futures-macro v0.3.31</td>
   <td>0.3s</td>
   <td></td>
@@ -338,15 +330,15 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
 </tr>
 
 <tr>
-  <td>14.</td>
-  <td>tokio-util v0.7.13</td>
-  <td>0.2s</td>
-  <td>0.1s (36%)</td>
-  <td>default</td>
+  <td>13.</td>
+  <td>mio v1.0.3</td>
+  <td>0.3s</td>
+  <td>0.1s (23%)</td>
+  <td>net, os-ext, os-poll</td>
 </tr>
 
 <tr>
-  <td>15.</td>
+  <td>14.</td>
   <td>proc-macro2 v1.0.93 build script (run)</td>
   <td>0.2s</td>
   <td></td>
@@ -354,7 +346,7 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
 </tr>
 
 <tr>
-  <td>16.</td>
+  <td>15.</td>
   <td>async-stream v0.3.6</td>
   <td>0.2s</td>
   <td>0.0s (3%)</td>
@@ -362,27 +354,35 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
 </tr>
 
 <tr>
-  <td>17.</td>
+  <td>16.</td>
   <td>proc-macro2 v1.0.93</td>
   <td>0.2s</td>
-  <td>0.1s (22%)</td>
+  <td>0.0s (20%)</td>
   <td>default, proc-macro</td>
+</tr>
+
+<tr>
+  <td>17.</td>
+  <td>tokio-test v0.4.4</td>
+  <td>0.2s</td>
+  <td>0.1s (45%)</td>
+  <td></td>
 </tr>
 
 <tr>
   <td>18.</td>
   <td>autocfg v1.4.0</td>
   <td>0.2s</td>
-  <td>0.1s (59%)</td>
+  <td>0.1s (52%)</td>
   <td></td>
 </tr>
 
 <tr>
   <td>19.</td>
-  <td>tokio-test v0.4.4</td>
+  <td>tokio-util v0.7.13</td>
   <td>0.2s</td>
-  <td>0.1s (48%)</td>
-  <td></td>
+  <td>0.1s (36%)</td>
+  <td>default</td>
 </tr>
 
 <tr>
@@ -405,7 +405,7 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
   <td>22.</td>
   <td>socket2 v0.5.8</td>
   <td>0.2s</td>
-  <td>0.1s (33%)</td>
+  <td>0.1s (30%)</td>
   <td>all</td>
 </tr>
 
@@ -427,14 +427,6 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
 
 <tr>
   <td>25.</td>
-  <td>signal-hook-registry v1.4.2</td>
-  <td>0.2s</td>
-  <td>0.1s (59%)</td>
-  <td></td>
-</tr>
-
-<tr>
-  <td>26.</td>
   <td>parking_lot_core v0.9.10 build script (run)</td>
   <td>0.2s</td>
   <td></td>
@@ -442,10 +434,18 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
 </tr>
 
 <tr>
+  <td>26.</td>
+  <td>signal-hook-registry v1.4.2</td>
+  <td>0.1s</td>
+  <td>0.1s (53%)</td>
+  <td></td>
+</tr>
+
+<tr>
   <td>27.</td>
   <td>parking_lot v0.12.3</td>
-  <td>0.2s</td>
-  <td>0.1s (41%)</td>
+  <td>0.1s</td>
+  <td>0.1s (42%)</td>
   <td>default</td>
 </tr>
 
@@ -453,12 +453,20 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
   <td>28.</td>
   <td>parking_lot_core v0.9.10</td>
   <td>0.1s</td>
-  <td>0.1s (38%)</td>
+  <td>0.1s (39%)</td>
   <td></td>
 </tr>
 
 <tr>
   <td>29.</td>
+  <td>smallvec v1.13.2</td>
+  <td>0.1s</td>
+  <td>0.0s (20%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>30.</td>
   <td>doc-comment v0.3.3 build script</td>
   <td>0.1s</td>
   <td></td>
@@ -466,7 +474,7 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
 </tr>
 
 <tr>
-  <td>30.</td>
+  <td>31.</td>
   <td>parking_lot_core v0.9.10 build script</td>
   <td>0.1s</td>
   <td></td>
@@ -474,43 +482,35 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
 </tr>
 
 <tr>
-  <td>31.</td>
-  <td>smallvec v1.13.2</td>
-  <td>0.1s</td>
-  <td>0.0s (16%)</td>
-  <td></td>
-</tr>
-
-<tr>
   <td>32.</td>
-  <td>quote v1.0.38</td>
+  <td>futures-channel v0.3.31</td>
   <td>0.1s</td>
-  <td>0.0s (31%)</td>
-  <td>default, proc-macro</td>
+  <td>0.0s (24%)</td>
+  <td>alloc, futures-sink, sink, std</td>
 </tr>
 
 <tr>
   <td>33.</td>
-  <td>futures-channel v0.3.31</td>
+  <td>quote v1.0.38</td>
   <td>0.1s</td>
-  <td>0.0s (17%)</td>
-  <td>alloc, futures-sink, sink, std</td>
+  <td>0.0s (26%)</td>
+  <td>default, proc-macro</td>
 </tr>
 
 <tr>
   <td>34.</td>
   <td>futures-executor v0.3.31</td>
   <td>0.1s</td>
-  <td>0.1s (51%)</td>
+  <td>0.0s (45%)</td>
   <td>std</td>
 </tr>
 
 <tr>
   <td>35.</td>
-  <td>lock_api v0.4.12</td>
+  <td>futures-task v0.3.31</td>
   <td>0.1s</td>
-  <td>0.0s (6%)</td>
-  <td>atomic_usize, default</td>
+  <td>0.0s (18%)</td>
+  <td>alloc, std</td>
 </tr>
 
 <tr>
@@ -523,14 +523,6 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
 
 <tr>
   <td>37.</td>
-  <td>slab v0.4.9 build script</td>
-  <td>0.1s</td>
-  <td></td>
-  <td>default, std</td>
-</tr>
-
-<tr>
-  <td>38.</td>
   <td>lock_api v0.4.12 build script</td>
   <td>0.1s</td>
   <td></td>
@@ -538,74 +530,82 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
 </tr>
 
 <tr>
-  <td>39.</td>
-  <td>futures-io v0.3.31</td>
+  <td>38.</td>
+  <td>slab v0.4.9 build script</td>
   <td>0.1s</td>
-  <td>0.0s (38%)</td>
-  <td>std</td>
-</tr>
-
-<tr>
-  <td>40.</td>
-  <td>futures-task v0.3.31</td>
-  <td>0.1s</td>
-  <td>0.0s (28%)</td>
-  <td>alloc, std</td>
-</tr>
-
-<tr>
-  <td>41.</td>
-  <td>unicode-ident v1.0.16</td>
-  <td>0.1s</td>
-  <td>0.0s (17%)</td>
   <td></td>
-</tr>
-
-<tr>
-  <td>42.</td>
-  <td>futures-core v0.3.31</td>
-  <td>0.1s</td>
-  <td>0.0s (32%)</td>
-  <td>alloc, default, std</td>
-</tr>
-
-<tr>
-  <td>43.</td>
-  <td>slab v0.4.9</td>
-  <td>0.1s</td>
-  <td>0.0s (8%)</td>
   <td>default, std</td>
 </tr>
 
 <tr>
-  <td>44.</td>
-  <td>futures-sink v0.3.31</td>
+  <td>39.</td>
+  <td>lock_api v0.4.12</td>
   <td>0.1s</td>
-  <td>0.0s (26%)</td>
+  <td>0.0s (7%)</td>
+  <td>atomic_usize, default</td>
+</tr>
+
+<tr>
+  <td>40.</td>
+  <td>futures-io v0.3.31</td>
+  <td>0.1s</td>
+  <td>0.0s (31%)</td>
+  <td>std</td>
+</tr>
+
+<tr>
+  <td>41.</td>
+  <td>futures-core v0.3.31</td>
+  <td>0.1s</td>
+  <td>0.0s (27%)</td>
   <td>alloc, default, std</td>
 </tr>
 
 <tr>
-  <td>45.</td>
-  <td>tests-build v0.1.0</td>
+  <td>42.</td>
+  <td>slab v0.4.9</td>
   <td>0.1s</td>
-  <td>0.0s (38%)</td>
+  <td>0.0s (7%)</td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>43.</td>
+  <td>unicode-ident v1.0.16</td>
+  <td>0.1s</td>
+  <td>0.0s (30%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>44.</td>
+  <td>pin-project-lite v0.2.16</td>
+  <td>0.0s</td>
+  <td>0.0s (23%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>45.</td>
+  <td>scopeguard v1.2.0</td>
+  <td>0.0s</td>
+  <td>0.0s (25%)</td>
   <td></td>
 </tr>
 
 <tr>
   <td>46.</td>
-  <td>pin-project-lite v0.2.16</td>
+  <td>futures-sink v0.3.31</td>
   <td>0.0s</td>
-  <td>0.0s (27%)</td>
-  <td></td>
+  <td>0.0s (26%)</td>
+  <td>alloc, default, std</td>
 </tr>
 
 <tr>
   <td>47.</td>
-  <td>scopeguard v1.2.0</td>
+  <td>tests-build v0.1.0</td>
   <td>0.0s</td>
-  <td>0.0s (2%)</td>
+  <td>0.0s (46%)</td>
   <td></td>
 </tr>
 
@@ -613,12 +613,20 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
   <td>48.</td>
   <td>cfg-if v1.0.0</td>
   <td>0.0s</td>
-  <td>0.0s (35%)</td>
+  <td>0.0s (38%)</td>
   <td></td>
 </tr>
 
 <tr>
   <td>49.</td>
+  <td>pin-utils v0.1.0</td>
+  <td>0.0s</td>
+  <td>0.0s (33%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>50.</td>
   <td>tests-integration v0.1.0</td>
   <td>0.0s</td>
   <td>0.0s (21%)</td>
@@ -626,67 +634,48 @@ See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Doc
 </tr>
 
 <tr>
-  <td>50.</td>
+  <td>51.</td>
   <td>futures v0.3.31</td>
   <td>0.0s</td>
-  <td>0.0s (17%)</td>
+  <td>0.0s (18%)</td>
   <td>alloc, async-await, default, executor, futures-executor, std</td>
-</tr>
-
-<tr>
-  <td>51.</td>
-  <td>pin-utils v0.1.0</td>
-  <td>0.0s</td>
-  <td>0.0s (28%)</td>
-  <td></td>
 </tr>
 
 <tr>
   <td>52.</td>
   <td>doc-comment v0.3.3</td>
   <td>0.0s</td>
-  <td>0.0s (19%)</td>
+  <td>0.0s (28%)</td>
   <td></td>
 </tr>
 </tbody>
 </table>
 <script>
-DURATION = 7;
+DURATION = 6;
 const UNIT_DATA = [
   {
     "i": 0,
-    "name": "proc-macro2",
-    "version": "1.0.93",
+    "name": "autocfg",
+    "version": "1.4.0",
     "mode": "todo",
-    "target": " build script",
-    "start": 0.07,
-    "duration": 0.22,
-    "rmeta_time": null,
+    "target": "",
+    "start": 0.12,
+    "duration": 0.2,
+    "rmeta_time": 0.1,
     "unlocked_units": [
-      20
+      23,
+      22
     ],
     "unlocked_rmeta_units": []
   },
   {
     "i": 1,
-    "name": "unicode-ident",
-    "version": "1.0.16",
-    "mode": "todo",
-    "target": "",
-    "start": 0.07,
-    "duration": 0.07,
-    "rmeta_time": 0.06,
-    "unlocked_units": [],
-    "unlocked_rmeta_units": []
-  },
-  {
-    "i": 2,
     "name": "libc",
     "version": "0.2.169",
     "mode": "todo",
     "target": " build script",
-    "start": 0.07,
-    "duration": 0.22,
+    "start": 0.12,
+    "duration": 0.2,
     "rmeta_time": null,
     "unlocked_units": [
       21
@@ -694,15 +683,29 @@ const UNIT_DATA = [
     "unlocked_rmeta_units": []
   },
   {
-    "i": 3,
-    "name": "smallvec",
-    "version": "1.13.2",
+    "i": 2,
+    "name": "unicode-ident",
+    "version": "1.0.16",
     "mode": "todo",
     "target": "",
-    "start": 0.08,
-    "duration": 0.13,
-    "rmeta_time": 0.11,
+    "start": 0.12,
+    "duration": 0.06,
+    "rmeta_time": 0.04,
     "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 3,
+    "name": "proc-macro2",
+    "version": "1.0.93",
+    "mode": "todo",
+    "target": " build script",
+    "start": 0.12,
+    "duration": 0.2,
+    "rmeta_time": null,
+    "unlocked_units": [
+      20
+    ],
     "unlocked_rmeta_units": []
   },
   {
@@ -711,39 +714,34 @@ const UNIT_DATA = [
     "version": "0.2.16",
     "mode": "todo",
     "target": "",
-    "start": 0.08,
-    "duration": 0.04,
-    "rmeta_time": 0.03,
+    "start": 0.12,
+    "duration": 0.05,
+    "rmeta_time": 0.04,
     "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
   {
     "i": 5,
-    "name": "parking_lot_core",
-    "version": "0.9.10",
+    "name": "cfg-if",
+    "version": "1.0.0",
     "mode": "todo",
-    "target": " build script",
-    "start": 0.08,
-    "duration": 0.14,
-    "rmeta_time": null,
-    "unlocked_units": [
-      18
-    ],
+    "target": "",
+    "start": 0.12,
+    "duration": 0.03,
+    "rmeta_time": 0.02,
+    "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
   {
     "i": 6,
-    "name": "autocfg",
-    "version": "1.4.0",
+    "name": "scopeguard",
+    "version": "1.2.0",
     "mode": "todo",
     "target": "",
-    "start": 0.08,
-    "duration": 0.23,
-    "rmeta_time": 0.09,
-    "unlocked_units": [
-      22,
-      23
-    ],
+    "start": 0.12,
+    "duration": 0.04,
+    "rmeta_time": 0.03,
+    "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
   {
@@ -752,34 +750,36 @@ const UNIT_DATA = [
     "version": "0.3.31",
     "mode": "todo",
     "target": "",
-    "start": 0.08,
-    "duration": 0.06,
-    "rmeta_time": 0.04,
+    "start": 0.12,
+    "duration": 0.07,
+    "rmeta_time": 0.05,
     "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
   {
     "i": 8,
-    "name": "scopeguard",
-    "version": "1.2.0",
+    "name": "smallvec",
+    "version": "1.13.2",
     "mode": "todo",
     "target": "",
-    "start": 0.08,
-    "duration": 0.04,
-    "rmeta_time": 0.04,
+    "start": 0.12,
+    "duration": 0.13,
+    "rmeta_time": 0.11,
     "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
   {
     "i": 9,
-    "name": "cfg-if",
-    "version": "1.0.0",
+    "name": "parking_lot_core",
+    "version": "0.9.10",
     "mode": "todo",
-    "target": "",
-    "start": 0.08,
-    "duration": 0.03,
-    "rmeta_time": 0.02,
-    "unlocked_units": [],
+    "target": " build script",
+    "start": 0.12,
+    "duration": 0.12,
+    "rmeta_time": null,
+    "unlocked_units": [
+      16
+    ],
     "unlocked_rmeta_units": []
   },
   {
@@ -788,12 +788,12 @@ const UNIT_DATA = [
     "version": "0.3.31",
     "mode": "todo",
     "target": "",
-    "start": 0.11,
-    "duration": 0.05,
-    "rmeta_time": 0.04,
+    "start": 0.16,
+    "duration": 0.04,
+    "rmeta_time": 0.03,
     "unlocked_units": [],
     "unlocked_rmeta_units": [
-      16
+      14
     ]
   },
   {
@@ -802,7 +802,7 @@ const UNIT_DATA = [
     "version": "1.10.0",
     "mode": "todo",
     "target": "",
-    "start": 0.11,
+    "start": 0.17,
     "duration": 0.34,
     "rmeta_time": 0.29,
     "unlocked_units": [],
@@ -810,13 +810,13 @@ const UNIT_DATA = [
   },
   {
     "i": 12,
-    "name": "pin-utils",
-    "version": "0.1.0",
+    "name": "futures-task",
+    "version": "0.3.31",
     "mode": "todo",
     "target": "",
-    "start": 0.12,
-    "duration": 0.02,
-    "rmeta_time": 0.02,
+    "start": 0.17,
+    "duration": 0.09,
+    "rmeta_time": 0.07,
     "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
@@ -826,72 +826,72 @@ const UNIT_DATA = [
     "version": "0.3.31",
     "mode": "todo",
     "target": "",
-    "start": 0.14,
-    "duration": 0.09,
-    "rmeta_time": 0.06,
-    "unlocked_units": [],
-    "unlocked_rmeta_units": []
-  },
-  {
-    "i": 14,
-    "name": "memchr",
-    "version": "2.7.4",
-    "mode": "todo",
-    "target": "",
-    "start": 0.14,
-    "duration": 0.31,
-    "rmeta_time": 0.22,
-    "unlocked_units": [],
-    "unlocked_rmeta_units": []
-  },
-  {
-    "i": 15,
-    "name": "futures-task",
-    "version": "0.3.31",
-    "mode": "todo",
-    "target": "",
-    "start": 0.15,
-    "duration": 0.08,
+    "start": 0.18,
+    "duration": 0.07,
     "rmeta_time": 0.05,
     "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
   {
-    "i": 16,
+    "i": 14,
     "name": "futures-channel",
     "version": "0.3.31",
     "mode": "todo",
     "target": "",
-    "start": 0.17,
+    "start": 0.19,
     "duration": 0.12,
-    "rmeta_time": 0.1,
+    "rmeta_time": 0.09,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 15,
+    "name": "memchr",
+    "version": "2.7.4",
+    "mode": "todo",
+    "target": "",
+    "start": 0.2,
+    "duration": 0.29,
+    "rmeta_time": 0.23,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 16,
+    "name": "parking_lot_core",
+    "version": "0.9.10",
+    "mode": "run-custom-build",
+    "target": " build script (run)",
+    "start": 0.24,
+    "duration": 0.16,
+    "rmeta_time": null,
     "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
   {
     "i": 17,
-    "name": "doc-comment",
-    "version": "0.3.3",
+    "name": "pin-utils",
+    "version": "0.1.0",
     "mode": "todo",
-    "target": " build script",
-    "start": 0.21,
-    "duration": 0.14,
-    "rmeta_time": null,
-    "unlocked_units": [
-      24
-    ],
+    "target": "",
+    "start": 0.25,
+    "duration": 0.03,
+    "rmeta_time": 0.02,
+    "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
   {
     "i": 18,
-    "name": "parking_lot_core",
-    "version": "0.9.10",
-    "mode": "run-custom-build",
-    "target": " build script (run)",
-    "start": 0.22,
-    "duration": 0.16,
+    "name": "doc-comment",
+    "version": "0.3.3",
+    "mode": "todo",
+    "target": " build script",
+    "start": 0.26,
+    "duration": 0.12,
     "rmeta_time": null,
-    "unlocked_units": [],
+    "unlocked_units": [
+      24
+    ],
     "unlocked_rmeta_units": []
   },
   {
@@ -900,9 +900,9 @@ const UNIT_DATA = [
     "version": "0.1.0",
     "mode": "todo",
     "target": "",
-    "start": 0.23,
-    "duration": 0.05,
-    "rmeta_time": 0.03,
+    "start": 0.26,
+    "duration": 0.03,
+    "rmeta_time": 0.02,
     "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
@@ -912,7 +912,7 @@ const UNIT_DATA = [
     "version": "1.0.93",
     "mode": "run-custom-build",
     "target": " build script (run)",
-    "start": 0.29,
+    "start": 0.32,
     "duration": 0.24,
     "rmeta_time": null,
     "unlocked_units": [
@@ -926,8 +926,8 @@ const UNIT_DATA = [
     "version": "0.2.169",
     "mode": "run-custom-build",
     "target": " build script (run)",
-    "start": 0.29,
-    "duration": 0.35,
+    "start": 0.32,
+    "duration": 0.36,
     "rmeta_time": null,
     "unlocked_units": [
       28
@@ -940,11 +940,11 @@ const UNIT_DATA = [
     "version": "0.4.12",
     "mode": "todo",
     "target": " build script",
-    "start": 0.31,
-    "duration": 0.09,
+    "start": 0.32,
+    "duration": 0.08,
     "rmeta_time": null,
     "unlocked_units": [
-      25
+      26
     ],
     "unlocked_rmeta_units": []
   },
@@ -954,11 +954,11 @@ const UNIT_DATA = [
     "version": "0.4.9",
     "mode": "todo",
     "target": " build script",
-    "start": 0.31,
-    "duration": 0.09,
+    "start": 0.32,
+    "duration": 0.08,
     "rmeta_time": null,
     "unlocked_units": [
-      26
+      25
     ],
     "unlocked_rmeta_units": []
   },
@@ -968,8 +968,8 @@ const UNIT_DATA = [
     "version": "0.3.3",
     "mode": "run-custom-build",
     "target": " build script (run)",
-    "start": 0.34,
-    "duration": 0.46,
+    "start": 0.38,
+    "duration": 0.47,
     "rmeta_time": null,
     "unlocked_units": [
       31
@@ -978,12 +978,12 @@ const UNIT_DATA = [
   },
   {
     "i": 25,
-    "name": "lock_api",
-    "version": "0.4.12",
+    "name": "slab",
+    "version": "0.4.9",
     "mode": "run-custom-build",
     "target": " build script (run)",
-    "start": 0.4,
-    "duration": 0.55,
+    "start": 0.41,
+    "duration": 0.58,
     "rmeta_time": null,
     "unlocked_units": [
       36
@@ -992,15 +992,15 @@ const UNIT_DATA = [
   },
   {
     "i": 26,
-    "name": "slab",
-    "version": "0.4.9",
+    "name": "lock_api",
+    "version": "0.4.12",
     "mode": "run-custom-build",
     "target": " build script (run)",
-    "start": 0.4,
-    "duration": 0.68,
+    "start": 0.41,
+    "duration": 0.71,
     "rmeta_time": null,
     "unlocked_units": [
-      38
+      37
     ],
     "unlocked_rmeta_units": []
   },
@@ -1010,9 +1010,9 @@ const UNIT_DATA = [
     "version": "1.0.93",
     "mode": "todo",
     "target": "",
-    "start": 0.53,
-    "duration": 0.23,
-    "rmeta_time": 0.18,
+    "start": 0.57,
+    "duration": 0.21,
+    "rmeta_time": 0.17,
     "unlocked_units": [],
     "unlocked_rmeta_units": [
       29
@@ -1024,15 +1024,15 @@ const UNIT_DATA = [
     "version": "0.2.169",
     "mode": "todo",
     "target": "",
-    "start": 0.65,
-    "duration": 0.2,
-    "rmeta_time": 0.19,
+    "start": 0.68,
+    "duration": 0.19,
+    "rmeta_time": 0.18,
     "unlocked_units": [],
     "unlocked_rmeta_units": [
       33,
+      34,
       35,
-      32,
-      34
+      32
     ]
   },
   {
@@ -1041,8 +1041,8 @@ const UNIT_DATA = [
     "version": "1.0.38",
     "mode": "todo",
     "target": "",
-    "start": 0.71,
-    "duration": 0.12,
+    "start": 0.73,
+    "duration": 0.11,
     "rmeta_time": 0.08,
     "unlocked_units": [],
     "unlocked_rmeta_units": [
@@ -1055,9 +1055,9 @@ const UNIT_DATA = [
     "version": "2.0.98",
     "mode": "todo",
     "target": "",
-    "start": 0.79,
-    "duration": 1.34,
-    "rmeta_time": 1.13,
+    "start": 0.82,
+    "duration": 1.26,
+    "rmeta_time": 1.09,
     "unlocked_units": [
       40,
       39,
@@ -1071,7 +1071,7 @@ const UNIT_DATA = [
     "version": "0.3.3",
     "mode": "todo",
     "target": "",
-    "start": 0.81,
+    "start": 0.84,
     "duration": 0.02,
     "rmeta_time": 0.02,
     "unlocked_units": [],
@@ -1083,83 +1083,83 @@ const UNIT_DATA = [
     "version": "0.9.10",
     "mode": "todo",
     "target": "",
-    "start": 0.84,
-    "duration": 0.14,
-    "rmeta_time": 0.09,
+    "start": 0.86,
+    "duration": 0.13,
+    "rmeta_time": 0.08,
     "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
   {
     "i": 33,
-    "name": "mio",
-    "version": "1.0.3",
-    "mode": "todo",
-    "target": "",
-    "start": 0.84,
-    "duration": 0.29,
-    "rmeta_time": 0.21,
-    "unlocked_units": [],
-    "unlocked_rmeta_units": []
-  },
-  {
-    "i": 34,
-    "name": "socket2",
-    "version": "0.5.8",
-    "mode": "todo",
-    "target": "",
-    "start": 0.84,
-    "duration": 0.2,
-    "rmeta_time": 0.14,
-    "unlocked_units": [],
-    "unlocked_rmeta_units": []
-  },
-  {
-    "i": 35,
     "name": "signal-hook-registry",
     "version": "1.4.2",
     "mode": "todo",
     "target": "",
-    "start": 0.84,
-    "duration": 0.17,
+    "start": 0.86,
+    "duration": 0.15,
     "rmeta_time": 0.07,
     "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
   {
-    "i": 36,
-    "name": "lock_api",
-    "version": "0.4.12",
+    "i": 34,
+    "name": "mio",
+    "version": "1.0.3",
     "mode": "todo",
     "target": "",
-    "start": 0.95,
-    "duration": 0.1,
-    "rmeta_time": 0.09,
-    "unlocked_units": [],
-    "unlocked_rmeta_units": [
-      37
-    ]
-  },
-  {
-    "i": 37,
-    "name": "parking_lot",
-    "version": "0.12.3",
-    "mode": "todo",
-    "target": "",
-    "start": 1.04,
-    "duration": 0.15,
-    "rmeta_time": 0.09,
+    "start": 0.86,
+    "duration": 0.25,
+    "rmeta_time": 0.2,
     "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
   {
-    "i": 38,
+    "i": 35,
+    "name": "socket2",
+    "version": "0.5.8",
+    "mode": "todo",
+    "target": "",
+    "start": 0.86,
+    "duration": 0.19,
+    "rmeta_time": 0.13,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 36,
     "name": "slab",
     "version": "0.4.9",
     "mode": "todo",
     "target": "",
-    "start": 1.08,
+    "start": 0.99,
     "duration": 0.06,
     "rmeta_time": 0.06,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 37,
+    "name": "lock_api",
+    "version": "0.4.12",
+    "mode": "todo",
+    "target": "",
+    "start": 1.12,
+    "duration": 0.08,
+    "rmeta_time": 0.08,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      38
+    ]
+  },
+  {
+    "i": 38,
+    "name": "parking_lot",
+    "version": "0.12.3",
+    "mode": "todo",
+    "target": "",
+    "start": 1.19,
+    "duration": 0.14,
+    "rmeta_time": 0.08,
     "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
@@ -1169,8 +1169,8 @@ const UNIT_DATA = [
     "version": "2.5.0",
     "mode": "todo",
     "target": "",
-    "start": 2.14,
-    "duration": 0.38,
+    "start": 2.08,
+    "duration": 0.37,
     "rmeta_time": null,
     "unlocked_units": [
       44
@@ -1183,8 +1183,8 @@ const UNIT_DATA = [
     "version": "0.3.31",
     "mode": "todo",
     "target": "",
-    "start": 2.14,
-    "duration": 0.29,
+    "start": 2.08,
+    "duration": 0.27,
     "rmeta_time": null,
     "unlocked_units": [
       43
@@ -1197,7 +1197,7 @@ const UNIT_DATA = [
     "version": "0.3.6",
     "mode": "todo",
     "target": "",
-    "start": 2.14,
+    "start": 2.08,
     "duration": 0.17,
     "rmeta_time": null,
     "unlocked_units": [
@@ -1211,9 +1211,9 @@ const UNIT_DATA = [
     "version": "0.3.6",
     "mode": "todo",
     "target": "",
-    "start": 2.31,
-    "duration": 0.24,
-    "rmeta_time": 0.23,
+    "start": 2.24,
+    "duration": 0.22,
+    "rmeta_time": 0.21,
     "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
@@ -1223,9 +1223,9 @@ const UNIT_DATA = [
     "version": "0.3.31",
     "mode": "todo",
     "target": "",
-    "start": 2.43,
-    "duration": 1.5,
-    "rmeta_time": 1.44,
+    "start": 2.35,
+    "duration": 1.36,
+    "rmeta_time": 1.31,
     "unlocked_units": [],
     "unlocked_rmeta_units": [
       45
@@ -1237,16 +1237,16 @@ const UNIT_DATA = [
     "version": "1.43.0",
     "mode": "todo",
     "target": "",
-    "start": 2.51,
-    "duration": 3.71,
-    "rmeta_time": 2.73,
+    "start": 2.45,
+    "duration": 3.39,
+    "rmeta_time": 2.54,
     "unlocked_units": [
       51
     ],
     "unlocked_rmeta_units": [
       47,
-      48,
-      49
+      49,
+      48
     ]
   },
   {
@@ -1255,8 +1255,8 @@ const UNIT_DATA = [
     "version": "0.3.31",
     "mode": "todo",
     "target": "",
-    "start": 3.87,
-    "duration": 0.12,
+    "start": 3.66,
+    "duration": 0.1,
     "rmeta_time": 0.06,
     "unlocked_units": [],
     "unlocked_rmeta_units": [
@@ -1269,7 +1269,7 @@ const UNIT_DATA = [
     "version": "0.3.31",
     "mode": "todo",
     "target": "",
-    "start": 3.92,
+    "start": 3.71,
     "duration": 0.02,
     "rmeta_time": 0.02,
     "unlocked_units": [],
@@ -1277,15 +1277,17 @@ const UNIT_DATA = [
   },
   {
     "i": 47,
-    "name": "tokio-util",
-    "version": "0.7.13",
+    "name": "tokio-stream",
+    "version": "0.1.17",
     "mode": "todo",
     "target": "",
-    "start": 5.25,
-    "duration": 0.24,
-    "rmeta_time": 0.16,
+    "start": 5.0,
+    "duration": 0.28,
+    "rmeta_time": 0.24,
     "unlocked_units": [],
-    "unlocked_rmeta_units": []
+    "unlocked_rmeta_units": [
+      50
+    ]
   },
   {
     "i": 48,
@@ -1293,25 +1295,23 @@ const UNIT_DATA = [
     "version": "0.1.0",
     "mode": "todo",
     "target": "",
-    "start": 5.25,
-    "duration": 0.03,
+    "start": 5.0,
+    "duration": 0.02,
     "rmeta_time": 0.02,
     "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
   {
     "i": 49,
-    "name": "tokio-stream",
-    "version": "0.1.17",
+    "name": "tokio-util",
+    "version": "0.7.13",
     "mode": "todo",
     "target": "",
-    "start": 5.25,
-    "duration": 0.32,
-    "rmeta_time": 0.28,
+    "start": 5.0,
+    "duration": 0.2,
+    "rmeta_time": 0.13,
     "unlocked_units": [],
-    "unlocked_rmeta_units": [
-      50
-    ]
+    "unlocked_rmeta_units": []
   },
   {
     "i": 50,
@@ -1319,9 +1319,9 @@ const UNIT_DATA = [
     "version": "0.4.4",
     "mode": "todo",
     "target": "",
-    "start": 5.52,
-    "duration": 0.22,
-    "rmeta_time": 0.12,
+    "start": 5.24,
+    "duration": 0.21,
+    "rmeta_time": 0.11,
     "unlocked_units": [],
     "unlocked_rmeta_units": []
   },
@@ -1331,7 +1331,7 @@ const UNIT_DATA = [
     "version": "0.1.0",
     "mode": "todo",
     "target": " bin \"test-cat\"",
-    "start": 6.22,
+    "start": 5.84,
     "duration": 0.09,
     "rmeta_time": null,
     "unlocked_units": [],
@@ -1340,907 +1340,901 @@ const UNIT_DATA = [
 ];
 const CONCURRENCY_DATA = [
   {
-    "t": 0.073207291,
+    "t": 0.118974291,
     "active": 10,
     "waiting": 8,
     "inactive": 34
   },
   {
-    "t": 0.07514975,
+    "t": 0.11899425,
     "active": 10,
     "waiting": 8,
     "inactive": 34
   },
   {
-    "t": 0.075507291,
+    "t": 0.121943541,
     "active": 10,
     "waiting": 8,
     "inactive": 34
   },
   {
-    "t": 0.076897708,
+    "t": 0.141722916,
     "active": 10,
     "waiting": 8,
     "inactive": 34
   },
   {
-    "t": 0.097754375,
+    "t": 0.153989083,
     "active": 10,
     "waiting": 8,
     "inactive": 34
   },
   {
-    "t": 0.103369375,
+    "t": 0.154288958,
     "active": 10,
     "waiting": 8,
     "inactive": 34
   },
   {
-    "t": 0.108813916,
+    "t": 0.154578791,
     "active": 10,
     "waiting": 7,
     "inactive": 34
   },
   {
-    "t": 0.10934275,
+    "t": 0.156771458,
     "active": 10,
     "waiting": 7,
     "inactive": 34
   },
   {
-    "t": 0.113214791,
+    "t": 0.15878875,
     "active": 10,
     "waiting": 7,
     "inactive": 34
   },
   {
-    "t": 0.113828625,
+    "t": 0.164707375,
     "active": 10,
     "waiting": 6,
     "inactive": 34
   },
   {
-    "t": 0.114075916,
+    "t": 0.165199291,
     "active": 10,
     "waiting": 5,
     "inactive": 34
   },
   {
-    "t": 0.118229541,
+    "t": 0.167055333,
     "active": 10,
     "waiting": 5,
     "inactive": 34
   },
   {
-    "t": 0.133371875,
+    "t": 0.169353416,
     "active": 10,
     "waiting": 5,
     "inactive": 34
   },
   {
-    "t": 0.133471041,
-    "active": 10,
-    "waiting": 5,
-    "inactive": 34
-  },
-  {
-    "t": 0.138705875,
+    "t": 0.17570625,
     "active": 10,
     "waiting": 4,
     "inactive": 34
   },
   {
-    "t": 0.14090775,
+    "t": 0.175950583,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 34
+  },
+  {
+    "t": 0.184614,
+    "active": 10,
+    "waiting": 5,
+    "inactive": 33
+  },
+  {
+    "t": 0.187109541,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 33
+  },
+  {
+    "t": 0.187926791,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 33
+  },
+  {
+    "t": 0.194846541,
     "active": 10,
     "waiting": 3,
-    "inactive": 34
+    "inactive": 33
   },
   {
-    "t": 0.143622375,
-    "active": 10,
-    "waiting": 3,
-    "inactive": 34
-  },
-  {
-    "t": 0.146212833,
-    "active": 10,
-    "waiting": 2,
-    "inactive": 34
-  },
-  {
-    "t": 0.146761458,
-    "active": 10,
-    "waiting": 2,
-    "inactive": 34
-  },
-  {
-    "t": 0.148953625,
+    "t": 0.195870541,
     "active": 10,
     "waiting": 3,
     "inactive": 33
   },
   {
-    "t": 0.1627525,
+    "t": 0.216721041,
     "active": 10,
-    "waiting": 2,
+    "waiting": 3,
     "inactive": 33
   },
   {
-    "t": 0.165346125,
+    "t": 0.22707325,
     "active": 10,
-    "waiting": 2,
+    "waiting": 3,
     "inactive": 33
   },
   {
-    "t": 0.168719083,
+    "t": 0.228639541,
     "active": 10,
-    "waiting": 2,
+    "waiting": 3,
     "inactive": 33
   },
   {
-    "t": 0.184678583,
+    "t": 0.240512791,
     "active": 10,
-    "waiting": 2,
+    "waiting": 3,
     "inactive": 33
   },
   {
-    "t": 0.195920291,
+    "t": 0.242851791,
     "active": 10,
-    "waiting": 2,
-    "inactive": 33
-  },
-  {
-    "t": 0.201762916,
-    "active": 10,
-    "waiting": 2,
-    "inactive": 33
-  },
-  {
-    "t": 0.205891791,
-    "active": 10,
-    "waiting": 1,
-    "inactive": 33
-  },
-  {
-    "t": 0.206350333,
-    "active": 10,
-    "waiting": 1,
-    "inactive": 33
-  },
-  {
-    "t": 0.212497125,
-    "active": 10,
-    "waiting": 1,
+    "waiting": 3,
     "inactive": 32
   },
   {
-    "t": 0.215269333,
+    "t": 0.244216416,
+    "active": 10,
+    "waiting": 3,
+    "inactive": 32
+  },
+  {
+    "t": 0.250397833,
+    "active": 10,
+    "waiting": 2,
+    "inactive": 32
+  },
+  {
+    "t": 0.25241325,
+    "active": 10,
+    "waiting": 2,
+    "inactive": 32
+  },
+  {
+    "t": 0.254595166,
     "active": 10,
     "waiting": 1,
     "inactive": 32
   },
   {
-    "t": 0.22332575,
+    "t": 0.256026291,
+    "active": 10,
+    "waiting": 1,
+    "inactive": 32
+  },
+  {
+    "t": 0.257162708,
     "active": 10,
     "waiting": 0,
     "inactive": 32
   },
   {
-    "t": 0.230350166,
+    "t": 0.259059625,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 32
+  },
+  {
+    "t": 0.274456583,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 32
+  },
+  {
+    "t": 0.277709333,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 32
+  },
+  {
+    "t": 0.280189375,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 32
+  },
+  {
+    "t": 0.28518475,
     "active": 9,
     "waiting": 0,
     "inactive": 32
   },
   {
-    "t": 0.231020375,
+    "t": 0.2869715,
     "active": 9,
     "waiting": 0,
     "inactive": 32
   },
   {
-    "t": 0.231363833,
+    "t": 0.287498541,
     "active": 9,
     "waiting": 0,
     "inactive": 32
   },
   {
-    "t": 0.234218458,
-    "active": 9,
-    "waiting": 0,
-    "inactive": 32
-  },
-  {
-    "t": 0.234814083,
-    "active": 9,
-    "waiting": 0,
-    "inactive": 32
-  },
-  {
-    "t": 0.235064625,
-    "active": 9,
-    "waiting": 0,
-    "inactive": 32
-  },
-  {
-    "t": 0.235150416,
-    "active": 9,
-    "waiting": 0,
-    "inactive": 32
-  },
-  {
-    "t": 0.235163208,
-    "active": 9,
-    "waiting": 0,
-    "inactive": 32
-  },
-  {
-    "t": 0.235172625,
-    "active": 9,
-    "waiting": 0,
-    "inactive": 32
-  },
-  {
-    "t": 0.23518225,
-    "active": 9,
-    "waiting": 0,
-    "inactive": 32
-  },
-  {
-    "t": 0.2351925,
-    "active": 9,
-    "waiting": 0,
-    "inactive": 32
-  },
-  {
-    "t": 0.2628475,
-    "active": 9,
-    "waiting": 0,
-    "inactive": 32
-  },
-  {
-    "t": 0.28295775,
+    "t": 0.293465875,
     "active": 8,
     "waiting": 0,
     "inactive": 32
   },
   {
-    "t": 0.28329975,
+    "t": 0.293931666,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 32
+  },
+  {
+    "t": 0.29413925,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 32
+  },
+  {
+    "t": 0.294179708,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 32
+  },
+  {
+    "t": 0.294201541,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 32
+  },
+  {
+    "t": 0.294222125,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 32
+  },
+  {
+    "t": 0.29424175,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 32
+  },
+  {
+    "t": 0.294252458,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 32
+  },
+  {
+    "t": 0.308538416,
     "active": 7,
     "waiting": 0,
     "inactive": 32
   },
   {
-    "t": 0.289328166,
-    "active": 7,
-    "waiting": 0,
-    "inactive": 31
-  },
-  {
-    "t": 0.289356416,
-    "active": 7,
-    "waiting": 0,
-    "inactive": 31
-  },
-  {
-    "t": 0.289385291,
-    "active": 7,
-    "waiting": 0,
-    "inactive": 31
-  },
-  {
-    "t": 0.289490166,
+    "t": 0.320452333,
     "active": 7,
     "waiting": 0,
     "inactive": 30
   },
   {
-    "t": 0.290714833,
+    "t": 0.322302708,
     "active": 7,
     "waiting": 0,
     "inactive": 30
   },
   {
-    "t": 0.291104291,
-    "active": 7,
-    "waiting": 0,
-    "inactive": 30
-  },
-  {
-    "t": 0.305954666,
+    "t": 0.323613666,
     "active": 8,
     "waiting": 0,
     "inactive": 28
   },
   {
-    "t": 0.306056083,
+    "t": 0.323718833,
     "active": 8,
     "waiting": 0,
     "inactive": 28
   },
   {
-    "t": 0.306083083,
-    "active": 8,
-    "waiting": 0,
-    "inactive": 28
-  },
-  {
-    "t": 0.344836708,
+    "t": 0.377353125,
     "active": 8,
     "waiting": 0,
     "inactive": 27
   },
   {
-    "t": 0.3449,
+    "t": 0.377386708,
     "active": 8,
     "waiting": 0,
     "inactive": 27
   },
   {
-    "t": 0.361918166,
+    "t": 0.377626,
     "active": 8,
     "waiting": 0,
     "inactive": 27
   },
   {
-    "t": 0.370406583,
+    "t": 0.402639625,
     "active": 7,
     "waiting": 0,
     "inactive": 27
   },
   {
-    "t": 0.397126583,
+    "t": 0.407633333,
     "active": 7,
     "waiting": 0,
-    "inactive": 25
+    "inactive": 26
   },
   {
-    "t": 0.397173708,
+    "t": 0.407675625,
     "active": 7,
     "waiting": 0,
-    "inactive": 25
+    "inactive": 26
   },
   {
-    "t": 0.40271,
+    "t": 0.407803625,
     "active": 7,
     "waiting": 0,
     "inactive": 25
   },
   {
-    "t": 0.448672333,
+    "t": 0.407811916,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 25
+  },
+  {
+    "t": 0.407845166,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 25
+  },
+  {
+    "t": 0.42635125,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 25
+  },
+  {
+    "t": 0.454361625,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 25
+  },
+  {
+    "t": 0.490730583,
     "active": 6,
     "waiting": 0,
     "inactive": 25
   },
   {
-    "t": 0.456904541,
+    "t": 0.501318625,
     "active": 5,
     "waiting": 0,
     "inactive": 25
   },
   {
-    "t": 0.531526833,
+    "t": 0.565375708,
     "active": 5,
     "waiting": 0,
     "inactive": 24
   },
   {
-    "t": 0.531575958,
+    "t": 0.565417833,
     "active": 5,
     "waiting": 0,
     "inactive": 24
   },
   {
-    "t": 0.645395833,
+    "t": 0.680484208,
     "active": 5,
     "waiting": 0,
     "inactive": 23
   },
   {
-    "t": 0.645448208,
+    "t": 0.680540458,
     "active": 5,
     "waiting": 0,
     "inactive": 23
   },
   {
-    "t": 0.712996708,
+    "t": 0.733959083,
     "active": 5,
     "waiting": 1,
     "inactive": 22
   },
   {
-    "t": 0.713063875,
+    "t": 0.734028416,
     "active": 6,
     "waiting": 0,
     "inactive": 22
   },
   {
-    "t": 0.713159333,
+    "t": 0.734178625,
     "active": 6,
     "waiting": 0,
     "inactive": 22
   },
   {
-    "t": 0.764251791,
+    "t": 0.775099041,
     "active": 5,
     "waiting": 0,
     "inactive": 22
   },
   {
-    "t": 0.794665291,
+    "t": 0.814876708,
     "active": 5,
     "waiting": 1,
     "inactive": 21
   },
   {
-    "t": 0.794734083,
+    "t": 0.814952208,
     "active": 6,
     "waiting": 0,
     "inactive": 21
   },
   {
-    "t": 0.794845125,
+    "t": 0.815029375,
     "active": 6,
     "waiting": 0,
     "inactive": 21
   },
   {
-    "t": 0.805629083,
-    "active": 6,
+    "t": 0.84340975,
+    "active": 5,
     "waiting": 0,
-    "inactive": 20
+    "inactive": 21
   },
   {
-    "t": 0.805693875,
-    "active": 6,
-    "waiting": 0,
-    "inactive": 20
-  },
-  {
-    "t": 0.821357791,
-    "active": 6,
-    "waiting": 0,
-    "inactive": 20
-  },
-  {
-    "t": 0.825092083,
+    "t": 0.843546708,
     "active": 5,
     "waiting": 0,
     "inactive": 20
   },
   {
-    "t": 0.831447166,
-    "active": 4,
+    "t": 0.843602208,
+    "active": 5,
     "waiting": 0,
     "inactive": 20
   },
   {
-    "t": 0.836398125,
-    "active": 4,
+    "t": 0.858638833,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 20
+  },
+  {
+    "t": 0.86068,
+    "active": 5,
     "waiting": 4,
     "inactive": 16
   },
   {
-    "t": 0.83648875,
+    "t": 0.860787333,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 16
+  },
+  {
+    "t": 0.860911,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 16
+  },
+  {
+    "t": 0.860996291,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 16
+  },
+  {
+    "t": 0.86464025,
     "active": 8,
     "waiting": 0,
     "inactive": 16
   },
   {
-    "t": 0.836535625,
-    "active": 8,
-    "waiting": 0,
-    "inactive": 16
-  },
-  {
-    "t": 0.836560708,
-    "active": 8,
-    "waiting": 0,
-    "inactive": 16
-  },
-  {
-    "t": 0.836747166,
-    "active": 8,
-    "waiting": 0,
-    "inactive": 16
-  },
-  {
-    "t": 0.846665958,
+    "t": 0.8695715,
     "active": 7,
     "waiting": 0,
     "inactive": 16
   },
   {
-    "t": 0.905195041,
+    "t": 0.930043208,
     "active": 7,
     "waiting": 0,
     "inactive": 16
   },
   {
-    "t": 0.924147791,
+    "t": 0.942824666,
     "active": 7,
     "waiting": 0,
     "inactive": 16
   },
   {
-    "t": 0.945360041,
+    "t": 0.986181541,
     "active": 7,
     "waiting": 0,
     "inactive": 15
   },
   {
-    "t": 0.945755708,
+    "t": 0.987135625,
     "active": 7,
     "waiting": 0,
     "inactive": 15
   },
   {
-    "t": 0.971195541,
+    "t": 0.988851625,
     "active": 7,
     "waiting": 0,
     "inactive": 15
   },
   {
-    "t": 0.973120333,
-    "active": 7,
-    "waiting": 0,
-    "inactive": 15
-  },
-  {
-    "t": 0.977654333,
+    "t": 0.994534333,
     "active": 6,
     "waiting": 0,
     "inactive": 15
   },
   {
-    "t": 1.001930833,
+    "t": 0.994914833,
+    "active": 6,
+    "waiting": 0,
+    "inactive": 15
+  },
+  {
+    "t": 1.006823166,
     "active": 5,
     "waiting": 0,
     "inactive": 15
   },
   {
-    "t": 1.037843291,
+    "t": 1.045327625,
     "active": 5,
+    "waiting": 0,
+    "inactive": 15
+  },
+  {
+    "t": 1.049895333,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 15
+  },
+  {
+    "t": 1.051314666,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 15
+  },
+  {
+    "t": 1.057665666,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 15
+  },
+  {
+    "t": 1.115255666,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 15
+  },
+  {
+    "t": 1.116818125,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 14
+  },
+  {
+    "t": 1.116853458,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 14
+  },
+  {
+    "t": 1.193020875,
+    "active": 2,
     "waiting": 1,
-    "inactive": 14
-  },
-  {
-    "t": 1.037928208,
-    "active": 6,
-    "waiting": 0,
-    "inactive": 14
-  },
-  {
-    "t": 1.038090125,
-    "active": 6,
-    "waiting": 0,
-    "inactive": 14
-  },
-  {
-    "t": 1.040333291,
-    "active": 5,
-    "waiting": 0,
-    "inactive": 14
-  },
-  {
-    "t": 1.043984541,
-    "active": 4,
-    "waiting": 0,
-    "inactive": 14
-  },
-  {
-    "t": 1.047221041,
-    "active": 4,
-    "waiting": 0,
-    "inactive": 14
-  },
-  {
-    "t": 1.080299041,
-    "active": 4,
-    "waiting": 0,
     "inactive": 13
   },
   {
-    "t": 1.080349333,
-    "active": 4,
-    "waiting": 0,
-    "inactive": 13
-  },
-  {
-    "t": 1.126799375,
-    "active": 4,
-    "waiting": 0,
-    "inactive": 13
-  },
-  {
-    "t": 1.127189708,
+    "t": 1.193118375,
     "active": 3,
     "waiting": 0,
     "inactive": 13
   },
   {
-    "t": 1.136981541,
+    "t": 1.193256041,
     "active": 3,
     "waiting": 0,
     "inactive": 13
   },
   {
-    "t": 1.141625208,
+    "t": 1.199137875,
     "active": 2,
     "waiting": 0,
     "inactive": 13
   },
   {
-    "t": 1.188813375,
+    "t": 1.275864041,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 13
+  },
+  {
+    "t": 1.336881541,
     "active": 1,
     "waiting": 0,
     "inactive": 13
   },
   {
-    "t": 1.6938722080000002,
+    "t": 1.840985208,
     "active": 1,
     "waiting": 0,
     "inactive": 13
   },
   {
-    "t": 1.920392291,
+    "t": 1.902779041,
     "active": 1,
     "waiting": 0,
     "inactive": 13
   },
   {
-    "t": 2.137361833,
+    "t": 2.078117333,
     "active": 3,
     "waiting": 0,
     "inactive": 10
   },
   {
-    "t": 2.137393625,
+    "t": 2.078146125,
     "active": 3,
     "waiting": 0,
     "inactive": 10
   },
   {
-    "t": 2.137494375,
+    "t": 2.078258,
     "active": 3,
     "waiting": 0,
     "inactive": 10
   },
   {
-    "t": 2.311570583,
+    "t": 2.243506625,
     "active": 3,
     "waiting": 0,
     "inactive": 9
   },
   {
-    "t": 2.311682375,
+    "t": 2.243653791,
     "active": 3,
     "waiting": 0,
     "inactive": 9
   },
   {
-    "t": 2.425289708,
+    "t": 2.351130125,
     "active": 3,
     "waiting": 0,
     "inactive": 8
   },
   {
-    "t": 2.425449791,
+    "t": 2.351246208,
     "active": 3,
     "waiting": 0,
     "inactive": 8
   },
   {
-    "t": 2.512674125,
+    "t": 2.450310583,
     "active": 3,
     "waiting": 0,
     "inactive": 7
   },
   {
-    "t": 2.512695166,
+    "t": 2.450378291,
     "active": 3,
     "waiting": 0,
     "inactive": 7
   },
   {
-    "t": 2.512755083,
+    "t": 2.453407583,
     "active": 3,
     "waiting": 0,
     "inactive": 7
   },
   {
-    "t": 2.543436291,
-    "active": 3,
-    "waiting": 0,
-    "inactive": 7
-  },
-  {
-    "t": 2.549505291,
+    "t": 2.459249833,
     "active": 2,
     "waiting": 0,
     "inactive": 7
   },
   {
-    "t": 3.054578333,
+    "t": 2.964311625,
     "active": 2,
     "waiting": 0,
     "inactive": 7
   },
   {
-    "t": 3.559686625,
+    "t": 3.469413291,
     "active": 2,
     "waiting": 0,
     "inactive": 7
   },
   {
-    "t": 3.8670774999999997,
+    "t": 3.656737833,
     "active": 2,
     "waiting": 1,
     "inactive": 6
   },
   {
-    "t": 3.86717125,
+    "t": 3.6568245409999998,
     "active": 3,
     "waiting": 0,
     "inactive": 6
   },
   {
-    "t": 3.867260875,
+    "t": 3.656900125,
     "active": 3,
     "waiting": 0,
     "inactive": 6
   },
   {
-    "t": 3.923344833,
-    "active": 3,
+    "t": 3.71304975,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 6
+  },
+  {
+    "t": 3.71322225,
+    "active": 2,
     "waiting": 1,
     "inactive": 5
   },
   {
-    "t": 3.923414,
-    "active": 4,
-    "waiting": 0,
-    "inactive": 5
-  },
-  {
-    "t": 3.923500166,
-    "active": 4,
-    "waiting": 0,
-    "inactive": 5
-  },
-  {
-    "t": 3.925773541,
+    "t": 3.713260291,
     "active": 3,
     "waiting": 0,
     "inactive": 5
   },
   {
-    "t": 3.942087333,
+    "t": 3.713386208,
     "active": 3,
     "waiting": 0,
     "inactive": 5
   },
   {
-    "t": 3.945928708,
+    "t": 3.73164125,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 5
+  },
+  {
+    "t": 3.73564075,
     "active": 2,
     "waiting": 0,
     "inactive": 5
   },
   {
-    "t": 3.982498708,
+    "t": 3.759497208,
     "active": 1,
     "waiting": 0,
     "inactive": 5
   },
   {
-    "t": 4.487579416,
+    "t": 4.264565666,
     "active": 1,
     "waiting": 0,
     "inactive": 5
   },
   {
-    "t": 4.991324291,
+    "t": 4.769646291,
     "active": 1,
     "waiting": 0,
     "inactive": 5
   },
   {
-    "t": 5.245977458,
+    "t": 4.994934583,
     "active": 1,
     "waiting": 3,
     "inactive": 2
   },
   {
-    "t": 5.246157,
+    "t": 4.995113125,
     "active": 4,
     "waiting": 0,
     "inactive": 2
   },
   {
-    "t": 5.24623625,
+    "t": 4.995194333,
     "active": 4,
     "waiting": 0,
     "inactive": 2
   },
   {
-    "t": 5.24630425,
+    "t": 4.995306666,
     "active": 4,
     "waiting": 0,
     "inactive": 2
   },
   {
-    "t": 5.27073675,
+    "t": 5.013543416,
     "active": 4,
     "waiting": 0,
     "inactive": 2
   },
   {
-    "t": 5.277350541,
+    "t": 5.018505916,
     "active": 3,
     "waiting": 0,
     "inactive": 2
   },
   {
-    "t": 5.402458916,
+    "t": 5.126062,
     "active": 3,
     "waiting": 0,
     "inactive": 2
   },
   {
-    "t": 5.488956666,
+    "t": 5.198085416,
     "active": 2,
     "waiting": 0,
     "inactive": 2
   },
   {
-    "t": 5.521731208,
+    "t": 5.236657,
     "active": 2,
     "waiting": 1,
     "inactive": 1
   },
   {
-    "t": 5.521821916,
+    "t": 5.236737458,
     "active": 3,
     "waiting": 0,
     "inactive": 1
   },
   {
-    "t": 5.521909041,
+    "t": 5.236838166,
     "active": 3,
     "waiting": 0,
     "inactive": 1
   },
   {
-    "t": 5.56437375,
+    "t": 5.2784956659999995,
     "active": 2,
     "waiting": 0,
     "inactive": 1
   },
   {
-    "t": 5.638536291,
+    "t": 5.350370041,
     "active": 2,
     "waiting": 0,
     "inactive": 1
   },
   {
-    "t": 5.7446628749999995,
+    "t": 5.443733708,
     "active": 1,
     "waiting": 0,
     "inactive": 1
   },
   {
-    "t": 6.223377458,
+    "t": 5.841966416,
     "active": 1,
     "waiting": 0,
     "inactive": 0
   },
   {
-    "t": 6.223488333,
+    "t": 5.842070583,
     "active": 1,
     "waiting": 0,
     "inactive": 0
   },
   {
-    "t": 6.317620708,
+    "t": 5.92715175,
     "active": 0,
     "waiting": 0,
     "inactive": 0
@@ -2248,112 +2242,108 @@ const CONCURRENCY_DATA = [
 ];
 const CPU_USAGE = [
   [
-    0.168719458,
-    94.1747572815534
+    0.216722916,
+    94.28571428571429
   ],
   [
-    0.282958083,
+    0.320452375,
     100.0
   ],
   [
-    0.397126625,
-    89.47368421052632
+    0.42635225,
+    85.98130841121495
   ],
   [
-    0.531527041,
-    47.692307692307686
+    0.565378958,
+    48.57142857142858
   ],
   [
-    0.645396,
-    43.58974358974359
+    0.68048425,
+    42.10526315789473
   ],
   [
-    0.764255083,
-    63.559322033898304
+    0.814876916,
+    61.19402985074627
   ],
   [
-    0.90519525,
-    76.81159420289855
+    0.930043541,
+    78.0701754385965
   ],
   [
-    1.037843458,
-    92.42424242424242
+    1.045327833,
+    91.30434782608695
   ],
   [
-    1.141625375,
-    71.81818181818181
+    1.193021083,
+    51.35135135135135
   ],
   [
-    1.693872375,
-    18.46435100548446
+    1.336881791,
+    42.95774647887324
   ],
   [
-    1.9203924159999999,
-    19.8237885462555
+    1.840985416,
+    25.198412698412696
   ],
   [
-    2.137361916,
-    49.76744186046511
+    2.0781175,
+    52.96610169491525
   ],
   [
-    2.311570625,
-    51.68539325842696
+    2.243506791,
+    56.707317073170735
   ],
   [
-    2.425290833,
-    83.1858407079646
+    2.351130208,
+    81.08108108108108
   ],
   [
-    2.5434388329999997,
-    54.23728813559322
+    2.4534085,
+    57.42574257425743
   ],
   [
-    3.054578541,
-    33.26810176125244
+    2.9643117500000002,
+    39.688715953307394
   ],
   [
-    3.559686916,
-    24.652087475149102
+    3.4694133750000002,
+    36.4
   ],
   [
-    3.867077625,
-    26.797385620915037
+    3.656738083,
+    36.31578947368421
   ],
   [
-    3.982498958,
-    43.96551724137932
+    3.759497333,
+    54.0
   ],
   [
-    4.487579583,
-    16.46825396825396
+    4.264565791,
+    25.0
   ],
   [
-    4.9913245,
-    16.666666666666657
+    4.7696464160000005,
+    27.182539682539684
   ],
   [
-    5.245977708,
-    23.715415019762844
+    4.99493475,
+    25.0
   ],
   [
-    5.402459083,
-    74.67532467532467
+    5.12606225,
+    62.121212121212125
   ],
   [
-    5.521731375,
-    92.5
+    5.2366572080000005,
+    86.23853211009174
   ],
   [
-    5.638536541,
-    81.19658119658119
+    5.350370166,
+    75.22123893805309
   ],
   [
-    5.744663125,
-    83.9622641509434
-  ],
-  [
-    6.223377666,
-    48.440748440748436
+    5.8419666249999995,
+    53.84615384615385
   ]
 ];
 // Position of the vertical axis.

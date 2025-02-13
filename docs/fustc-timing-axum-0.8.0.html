@@ -1,0 +1,3376 @@
+
+<html>
+<head>
+  <title>Cargo Build Timings — axum-macros 0.5.0, axum-core 0.5.0, axum-extra 0.10.0, axum 0.8.0</title>
+  <meta charset="utf-8">
+<style type="text/css">
+:root {
+  --error-text: #e80000;
+  --text: #000;
+  --background: #fff;
+  --h1-border-bottom: #c0c0c0;
+  --table-box-shadow: rgba(0, 0, 0, 0.1);
+  --table-th: #d5dde5;
+  --table-th-background: #1b1e24;
+  --table-th-border-bottom: #9ea7af;
+  --table-th-border-right: #343a45;
+  --table-tr-border-top: #c1c3d1;
+  --table-tr-border-bottom: #c1c3d1;
+  --table-tr-odd-background: #ebebeb;
+  --table-td-background: #ffffff;
+  --table-td-border-right: #C1C3D1;
+  --canvas-background: #f7f7f7;
+  --canvas-axes: #303030;
+  --canvas-grid: #e6e6e6;
+  --canvas-block: #aa95e8;
+  --canvas-custom-build: #f0b165;
+  --canvas-not-custom-build: #95cce8;
+  --canvas-dep-line: #ddd;
+  --canvas-dep-line-highlighted: #000;
+  --canvas-cpu: rgba(250, 119, 0, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --error-text: #e80000;
+    --text: #fff;
+    --background: #121212;
+    --h1-border-bottom: #444;
+    --table-box-shadow: rgba(255, 255, 255, 0.1);
+    --table-th: #a0a0a0;
+    --table-th-background: #2c2c2c;
+    --table-th-border-bottom: #555;
+    --table-th-border-right: #444;
+    --table-tr-border-top: #333;
+    --table-tr-border-bottom: #333;
+    --table-tr-odd-background: #1e1e1e;
+    --table-td-background: #262626;
+    --table-td-border-right: #333;
+    --canvas-background: #1a1a1a;
+    --canvas-axes: #b0b0b0;
+    --canvas-grid: #333;
+    --canvas-block: #aa95e8;
+    --canvas-custom-build: #f0b165;
+    --canvas-not-custom-build: #95cce8;
+    --canvas-dep-line: #444;
+    --canvas-dep-line-highlighted: #fff;
+    --canvas-cpu: rgba(250, 119, 0, 0.2);
+  }
+}
+
+html {
+  font-family: sans-serif;
+  color: var(--text);
+  background: var(--background);
+}
+
+.canvas-container {
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+h1 {
+  border-bottom: 1px solid var(--h1-border-bottom);
+}
+
+.graph {
+  display: block;
+}
+
+.my-table {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+  box-shadow: 0 5px 10px var(--table-box-shadow);
+}
+
+.my-table th {
+  color: var(--table-th);
+  background: var(--table-th-background);
+  border-bottom: 4px solid var(--table-th-border-bottom);
+  border-right: 1px solid var(--table-th-border-right);
+  font-size: 18px;
+  font-weight: 100;
+  padding: 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.my-table th:first-child {
+  border-top-left-radius: 3px;
+}
+
+.my-table th:last-child {
+  border-top-right-radius: 3px;
+  border-right:none;
+}
+
+.my-table tr {
+  border-top: 1px solid var(--table-tr-border-top);
+  border-bottom: 1px solid var(--table-tr-border-bottom);
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.my-table tr:first-child {
+  border-top:none;
+}
+
+.my-table tr:last-child {
+  border-bottom:none;
+}
+
+.my-table tr:nth-child(odd) td {
+  background: var(--table-tr-odd-background);
+}
+
+.my-table tr:last-child td:first-child {
+  border-bottom-left-radius:3px;
+}
+
+.my-table tr:last-child td:last-child {
+  border-bottom-right-radius:3px;
+}
+
+.my-table td {
+  background: var(--table-td-background);
+  padding: 10px;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: 300;
+  font-size: 14px;
+  border-right: 1px solid var(--table-td-border-right);
+}
+
+.my-table td:last-child {
+  border-right: 0px;
+}
+
+.summary-table td:first-child {
+  vertical-align: top;
+  text-align: right;
+}
+
+.input-table td {
+  text-align: center;
+}
+
+.error-text {
+  color: var(--error-text);
+}
+
+</style>
+</head>
+<body>
+
+<h1>Cargo Build Timings</h1>
+See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Documentation</a>
+
+<table class="my-table summary-table">
+  <tr>
+    <td>Targets:</td><td>axum-macros 0.5.0 (lib)<br>axum-core 0.5.0 (lib)<br>axum-extra 0.10.0 (lib)<br>axum 0.8.0 (lib)</td>
+  </tr>
+  <tr>
+    <td>Profile:</td><td>dev</td>
+  </tr>
+  <tr>
+    <td>Fresh units:</td><td>0</td>
+  </tr>
+  <tr>
+    <td>Dirty units:</td><td>61</td>
+  </tr>
+  <tr>
+    <td>Total units:</td><td>61</td>
+  </tr>
+  <tr>
+    <td>Max concurrency:</td><td>10 (jobs=10 ncpu=10)</td>
+  </tr>
+  <tr>
+    <td>Build start:</td><td>2025-02-13T11:19:25Z</td>
+  </tr>
+  <tr>
+    <td>Total time:</td><td>6.4s</td>
+  </tr>
+  <tr>
+    <td>rustc:</td><td>rustc 1.86.0-nightly (92bedea1c 2025-02-11)<br>Host: aarch64-apple-darwin<br>Target: aarch64-apple-darwin</td>
+  </tr>
+
+</table>
+
+<table class="input-table">
+  <tr>
+    <td><label for="min-unit-time">Min unit time:</label></td>
+    <td><label for="scale">Scale:</label></td>
+  </tr>
+  <tr>
+    <td><input type="range" min="0" max="30" step="0.1" value="0" id="min-unit-time"></td>
+    <td><input type="range" min="1" max="50" value="20" id="scale"></td>
+  </tr>
+  <tr>
+    <td><output for="min-unit-time" id="min-unit-time-output"></output></td>
+    <td><output for="scale" id="scale-output"></output></td>
+  </tr>
+</table>
+
+<div id="pipeline-container" class="canvas-container">
+ <canvas id="pipeline-graph" class="graph" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+ <canvas id="pipeline-graph-lines" style="position: absolute; left: 0; top: 0; z-index: 1; pointer-events:none;"></canvas>
+</div>
+<div class="canvas-container">
+  <canvas id="timing-graph" class="graph"></canvas>
+</div>
+
+<table class="my-table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Unit</th>
+      <th>Total</th>
+      <th>Codegen</th>
+      <th>Features</th>
+    </tr>
+  </thead>
+  <tbody>
+
+<tr>
+  <td>1.</td>
+  <td>axum v0.8.0</td>
+  <td>2.0s</td>
+  <td>0.3s (13%)</td>
+  <td>default, form, http1, json, matched-path, original-uri, query, tokio, tower-log, tracing</td>
+</tr>
+
+<tr>
+  <td>2.</td>
+  <td>syn v2.0.93</td>
+  <td>1.5s</td>
+  <td>0.2s (15%)</td>
+  <td>clone-impls, default, derive, extra-traits, full, parsing, printing, proc-macro</td>
+</tr>
+
+<tr>
+  <td>3.</td>
+  <td>tokio v1.42.0</td>
+  <td>1.5s</td>
+  <td>0.3s (21%)</td>
+  <td>default, io-std, libc, macros, mio, net, rt, socket2, sync, time, tokio-macros</td>
+</tr>
+
+<tr>
+  <td>4.</td>
+  <td>serde v1.0.217</td>
+  <td>1.2s</td>
+  <td>0.1s (5%)</td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>5.</td>
+  <td>axum-core v0.5.0</td>
+  <td>1.1s</td>
+  <td>0.2s (20%)</td>
+  <td>tracing</td>
+</tr>
+
+<tr>
+  <td>6.</td>
+  <td>axum-macros v0.5.0</td>
+  <td>0.9s</td>
+  <td></td>
+  <td>default</td>
+</tr>
+
+<tr>
+  <td>7.</td>
+  <td>futures-util v0.3.31</td>
+  <td>0.9s</td>
+  <td>0.1s (8%)</td>
+  <td>alloc</td>
+</tr>
+
+<tr>
+  <td>8.</td>
+  <td>rustversion v1.0.19 build script (run)</td>
+  <td>0.7s</td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>9.</td>
+  <td>http v1.2.0</td>
+  <td>0.7s</td>
+  <td>0.3s (43%)</td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>10.</td>
+  <td>serde_json v1.0.134</td>
+  <td>0.5s</td>
+  <td>0.1s (23%)</td>
+  <td>default, raw_value, std</td>
+</tr>
+
+<tr>
+  <td>11.</td>
+  <td>httparse v1.9.5 build script (run)</td>
+  <td>0.5s</td>
+  <td></td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>12.</td>
+  <td>hyper v1.5.2</td>
+  <td>0.5s</td>
+  <td>0.1s (25%)</td>
+  <td>default, http1, server</td>
+</tr>
+
+<tr>
+  <td>13.</td>
+  <td>bytes v1.9.0</td>
+  <td>0.4s</td>
+  <td>0.1s (27%)</td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>14.</td>
+  <td>tracing-core v0.1.33</td>
+  <td>0.4s</td>
+  <td>0.2s (42%)</td>
+  <td>once_cell, std</td>
+</tr>
+
+<tr>
+  <td>15.</td>
+  <td>serde v1.0.217 build script (run)</td>
+  <td>0.4s</td>
+  <td></td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>16.</td>
+  <td>serde_json v1.0.134 build script (run)</td>
+  <td>0.4s</td>
+  <td></td>
+  <td>default, raw_value, std</td>
+</tr>
+
+<tr>
+  <td>17.</td>
+  <td>mio v1.0.3</td>
+  <td>0.3s</td>
+  <td>0.1s (32%)</td>
+  <td>net, os-ext, os-poll</td>
+</tr>
+
+<tr>
+  <td>18.</td>
+  <td>proc-macro2 v1.0.92</td>
+  <td>0.3s</td>
+  <td>0.1s (43%)</td>
+  <td>default, proc-macro</td>
+</tr>
+
+<tr>
+  <td>19.</td>
+  <td>socket2 v0.5.8</td>
+  <td>0.3s</td>
+  <td>0.1s (44%)</td>
+  <td>all</td>
+</tr>
+
+<tr>
+  <td>20.</td>
+  <td>memchr v2.7.4</td>
+  <td>0.3s</td>
+  <td>0.1s (21%)</td>
+  <td>alloc, default, std</td>
+</tr>
+
+<tr>
+  <td>21.</td>
+  <td>axum-extra v0.10.0</td>
+  <td>0.3s</td>
+  <td>0.0s (14%)</td>
+  <td>default, tracing</td>
+</tr>
+
+<tr>
+  <td>22.</td>
+  <td>libc v0.2.169 build script (run)</td>
+  <td>0.3s</td>
+  <td></td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>23.</td>
+  <td>rustversion v1.0.19</td>
+  <td>0.3s</td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>24.</td>
+  <td>libc v0.2.169 build script</td>
+  <td>0.3s</td>
+  <td></td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>25.</td>
+  <td>rustversion v1.0.19 build script</td>
+  <td>0.2s</td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>26.</td>
+  <td>httparse v1.9.5</td>
+  <td>0.2s</td>
+  <td>0.1s (25%)</td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>27.</td>
+  <td>libc v0.2.169</td>
+  <td>0.2s</td>
+  <td>0.0s (5%)</td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>28.</td>
+  <td>serde v1.0.217 build script</td>
+  <td>0.2s</td>
+  <td></td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>29.</td>
+  <td>httparse v1.9.5 build script</td>
+  <td>0.2s</td>
+  <td></td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>30.</td>
+  <td>proc-macro2 v1.0.92 build script (run)</td>
+  <td>0.2s</td>
+  <td></td>
+  <td>default, proc-macro</td>
+</tr>
+
+<tr>
+  <td>31.</td>
+  <td>tokio-macros v2.4.0</td>
+  <td>0.2s</td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>32.</td>
+  <td>proc-macro2 v1.0.92 build script</td>
+  <td>0.2s</td>
+  <td></td>
+  <td>default, proc-macro</td>
+</tr>
+
+<tr>
+  <td>33.</td>
+  <td>mime v0.3.17</td>
+  <td>0.2s</td>
+  <td>0.1s (36%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>34.</td>
+  <td>tower v0.5.2</td>
+  <td>0.2s</td>
+  <td>0.0s (5%)</td>
+  <td>__common, futures-core, futures-util, log, make, pin-project-lite, sync_wrapper, tokio, tracing, util</td>
+</tr>
+
+<tr>
+  <td>35.</td>
+  <td>http-body-util v0.1.2</td>
+  <td>0.2s</td>
+  <td>0.0s (4%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>36.</td>
+  <td>matchit v0.8.4</td>
+  <td>0.2s</td>
+  <td>0.0s (26%)</td>
+  <td>default</td>
+</tr>
+
+<tr>
+  <td>37.</td>
+  <td>quote v1.0.38</td>
+  <td>0.2s</td>
+  <td>0.1s (30%)</td>
+  <td>default, proc-macro</td>
+</tr>
+
+<tr>
+  <td>38.</td>
+  <td>httpdate v1.0.3</td>
+  <td>0.2s</td>
+  <td>0.1s (31%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>39.</td>
+  <td>serde_path_to_error v0.1.16</td>
+  <td>0.2s</td>
+  <td>0.0s (13%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>40.</td>
+  <td>once_cell v1.20.2</td>
+  <td>0.2s</td>
+  <td>0.0s (10%)</td>
+  <td>alloc, default, race, std</td>
+</tr>
+
+<tr>
+  <td>41.</td>
+  <td>futures-channel v0.3.31</td>
+  <td>0.2s</td>
+  <td>0.0s (12%)</td>
+  <td>alloc, default, std</td>
+</tr>
+
+<tr>
+  <td>42.</td>
+  <td>log v0.4.22</td>
+  <td>0.1s</td>
+  <td>0.0s (30%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>43.</td>
+  <td>tracing v0.1.41</td>
+  <td>0.1s</td>
+  <td>0.0s (29%)</td>
+  <td>log, std</td>
+</tr>
+
+<tr>
+  <td>44.</td>
+  <td>hyper-util v0.1.10</td>
+  <td>0.1s</td>
+  <td>0.0s (14%)</td>
+  <td>default, http1, server, service, tokio</td>
+</tr>
+
+<tr>
+  <td>45.</td>
+  <td>serde_json v1.0.134 build script</td>
+  <td>0.1s</td>
+  <td></td>
+  <td>default, raw_value, std</td>
+</tr>
+
+<tr>
+  <td>46.</td>
+  <td>ryu v1.0.18</td>
+  <td>0.1s</td>
+  <td>0.0s (28%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>47.</td>
+  <td>serde_urlencoded v0.7.1</td>
+  <td>0.1s</td>
+  <td>0.0s (11%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>48.</td>
+  <td>form_urlencoded v1.2.1</td>
+  <td>0.1s</td>
+  <td>0.0s (27%)</td>
+  <td>alloc, default, std</td>
+</tr>
+
+<tr>
+  <td>49.</td>
+  <td>futures-task v0.3.31</td>
+  <td>0.1s</td>
+  <td>0.0s (14%)</td>
+  <td>alloc</td>
+</tr>
+
+<tr>
+  <td>50.</td>
+  <td>percent-encoding v2.3.1</td>
+  <td>0.1s</td>
+  <td>0.0s (29%)</td>
+  <td>alloc, default, std</td>
+</tr>
+
+<tr>
+  <td>51.</td>
+  <td>smallvec v1.13.2</td>
+  <td>0.1s</td>
+  <td>0.0s (9%)</td>
+  <td>const_generics, const_new</td>
+</tr>
+
+<tr>
+  <td>52.</td>
+  <td>http-body v1.0.1</td>
+  <td>0.1s</td>
+  <td>0.0s (11%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>53.</td>
+  <td>futures-core v0.3.31</td>
+  <td>0.1s</td>
+  <td>0.0s (19%)</td>
+  <td>alloc, default, std</td>
+</tr>
+
+<tr>
+  <td>54.</td>
+  <td>itoa v1.0.14</td>
+  <td>0.1s</td>
+  <td>0.0s (9%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>55.</td>
+  <td>unicode-ident v1.0.14</td>
+  <td>0.1s</td>
+  <td>0.0s (14%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>56.</td>
+  <td>tower-layer v0.3.3</td>
+  <td>0.1s</td>
+  <td>0.0s (7%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>57.</td>
+  <td>fnv v1.0.7</td>
+  <td>0.1s</td>
+  <td>0.0s (9%)</td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>58.</td>
+  <td>pin-project-lite v0.2.15</td>
+  <td>0.1s</td>
+  <td>0.0s (13%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>59.</td>
+  <td>tower-service v0.3.3</td>
+  <td>0.1s</td>
+  <td>0.0s (10%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>60.</td>
+  <td>pin-utils v0.1.0</td>
+  <td>0.1s</td>
+  <td>0.0s (15%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>61.</td>
+  <td>sync_wrapper v1.0.2</td>
+  <td>0.1s</td>
+  <td>0.0s (7%)</td>
+  <td></td>
+</tr>
+</tbody>
+</table>
+<script>
+DURATION = 7;
+const UNIT_DATA = [
+  {
+    "i": 0,
+    "name": "itoa",
+    "version": "1.0.14",
+    "mode": "todo",
+    "target": "",
+    "start": 0.18,
+    "duration": 0.09,
+    "rmeta_time": 0.08,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 1,
+    "name": "proc-macro2",
+    "version": "1.0.92",
+    "mode": "todo",
+    "target": " build script",
+    "start": 0.18,
+    "duration": 0.2,
+    "rmeta_time": null,
+    "unlocked_units": [
+      18
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 2,
+    "name": "unicode-ident",
+    "version": "1.0.14",
+    "mode": "todo",
+    "target": "",
+    "start": 0.18,
+    "duration": 0.09,
+    "rmeta_time": 0.08,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 3,
+    "name": "libc",
+    "version": "0.2.169",
+    "mode": "todo",
+    "target": " build script",
+    "start": 0.18,
+    "duration": 0.25,
+    "rmeta_time": null,
+    "unlocked_units": [
+      21
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 4,
+    "name": "bytes",
+    "version": "1.9.0",
+    "mode": "todo",
+    "target": "",
+    "start": 0.18,
+    "duration": 0.39,
+    "rmeta_time": 0.29,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      22
+    ]
+  },
+  {
+    "i": 5,
+    "name": "pin-utils",
+    "version": "0.1.0",
+    "mode": "todo",
+    "target": "",
+    "start": 0.18,
+    "duration": 0.06,
+    "rmeta_time": 0.05,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 6,
+    "name": "pin-project-lite",
+    "version": "0.2.15",
+    "mode": "todo",
+    "target": "",
+    "start": 0.18,
+    "duration": 0.07,
+    "rmeta_time": 0.06,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 7,
+    "name": "futures-task",
+    "version": "0.3.31",
+    "mode": "todo",
+    "target": "",
+    "start": 0.18,
+    "duration": 0.1,
+    "rmeta_time": 0.09,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      14
+    ]
+  },
+  {
+    "i": 8,
+    "name": "fnv",
+    "version": "1.0.7",
+    "mode": "todo",
+    "target": "",
+    "start": 0.18,
+    "duration": 0.07,
+    "rmeta_time": 0.07,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 9,
+    "name": "futures-core",
+    "version": "0.3.31",
+    "mode": "todo",
+    "target": "",
+    "start": 0.18,
+    "duration": 0.09,
+    "rmeta_time": 0.07,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      17
+    ]
+  },
+  {
+    "i": 10,
+    "name": "serde",
+    "version": "1.0.217",
+    "mode": "todo",
+    "target": " build script",
+    "start": 0.25,
+    "duration": 0.24,
+    "rmeta_time": null,
+    "unlocked_units": [
+      23
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 11,
+    "name": "once_cell",
+    "version": "1.20.2",
+    "mode": "todo",
+    "target": "",
+    "start": 0.25,
+    "duration": 0.16,
+    "rmeta_time": 0.14,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      19
+    ]
+  },
+  {
+    "i": 12,
+    "name": "httparse",
+    "version": "1.9.5",
+    "mode": "todo",
+    "target": " build script",
+    "start": 0.25,
+    "duration": 0.23,
+    "rmeta_time": null,
+    "unlocked_units": [
+      24
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 13,
+    "name": "log",
+    "version": "0.4.22",
+    "mode": "todo",
+    "target": "",
+    "start": 0.27,
+    "duration": 0.15,
+    "rmeta_time": 0.1,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 14,
+    "name": "futures-util",
+    "version": "0.3.31",
+    "mode": "todo",
+    "target": "",
+    "start": 0.27,
+    "duration": 0.87,
+    "rmeta_time": 0.8,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      45
+    ]
+  },
+  {
+    "i": 15,
+    "name": "rustversion",
+    "version": "1.0.19",
+    "mode": "todo",
+    "target": " build script",
+    "start": 0.28,
+    "duration": 0.24,
+    "rmeta_time": null,
+    "unlocked_units": [
+      25
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 16,
+    "name": "tower-service",
+    "version": "0.3.3",
+    "mode": "todo",
+    "target": "",
+    "start": 0.29,
+    "duration": 0.07,
+    "rmeta_time": 0.06,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 17,
+    "name": "futures-channel",
+    "version": "0.3.31",
+    "mode": "todo",
+    "target": "",
+    "start": 0.36,
+    "duration": 0.15,
+    "rmeta_time": 0.13,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 18,
+    "name": "proc-macro2",
+    "version": "1.0.92",
+    "mode": "run-custom-build",
+    "target": " build script (run)",
+    "start": 0.38,
+    "duration": 0.23,
+    "rmeta_time": null,
+    "unlocked_units": [
+      28
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 19,
+    "name": "tracing-core",
+    "version": "0.1.33",
+    "mode": "todo",
+    "target": "",
+    "start": 0.41,
+    "duration": 0.37,
+    "rmeta_time": 0.21,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      29
+    ]
+  },
+  {
+    "i": 20,
+    "name": "httpdate",
+    "version": "1.0.3",
+    "mode": "todo",
+    "target": "",
+    "start": 0.42,
+    "duration": 0.17,
+    "rmeta_time": 0.12,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 21,
+    "name": "libc",
+    "version": "0.2.169",
+    "mode": "run-custom-build",
+    "target": " build script (run)",
+    "start": 0.43,
+    "duration": 0.3,
+    "rmeta_time": null,
+    "unlocked_units": [
+      31
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 22,
+    "name": "http",
+    "version": "1.2.0",
+    "mode": "todo",
+    "target": "",
+    "start": 0.48,
+    "duration": 0.65,
+    "rmeta_time": 0.37,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      36
+    ]
+  },
+  {
+    "i": 23,
+    "name": "serde",
+    "version": "1.0.217",
+    "mode": "run-custom-build",
+    "target": " build script (run)",
+    "start": 0.48,
+    "duration": 0.37,
+    "rmeta_time": null,
+    "unlocked_units": [
+      37
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 24,
+    "name": "httparse",
+    "version": "1.9.5",
+    "mode": "run-custom-build",
+    "target": " build script (run)",
+    "start": 0.51,
+    "duration": 0.49,
+    "rmeta_time": null,
+    "unlocked_units": [
+      43
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 25,
+    "name": "rustversion",
+    "version": "1.0.19",
+    "mode": "run-custom-build",
+    "target": " build script (run)",
+    "start": 0.52,
+    "duration": 0.67,
+    "rmeta_time": null,
+    "unlocked_units": [
+      47
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 26,
+    "name": "tower-layer",
+    "version": "0.3.3",
+    "mode": "todo",
+    "target": "",
+    "start": 0.57,
+    "duration": 0.08,
+    "rmeta_time": 0.08,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 27,
+    "name": "sync_wrapper",
+    "version": "1.0.2",
+    "mode": "todo",
+    "target": "",
+    "start": 0.59,
+    "duration": 0.06,
+    "rmeta_time": 0.05,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 28,
+    "name": "proc-macro2",
+    "version": "1.0.92",
+    "mode": "todo",
+    "target": "",
+    "start": 0.61,
+    "duration": 0.34,
+    "rmeta_time": 0.2,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      35
+    ]
+  },
+  {
+    "i": 29,
+    "name": "tracing",
+    "version": "0.1.41",
+    "mode": "todo",
+    "target": "",
+    "start": 0.65,
+    "duration": 0.14,
+    "rmeta_time": 0.1,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 30,
+    "name": "smallvec",
+    "version": "1.13.2",
+    "mode": "todo",
+    "target": "",
+    "start": 0.65,
+    "duration": 0.1,
+    "rmeta_time": 0.09,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 31,
+    "name": "libc",
+    "version": "0.2.169",
+    "mode": "todo",
+    "target": "",
+    "start": 0.74,
+    "duration": 0.24,
+    "rmeta_time": 0.22,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      41,
+      42
+    ]
+  },
+  {
+    "i": 32,
+    "name": "ryu",
+    "version": "1.0.18",
+    "mode": "todo",
+    "target": "",
+    "start": 0.76,
+    "duration": 0.13,
+    "rmeta_time": 0.09,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 33,
+    "name": "percent-encoding",
+    "version": "2.3.1",
+    "mode": "todo",
+    "target": "",
+    "start": 0.77,
+    "duration": 0.1,
+    "rmeta_time": 0.07,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      39
+    ]
+  },
+  {
+    "i": 34,
+    "name": "serde_json",
+    "version": "1.0.134",
+    "mode": "todo",
+    "target": " build script",
+    "start": 0.79,
+    "duration": 0.13,
+    "rmeta_time": null,
+    "unlocked_units": [
+      38
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 35,
+    "name": "quote",
+    "version": "1.0.38",
+    "mode": "todo",
+    "target": "",
+    "start": 0.85,
+    "duration": 0.17,
+    "rmeta_time": 0.12,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      40
+    ]
+  },
+  {
+    "i": 36,
+    "name": "http-body",
+    "version": "1.0.1",
+    "mode": "todo",
+    "target": "",
+    "start": 0.88,
+    "duration": 0.09,
+    "rmeta_time": 0.08,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 37,
+    "name": "serde",
+    "version": "1.0.217",
+    "mode": "todo",
+    "target": "",
+    "start": 0.89,
+    "duration": 1.15,
+    "rmeta_time": 1.1,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      52,
+      50,
+      51
+    ]
+  },
+  {
+    "i": 38,
+    "name": "serde_json",
+    "version": "1.0.134",
+    "mode": "run-custom-build",
+    "target": " build script (run)",
+    "start": 0.92,
+    "duration": 0.35,
+    "rmeta_time": null,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 39,
+    "name": "form_urlencoded",
+    "version": "1.2.1",
+    "mode": "todo",
+    "target": "",
+    "start": 0.95,
+    "duration": 0.11,
+    "rmeta_time": 0.08,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 40,
+    "name": "syn",
+    "version": "2.0.93",
+    "mode": "todo",
+    "target": "",
+    "start": 0.97,
+    "duration": 1.53,
+    "rmeta_time": 1.31,
+    "unlocked_units": [
+      53,
+      54
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 41,
+    "name": "mio",
+    "version": "1.0.3",
+    "mode": "todo",
+    "target": "",
+    "start": 0.98,
+    "duration": 0.35,
+    "rmeta_time": 0.24,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 42,
+    "name": "socket2",
+    "version": "0.5.8",
+    "mode": "todo",
+    "target": "",
+    "start": 1.0,
+    "duration": 0.32,
+    "rmeta_time": 0.18,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 43,
+    "name": "httparse",
+    "version": "1.9.5",
+    "mode": "todo",
+    "target": "",
+    "start": 1.03,
+    "duration": 0.24,
+    "rmeta_time": 0.18,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 44,
+    "name": "mime",
+    "version": "0.3.17",
+    "mode": "todo",
+    "target": "",
+    "start": 1.06,
+    "duration": 0.19,
+    "rmeta_time": 0.12,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 45,
+    "name": "http-body-util",
+    "version": "0.1.2",
+    "mode": "todo",
+    "target": "",
+    "start": 1.14,
+    "duration": 0.18,
+    "rmeta_time": 0.17,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 46,
+    "name": "memchr",
+    "version": "2.7.4",
+    "mode": "todo",
+    "target": "",
+    "start": 1.14,
+    "duration": 0.31,
+    "rmeta_time": 0.24,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 47,
+    "name": "rustversion",
+    "version": "1.0.19",
+    "mode": "todo",
+    "target": "",
+    "start": 1.2,
+    "duration": 0.25,
+    "rmeta_time": null,
+    "unlocked_units": [
+      49
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 48,
+    "name": "matchit",
+    "version": "0.8.4",
+    "mode": "todo",
+    "target": "",
+    "start": 1.26,
+    "duration": 0.18,
+    "rmeta_time": 0.13,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 49,
+    "name": "axum-core",
+    "version": "0.5.0",
+    "mode": "todo",
+    "target": "",
+    "start": 1.45,
+    "duration": 1.12,
+    "rmeta_time": 0.9,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 50,
+    "name": "serde_path_to_error",
+    "version": "0.1.16",
+    "mode": "todo",
+    "target": "",
+    "start": 1.99,
+    "duration": 0.17,
+    "rmeta_time": 0.15,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 51,
+    "name": "serde_json",
+    "version": "1.0.134",
+    "mode": "todo",
+    "target": "",
+    "start": 1.99,
+    "duration": 0.54,
+    "rmeta_time": 0.41,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 52,
+    "name": "serde_urlencoded",
+    "version": "0.7.1",
+    "mode": "todo",
+    "target": "",
+    "start": 1.99,
+    "duration": 0.12,
+    "rmeta_time": 0.11,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 53,
+    "name": "tokio-macros",
+    "version": "2.4.0",
+    "mode": "todo",
+    "target": "",
+    "start": 2.51,
+    "duration": 0.22,
+    "rmeta_time": null,
+    "unlocked_units": [
+      55
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 54,
+    "name": "axum-macros",
+    "version": "0.5.0",
+    "mode": "todo",
+    "target": "",
+    "start": 2.51,
+    "duration": 0.95,
+    "rmeta_time": null,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 55,
+    "name": "tokio",
+    "version": "1.42.0",
+    "mode": "todo",
+    "target": "",
+    "start": 2.73,
+    "duration": 1.53,
+    "rmeta_time": 1.2,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      57,
+      56
+    ]
+  },
+  {
+    "i": 56,
+    "name": "tower",
+    "version": "0.5.2",
+    "mode": "todo",
+    "target": "",
+    "start": 3.93,
+    "duration": 0.19,
+    "rmeta_time": 0.18,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 57,
+    "name": "hyper",
+    "version": "1.5.2",
+    "mode": "todo",
+    "target": "",
+    "start": 3.93,
+    "duration": 0.46,
+    "rmeta_time": 0.35,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      58
+    ]
+  },
+  {
+    "i": 58,
+    "name": "hyper-util",
+    "version": "0.1.10",
+    "mode": "todo",
+    "target": "",
+    "start": 4.28,
+    "duration": 0.14,
+    "rmeta_time": 0.12,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      59
+    ]
+  },
+  {
+    "i": 59,
+    "name": "axum",
+    "version": "0.8.0",
+    "mode": "todo",
+    "target": "",
+    "start": 4.39,
+    "duration": 2.01,
+    "rmeta_time": 1.74,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      60
+    ]
+  },
+  {
+    "i": 60,
+    "name": "axum-extra",
+    "version": "0.10.0",
+    "mode": "todo",
+    "target": "",
+    "start": 6.14,
+    "duration": 0.3,
+    "rmeta_time": 0.26,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  }
+];
+const CONCURRENCY_DATA = [
+  {
+    "t": 0.180252125,
+    "active": 1,
+    "waiting": 25,
+    "inactive": 35
+  },
+  {
+    "t": 0.180368958,
+    "active": 10,
+    "waiting": 16,
+    "inactive": 35
+  },
+  {
+    "t": 0.18037975,
+    "active": 10,
+    "waiting": 16,
+    "inactive": 35
+  },
+  {
+    "t": 0.180449333,
+    "active": 10,
+    "waiting": 16,
+    "inactive": 35
+  },
+  {
+    "t": 0.183894917,
+    "active": 10,
+    "waiting": 16,
+    "inactive": 35
+  },
+  {
+    "t": 0.23359625,
+    "active": 10,
+    "waiting": 16,
+    "inactive": 35
+  },
+  {
+    "t": 0.239762583,
+    "active": 10,
+    "waiting": 16,
+    "inactive": 35
+  },
+  {
+    "t": 0.242960708,
+    "active": 10,
+    "waiting": 15,
+    "inactive": 35
+  },
+  {
+    "t": 0.246743583,
+    "active": 10,
+    "waiting": 15,
+    "inactive": 35
+  },
+  {
+    "t": 0.249159167,
+    "active": 10,
+    "waiting": 14,
+    "inactive": 35
+  },
+  {
+    "t": 0.249747125,
+    "active": 10,
+    "waiting": 14,
+    "inactive": 35
+  },
+  {
+    "t": 0.253190083,
+    "active": 10,
+    "waiting": 13,
+    "inactive": 35
+  },
+  {
+    "t": 0.253329042,
+    "active": 10,
+    "waiting": 13,
+    "inactive": 35
+  },
+  {
+    "t": 0.255599958,
+    "active": 10,
+    "waiting": 13,
+    "inactive": 35
+  },
+  {
+    "t": 0.25841625,
+    "active": 10,
+    "waiting": 14,
+    "inactive": 34
+  },
+  {
+    "t": 0.263777667,
+    "active": 10,
+    "waiting": 14,
+    "inactive": 34
+  },
+  {
+    "t": 0.268308625,
+    "active": 10,
+    "waiting": 13,
+    "inactive": 34
+  },
+  {
+    "t": 0.268683375,
+    "active": 10,
+    "waiting": 13,
+    "inactive": 34
+  },
+  {
+    "t": 0.270763708,
+    "active": 10,
+    "waiting": 14,
+    "inactive": 33
+  },
+  {
+    "t": 0.271746875,
+    "active": 10,
+    "waiting": 13,
+    "inactive": 33
+  },
+  {
+    "t": 0.271888042,
+    "active": 10,
+    "waiting": 13,
+    "inactive": 33
+  },
+  {
+    "t": 0.276516083,
+    "active": 10,
+    "waiting": 12,
+    "inactive": 33
+  },
+  {
+    "t": 0.279574417,
+    "active": 10,
+    "waiting": 12,
+    "inactive": 33
+  },
+  {
+    "t": 0.285188125,
+    "active": 10,
+    "waiting": 11,
+    "inactive": 33
+  },
+  {
+    "t": 0.287494042,
+    "active": 10,
+    "waiting": 11,
+    "inactive": 33
+  },
+  {
+    "t": 0.348602625,
+    "active": 10,
+    "waiting": 11,
+    "inactive": 33
+  },
+  {
+    "t": 0.3555055,
+    "active": 10,
+    "waiting": 10,
+    "inactive": 33
+  },
+  {
+    "t": 0.356070792,
+    "active": 10,
+    "waiting": 10,
+    "inactive": 33
+  },
+  {
+    "t": 0.37274525,
+    "active": 10,
+    "waiting": 10,
+    "inactive": 33
+  },
+  {
+    "t": 0.384253917,
+    "active": 10,
+    "waiting": 10,
+    "inactive": 32
+  },
+  {
+    "t": 0.388971083,
+    "active": 10,
+    "waiting": 11,
+    "inactive": 31
+  },
+  {
+    "t": 0.405206625,
+    "active": 10,
+    "waiting": 10,
+    "inactive": 31
+  },
+  {
+    "t": 0.405324208,
+    "active": 10,
+    "waiting": 10,
+    "inactive": 31
+  },
+  {
+    "t": 0.416878333,
+    "active": 10,
+    "waiting": 9,
+    "inactive": 31
+  },
+  {
+    "t": 0.417470333,
+    "active": 10,
+    "waiting": 9,
+    "inactive": 31
+  },
+  {
+    "t": 0.432711333,
+    "active": 10,
+    "waiting": 9,
+    "inactive": 30
+  },
+  {
+    "t": 0.433028792,
+    "active": 10,
+    "waiting": 9,
+    "inactive": 30
+  },
+  {
+    "t": 0.466643667,
+    "active": 10,
+    "waiting": 10,
+    "inactive": 29
+  },
+  {
+    "t": 0.481880208,
+    "active": 10,
+    "waiting": 10,
+    "inactive": 28
+  },
+  {
+    "t": 0.484420875,
+    "active": 10,
+    "waiting": 10,
+    "inactive": 27
+  },
+  {
+    "t": 0.484945292,
+    "active": 10,
+    "waiting": 10,
+    "inactive": 27
+  },
+  {
+    "t": 0.4882845,
+    "active": 10,
+    "waiting": 10,
+    "inactive": 27
+  },
+  {
+    "t": 0.506492417,
+    "active": 10,
+    "waiting": 9,
+    "inactive": 27
+  },
+  {
+    "t": 0.506616042,
+    "active": 10,
+    "waiting": 9,
+    "inactive": 27
+  },
+  {
+    "t": 0.52313525,
+    "active": 10,
+    "waiting": 9,
+    "inactive": 26
+  },
+  {
+    "t": 0.523324583,
+    "active": 10,
+    "waiting": 9,
+    "inactive": 26
+  },
+  {
+    "t": 0.534737125,
+    "active": 10,
+    "waiting": 9,
+    "inactive": 26
+  },
+  {
+    "t": 0.569921875,
+    "active": 10,
+    "waiting": 8,
+    "inactive": 26
+  },
+  {
+    "t": 0.570088042,
+    "active": 10,
+    "waiting": 8,
+    "inactive": 26
+  },
+  {
+    "t": 0.588264167,
+    "active": 10,
+    "waiting": 7,
+    "inactive": 26
+  },
+  {
+    "t": 0.588405875,
+    "active": 10,
+    "waiting": 7,
+    "inactive": 26
+  },
+  {
+    "t": 0.609688917,
+    "active": 10,
+    "waiting": 7,
+    "inactive": 25
+  },
+  {
+    "t": 0.609856375,
+    "active": 10,
+    "waiting": 7,
+    "inactive": 25
+  },
+  {
+    "t": 0.617441458,
+    "active": 10,
+    "waiting": 8,
+    "inactive": 24
+  },
+  {
+    "t": 0.64208575,
+    "active": 10,
+    "waiting": 8,
+    "inactive": 24
+  },
+  {
+    "t": 0.64632025,
+    "active": 10,
+    "waiting": 7,
+    "inactive": 24
+  },
+  {
+    "t": 0.646545125,
+    "active": 10,
+    "waiting": 7,
+    "inactive": 24
+  },
+  {
+    "t": 0.6484515,
+    "active": 10,
+    "waiting": 7,
+    "inactive": 24
+  },
+  {
+    "t": 0.654551875,
+    "active": 10,
+    "waiting": 6,
+    "inactive": 24
+  },
+  {
+    "t": 0.654728583,
+    "active": 10,
+    "waiting": 6,
+    "inactive": 24
+  },
+  {
+    "t": 0.735667667,
+    "active": 10,
+    "waiting": 6,
+    "inactive": 23
+  },
+  {
+    "t": 0.737705333,
+    "active": 10,
+    "waiting": 6,
+    "inactive": 23
+  },
+  {
+    "t": 0.745927917,
+    "active": 10,
+    "waiting": 6,
+    "inactive": 23
+  },
+  {
+    "t": 0.747518875,
+    "active": 10,
+    "waiting": 6,
+    "inactive": 23
+  },
+  {
+    "t": 0.756931917,
+    "active": 10,
+    "waiting": 5,
+    "inactive": 23
+  },
+  {
+    "t": 0.757168833,
+    "active": 10,
+    "waiting": 5,
+    "inactive": 23
+  },
+  {
+    "t": 0.772208,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 23
+  },
+  {
+    "t": 0.775002167,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 23
+  },
+  {
+    "t": 0.785896042,
+    "active": 10,
+    "waiting": 3,
+    "inactive": 23
+  },
+  {
+    "t": 0.788006625,
+    "active": 10,
+    "waiting": 3,
+    "inactive": 23
+  },
+  {
+    "t": 0.805488083,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 22
+  },
+  {
+    "t": 0.848328542,
+    "active": 10,
+    "waiting": 5,
+    "inactive": 21
+  },
+  {
+    "t": 0.850671042,
+    "active": 10,
+    "waiting": 5,
+    "inactive": 20
+  },
+  {
+    "t": 0.85078825,
+    "active": 10,
+    "waiting": 5,
+    "inactive": 20
+  },
+  {
+    "t": 0.85369125,
+    "active": 10,
+    "waiting": 6,
+    "inactive": 19
+  },
+  {
+    "t": 0.878945375,
+    "active": 10,
+    "waiting": 5,
+    "inactive": 19
+  },
+  {
+    "t": 0.879077958,
+    "active": 10,
+    "waiting": 5,
+    "inactive": 19
+  },
+  {
+    "t": 0.884524292,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 19
+  },
+  {
+    "t": 0.886370125,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 19
+  },
+  {
+    "t": 0.922112667,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 18
+  },
+  {
+    "t": 0.922244417,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 18
+  },
+  {
+    "t": 0.952621792,
+    "active": 10,
+    "waiting": 3,
+    "inactive": 18
+  },
+  {
+    "t": 0.953084875,
+    "active": 10,
+    "waiting": 3,
+    "inactive": 18
+  },
+  {
+    "t": 0.961448292,
+    "active": 10,
+    "waiting": 5,
+    "inactive": 16
+  },
+  {
+    "t": 0.962742667,
+    "active": 10,
+    "waiting": 5,
+    "inactive": 16
+  },
+  {
+    "t": 0.972438708,
+    "active": 10,
+    "waiting": 6,
+    "inactive": 15
+  },
+  {
+    "t": 0.97355625,
+    "active": 10,
+    "waiting": 5,
+    "inactive": 15
+  },
+  {
+    "t": 0.973722042,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 15
+  },
+  {
+    "t": 0.975509708,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 15
+  },
+  {
+    "t": 0.997211958,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 14
+  },
+  {
+    "t": 1.000431583,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 14
+  },
+  {
+    "t": 1.025819125,
+    "active": 10,
+    "waiting": 3,
+    "inactive": 14
+  },
+  {
+    "t": 1.026104708,
+    "active": 10,
+    "waiting": 3,
+    "inactive": 14
+  },
+  {
+    "t": 1.034015333,
+    "active": 10,
+    "waiting": 3,
+    "inactive": 14
+  },
+  {
+    "t": 1.064688958,
+    "active": 10,
+    "waiting": 2,
+    "inactive": 14
+  },
+  {
+    "t": 1.064766542,
+    "active": 10,
+    "waiting": 2,
+    "inactive": 14
+  },
+  {
+    "t": 1.067679667,
+    "active": 10,
+    "waiting": 3,
+    "inactive": 13
+  },
+  {
+    "t": 1.134812542,
+    "active": 10,
+    "waiting": 2,
+    "inactive": 13
+  },
+  {
+    "t": 1.138557917,
+    "active": 10,
+    "waiting": 1,
+    "inactive": 13
+  },
+  {
+    "t": 1.142856125,
+    "active": 10,
+    "waiting": 1,
+    "inactive": 13
+  },
+  {
+    "t": 1.176514167,
+    "active": 10,
+    "waiting": 1,
+    "inactive": 13
+  },
+  {
+    "t": 1.187620792,
+    "active": 10,
+    "waiting": 1,
+    "inactive": 13
+  },
+  {
+    "t": 1.191848542,
+    "active": 10,
+    "waiting": 1,
+    "inactive": 12
+  },
+  {
+    "t": 1.197750375,
+    "active": 10,
+    "waiting": 1,
+    "inactive": 12
+  },
+  {
+    "t": 1.2045445830000001,
+    "active": 10,
+    "waiting": 1,
+    "inactive": 12
+  },
+  {
+    "t": 1.210825375,
+    "active": 10,
+    "waiting": 1,
+    "inactive": 12
+  },
+  {
+    "t": 1.2560274169999999,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.256442292,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.265067417,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.2657790420000001,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.26582175,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.273644625,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.2754406249999999,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.2754935,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275528958,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275552125,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275574167,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.2755936669999999,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275615625,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275635667,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.2756568750000001,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.2756764170000001,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275695625,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275716458,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275735417,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.27575675,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.27577675,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275797417,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.27581675,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275844417,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.2758635,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.2758844169999999,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275903958,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275925125,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275944625,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275965792,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.275986042,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.276004833,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.276025542,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.276049625,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.276082375,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.276102625,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.276120792,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.276140667,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.276159333,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.276178208,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.276198958,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.27621925,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.276238958,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.312289292,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.316891458,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.318973417,
+    "active": 6,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.322940917,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.385808792,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.3893052080000001,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.435087875,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.45201325,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 12
+  },
+  {
+    "t": 1.45227875,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 11
+  },
+  {
+    "t": 1.452352292,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 11
+  },
+  {
+    "t": 1.957383292,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 11
+  },
+  {
+    "t": 1.986586375,
+    "active": 3,
+    "waiting": 3,
+    "inactive": 8
+  },
+  {
+    "t": 1.9866942920000001,
+    "active": 6,
+    "waiting": 0,
+    "inactive": 8
+  },
+  {
+    "t": 1.986901958,
+    "active": 6,
+    "waiting": 0,
+    "inactive": 8
+  },
+  {
+    "t": 2.039805875,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 8
+  },
+  {
+    "t": 2.097679042,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 8
+  },
+  {
+    "t": 2.110983917,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 8
+  },
+  {
+    "t": 2.133993292,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 8
+  },
+  {
+    "t": 2.15650325,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 8
+  },
+  {
+    "t": 2.281627792,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 8
+  },
+  {
+    "t": 2.353593458,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 8
+  },
+  {
+    "t": 2.399946542,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 8
+  },
+  {
+    "t": 2.508209708,
+    "active": 3,
+    "waiting": 1,
+    "inactive": 6
+  },
+  {
+    "t": 2.508266583,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 6
+  },
+  {
+    "t": 2.508331417,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 6
+  },
+  {
+    "t": 2.5086135,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 6
+  },
+  {
+    "t": 2.525372208,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 6
+  },
+  {
+    "t": 2.572773625,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 6
+  },
+  {
+    "t": 2.7282286669999998,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 5
+  },
+  {
+    "t": 2.728270458,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 5
+  },
+  {
+    "t": 2.728294917,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 5
+  },
+  {
+    "t": 3.233351542,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 5
+  },
+  {
+    "t": 3.457155333,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 5
+  },
+  {
+    "t": 3.932361833,
+    "active": 1,
+    "waiting": 2,
+    "inactive": 3
+  },
+  {
+    "t": 3.932460208,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 3
+  },
+  {
+    "t": 3.932553375,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 3
+  },
+  {
+    "t": 3.932558792,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 3
+  },
+  {
+    "t": 4.112825333,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 3
+  },
+  {
+    "t": 4.121719375,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 3
+  },
+  {
+    "t": 4.257672375,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 3
+  },
+  {
+    "t": 4.2778462919999996,
+    "active": 1,
+    "waiting": 1,
+    "inactive": 2
+  },
+  {
+    "t": 4.277902625,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 2
+  },
+  {
+    "t": 4.278024708,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 2
+  },
+  {
+    "t": 4.390123333,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 2
+  },
+  {
+    "t": 4.393653917,
+    "active": 1,
+    "waiting": 1,
+    "inactive": 1
+  },
+  {
+    "t": 4.393706458,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 1
+  },
+  {
+    "t": 4.393775667,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 1
+  },
+  {
+    "t": 4.413099333,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 1
+  },
+  {
+    "t": 4.918162917,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 1
+  },
+  {
+    "t": 5.423264167,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 1
+  },
+  {
+    "t": 5.928325,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 1
+  },
+  {
+    "t": 6.134815375,
+    "active": 1,
+    "waiting": 1,
+    "inactive": 0
+  },
+  {
+    "t": 6.134919458,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 0
+  },
+  {
+    "t": 6.135023958,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 0
+  },
+  {
+    "t": 6.397271083,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 0
+  },
+  {
+    "t": 6.401076625,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 0
+  },
+  {
+    "t": 6.438949333,
+    "active": 0,
+    "waiting": 0,
+    "inactive": 0
+  }
+];
+const CPU_USAGE = [
+  [
+    0.276518333,
+    90.65420560747664
+  ],
+  [
+    0.384254167,
+    100.0
+  ],
+  [
+    0.484427875,
+    99.00990099009901
+  ],
+  [
+    0.588266208,
+    94.23076923076923
+  ],
+  [
+    0.735669375,
+    96.55172413793103
+  ],
+  [
+    0.848328792,
+    99.11504424778761
+  ],
+  [
+    0.952623167,
+    100.0
+  ],
+  [
+    1.0646892079999999,
+    100.0
+  ],
+  [
+    1.1765197920000001,
+    100.0
+  ],
+  [
+    1.312289542,
+    100.0
+  ],
+  [
+    1.435088042,
+    82.25806451612902
+  ],
+  [
+    1.95738725,
+    51.73745173745174
+  ],
+  [
+    2.097679208,
+    73.04964539007092
+  ],
+  [
+    2.281628125,
+    48.36956521739131
+  ],
+  [
+    2.399946833,
+    83.89830508474577
+  ],
+  [
+    2.508209875,
+    98.26086956521739
+  ],
+  [
+    2.728228833,
+    53.91705069124424
+  ],
+  [
+    3.233355083,
+    51.49700598802395
+  ],
+  [
+    3.4571555,
+    52.67857142857143
+  ],
+  [
+    3.932362,
+    30.188679245283026
+  ],
+  [
+    4.112828542,
+    65.92178770949721
+  ],
+  [
+    4.25767275,
+    59.72222222222222
+  ],
+  [
+    4.390124875,
+    56.06060606060606
+  ],
+  [
+    4.918163083,
+    21.56488549618321
+  ],
+  [
+    5.423264333,
+    19.488188976377955
+  ],
+  [
+    5.928325208,
+    17.063492063492063
+  ],
+  [
+    6.134815625,
+    19.02439024390243
+  ],
+  [
+    6.397274875,
+    60.37735849056604
+  ]
+];
+// Position of the vertical axis.
+const X_LINE = 50;
+// General-use margin size.
+const MARGIN = 5;
+// Position of the horizontal axis, relative to the bottom.
+const Y_LINE = 35;
+// Minimum distance between time tick labels.
+const MIN_TICK_DIST = 50;
+// Radius for rounded rectangle corners.
+const RADIUS = 3;
+// Height of unit boxes.
+const BOX_HEIGHT = 25;
+// Distance between Y tick marks on the unit graph.
+const Y_TICK_DIST = BOX_HEIGHT + 2;
+// Rects used for mouseover detection.
+// Objects of {x, y, x2, y2, i} where `i` is the index into UNIT_DATA.
+let HIT_BOXES = [];
+// Index into UNIT_DATA of the last unit hovered over by mouse.
+let LAST_HOVER = null;
+// Key is unit index, value is {x, y, width, rmeta_x} of the box.
+let UNIT_COORDS = {};
+// Map of unit index to the index it was unlocked by.
+let REVERSE_UNIT_DEPS = {};
+let REVERSE_UNIT_RMETA_DEPS = {};
+
+// Colors from css
+const getCssColor = name => getComputedStyle(document.body).getPropertyValue(name);
+const TEXT_COLOR = getCssColor('--text');
+const BG_COLOR = getCssColor('--background');
+const CANVAS_BG = getCssColor('--canvas-background');
+const AXES_COLOR = getCssColor('--canvas-axes');
+const GRID_COLOR = getCssColor('--canvas-grid');
+const BLOCK_COLOR = getCssColor('--canvas-block');
+const CUSTOM_BUILD_COLOR = getCssColor('--canvas-custom-build');
+const NOT_CUSTOM_BUILD_COLOR = getCssColor('--canvas-not-custom-build');
+const DEP_LINE_COLOR = getCssColor('--canvas-dep-line');
+const DEP_LINE_HIGHLIGHTED_COLOR = getCssColor('--canvas-dep-line-highlighted');
+const CPU_COLOR = getCssColor('--canvas-cpu');
+
+for (let n=0; n<UNIT_DATA.length; n++) {
+  let unit = UNIT_DATA[n];
+  for (let unlocked of unit.unlocked_units) {
+    REVERSE_UNIT_DEPS[unlocked] = n;
+  }
+  for (let unlocked of unit.unlocked_rmeta_units) {
+    REVERSE_UNIT_RMETA_DEPS[unlocked] = n;
+  }
+}
+
+function render_pipeline_graph() {
+  if (UNIT_DATA.length == 0) {
+    return;
+  }
+  let g = document.getElementById('pipeline-graph');
+  HIT_BOXES.length = 0;
+  g.onmousemove = pipeline_mousemove;
+  const min_time = document.getElementById('min-unit-time').valueAsNumber;
+
+  const units = UNIT_DATA.filter(unit => unit.duration >= min_time);
+
+  const graph_height = Y_TICK_DIST * units.length;
+  const {ctx, graph_width, canvas_width, canvas_height, px_per_sec} = draw_graph_axes('pipeline-graph', graph_height);
+  const container = document.getElementById('pipeline-container');
+  container.style.width = canvas_width;
+  container.style.height = canvas_height;
+
+  // Canvas for hover highlights. This is a separate layer to improve performance.
+  const linectx = setup_canvas('pipeline-graph-lines', canvas_width, canvas_height);
+  linectx.clearRect(0, 0, canvas_width, canvas_height);
+  ctx.strokeStyle = AXES_COLOR;
+  // Draw Y tick marks.
+  for (let n=1; n<units.length; n++) {
+    const y = MARGIN + Y_TICK_DIST * n;
+    ctx.beginPath();
+    ctx.moveTo(X_LINE, y);
+    ctx.lineTo(X_LINE-5, y);
+    ctx.stroke();
+  }
+
+  // Draw Y labels.
+  ctx.textAlign = 'end';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = AXES_COLOR;
+  for (let n=0; n<units.length; n++) {
+    let y = MARGIN + Y_TICK_DIST * n + Y_TICK_DIST / 2;
+    ctx.fillText(n+1, X_LINE-4, y);
+  }
+
+  // Draw the graph.
+  ctx.save();
+  ctx.translate(X_LINE, MARGIN);
+
+  // Compute x,y coordinate of each block.
+  // We also populate a map with the count of each unit name to disambiguate if necessary
+  const unitCount = new Map();
+  UNIT_COORDS = {};
+  for (i=0; i<units.length; i++) {
+    let unit = units[i];
+    let y = i * Y_TICK_DIST + 1;
+    let x = px_per_sec * unit.start;
+    let rmeta_x = null;
+    if (unit.rmeta_time != null) {
+      rmeta_x = x + px_per_sec * unit.rmeta_time;
+    }
+    let width = Math.max(px_per_sec * unit.duration, 1.0);
+    UNIT_COORDS[unit.i] = {x, y, width, rmeta_x};
+
+    const count = unitCount.get(unit.name) || 0;
+    unitCount.set(unit.name, count + 1);
+  }
+
+  // Draw the blocks.
+  for (i=0; i<units.length; i++) {
+    let unit = units[i];
+    let {x, y, width, rmeta_x} = UNIT_COORDS[unit.i];
+
+    HIT_BOXES.push({x: X_LINE+x, y:MARGIN+y, x2: X_LINE+x+width, y2: MARGIN+y+BOX_HEIGHT, i: unit.i});
+
+    ctx.beginPath();
+    ctx.fillStyle = unit.mode == 'run-custom-build' ? CUSTOM_BUILD_COLOR : NOT_CUSTOM_BUILD_COLOR;
+    roundedRect(ctx, x, y, width, BOX_HEIGHT, RADIUS);
+    ctx.fill();
+
+    if (unit.rmeta_time != null) {
+      ctx.beginPath();
+      ctx.fillStyle = BLOCK_COLOR;
+      let ctime = unit.duration - unit.rmeta_time;
+      roundedRect(ctx, rmeta_x, y, px_per_sec * ctime, BOX_HEIGHT, RADIUS);
+      ctx.fill();
+    }
+    ctx.fillStyle = TEXT_COLOR;
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'middle';
+    ctx.font = '14px sans-serif';
+
+    const labelName = (unitCount.get(unit.name) || 0) > 1 ? `${unit.name} (v${unit.version})${unit.target}` : `${unit.name}${unit.target}`;
+    const label = `${labelName}: ${unit.duration}s`;
+
+    const text_info = ctx.measureText(label);
+    const label_x = Math.min(x + 5.0, canvas_width - text_info.width - X_LINE);
+    ctx.fillText(label, label_x, y + BOX_HEIGHT / 2);
+    draw_dep_lines(ctx, unit.i, false);
+  }
+  ctx.restore();
+}
+
+// Draws lines from the given unit to the units it unlocks.
+function draw_dep_lines(ctx, unit_idx, highlighted) {
+  const unit = UNIT_DATA[unit_idx];
+  const {x, y, rmeta_x} = UNIT_COORDS[unit_idx];
+  ctx.save();
+  for (const unlocked of unit.unlocked_units) {
+    draw_one_dep_line(ctx, x, y, unlocked, highlighted);
+  }
+  for (const unlocked of unit.unlocked_rmeta_units) {
+    draw_one_dep_line(ctx, rmeta_x, y, unlocked, highlighted);
+  }
+  ctx.restore();
+}
+
+function draw_one_dep_line(ctx, from_x, from_y, to_unit, highlighted) {
+  if (to_unit in UNIT_COORDS) {
+    let {x: u_x, y: u_y} = UNIT_COORDS[to_unit];
+    ctx.strokeStyle = highlighted ? DEP_LINE_HIGHLIGHTED_COLOR: DEP_LINE_COLOR;
+    ctx.setLineDash([2]);
+    ctx.beginPath();
+    ctx.moveTo(from_x, from_y+BOX_HEIGHT/2);
+    ctx.lineTo(from_x-5, from_y+BOX_HEIGHT/2);
+    ctx.lineTo(from_x-5, u_y+BOX_HEIGHT/2);
+    ctx.lineTo(u_x, u_y+BOX_HEIGHT/2);
+    ctx.stroke();
+  }
+}
+
+function render_timing_graph() {
+  if (CONCURRENCY_DATA.length == 0) {
+    return;
+  }
+  const HEIGHT = 400;
+  const AXIS_HEIGHT = HEIGHT - MARGIN - Y_LINE;
+  const TOP_MARGIN = 10;
+  const GRAPH_HEIGHT = AXIS_HEIGHT - TOP_MARGIN;
+
+  const {canvas_width, graph_width, ctx} = draw_graph_axes('timing-graph', AXIS_HEIGHT);
+
+  // Draw Y tick marks and labels.
+  let max_v = 0;
+  for (c of CONCURRENCY_DATA) {
+    max_v = Math.max(max_v, c.active, c.waiting, c.inactive);
+  }
+  const px_per_v = GRAPH_HEIGHT / max_v;
+  const {step, tick_dist, num_ticks} = split_ticks(max_v, px_per_v, GRAPH_HEIGHT);
+  ctx.textAlign = 'end';
+  for (n=0; n<num_ticks; n++) {
+    let y = HEIGHT - Y_LINE - ((n + 1) * tick_dist);
+    ctx.beginPath();
+    ctx.moveTo(X_LINE, y);
+    ctx.lineTo(X_LINE-5, y);
+    ctx.stroke();
+    ctx.fillText((n+1) * step, X_LINE-10, y+5);
+  }
+
+  // Label the Y axis.
+  let label_y = (HEIGHT - Y_LINE) / 2;
+  ctx.save();
+  ctx.translate(15, label_y);
+  ctx.rotate(3*Math.PI/2);
+  ctx.textAlign = 'center';
+  ctx.fillText('# Units', 0, 0);
+  ctx.restore();
+
+  // Draw the graph.
+  ctx.save();
+  ctx.translate(X_LINE, MARGIN);
+
+  function coord(t, v) {
+    return {
+      x: graph_width * (t/DURATION),
+      y: TOP_MARGIN + GRAPH_HEIGHT * (1.0 - (v / max_v))
+    };
+  }
+
+  const cpuFillStyle = CPU_COLOR;
+  if (CPU_USAGE.length > 1) {
+    ctx.beginPath();
+    ctx.fillStyle = cpuFillStyle;
+    let bottomLeft = coord(CPU_USAGE[0][0], 0);
+    ctx.moveTo(bottomLeft.x, bottomLeft.y);
+    for (let i=0; i < CPU_USAGE.length; i++) {
+      let [time, usage] = CPU_USAGE[i];
+      let {x, y} = coord(time, usage / 100.0 * max_v);
+      ctx.lineTo(x, y);
+    }
+    let bottomRight = coord(CPU_USAGE[CPU_USAGE.length - 1][0], 0);
+    ctx.lineTo(bottomRight.x, bottomRight.y);
+    ctx.fill();
+  }
+
+  function draw_line(style, key) {
+    let first = CONCURRENCY_DATA[0];
+    let last = coord(first.t, key(first));
+    ctx.strokeStyle = style;
+    ctx.beginPath();
+    ctx.moveTo(last.x, last.y);
+    for (let i=1; i<CONCURRENCY_DATA.length; i++) {
+      let c = CONCURRENCY_DATA[i];
+      let {x, y} = coord(c.t, key(c));
+      ctx.lineTo(x, last.y);
+      ctx.lineTo(x, y);
+      last = {x, y};
+    }
+    ctx.stroke();
+  }
+
+  draw_line('blue', function(c) {return c.inactive;});
+  draw_line('red', function(c) {return c.waiting;});
+  draw_line('green', function(c) {return c.active;});
+
+  // Draw a legend.
+  ctx.restore();
+  ctx.save();
+  ctx.translate(canvas_width-200, MARGIN);
+  // background
+  ctx.fillStyle = BG_COLOR;
+  ctx.strokeStyle = TEXT_COLOR;
+  ctx.lineWidth = 1;
+  ctx.textBaseline = 'middle'
+  ctx.textAlign = 'start';
+  ctx.beginPath();
+  ctx.rect(0, 0, 150, 82);
+  ctx.stroke();
+  ctx.fill();
+
+  ctx.fillStyle = TEXT_COLOR;
+  ctx.beginPath();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = 'red';
+  ctx.moveTo(5, 10);
+  ctx.lineTo(50, 10);
+  ctx.stroke();
+  ctx.fillText('Waiting', 54, 11);
+
+  ctx.beginPath();
+  ctx.strokeStyle = 'blue';
+  ctx.moveTo(5, 30);
+  ctx.lineTo(50, 30);
+  ctx.stroke();
+  ctx.fillText('Inactive', 54, 31);
+
+  ctx.beginPath();
+  ctx.strokeStyle = 'green';
+  ctx.moveTo(5, 50);
+  ctx.lineTo(50, 50);
+  ctx.stroke();
+  ctx.fillText('Active', 54, 51);
+
+  ctx.beginPath();
+  ctx.fillStyle = cpuFillStyle
+  ctx.fillRect(15, 60, 30, 15);
+  ctx.fill();
+  ctx.fillStyle = TEXT_COLOR;
+  ctx.fillText('CPU Usage', 54, 71);
+
+  ctx.restore();
+}
+
+function setup_canvas(id, width, height) {
+  let g = document.getElementById(id);
+  let dpr = window.devicePixelRatio || 1;
+  g.width = width * dpr;
+  g.height = height * dpr;
+  g.style.width = width;
+  g.style.height = height;
+  let ctx = g.getContext('2d');
+  ctx.scale(dpr, dpr);
+  return ctx;
+}
+
+function draw_graph_axes(id, graph_height) {
+  const scale = document.getElementById('scale').valueAsNumber;
+  // Cap the size of the graph. It is hard to view if it is too large, and
+  // browsers may not render a large graph because it takes too much memory.
+  // 4096 is still ridiculously large, and probably won't render on mobile
+  // browsers, but should be ok for many desktop environments.
+  const graph_width = Math.min(scale * DURATION, 4096);
+  const px_per_sec = graph_width / DURATION;
+  const canvas_width = Math.max(graph_width + X_LINE + 30, X_LINE + 250);
+  const canvas_height = graph_height + MARGIN + Y_LINE;
+  let ctx = setup_canvas(id, canvas_width, canvas_height);
+  ctx.fillStyle = CANVAS_BG;
+  ctx.fillRect(0, 0, canvas_width, canvas_height);
+
+  ctx.lineWidth = 2;
+  ctx.font = '16px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.strokeStyle = AXES_COLOR;
+
+  // Draw main axes.
+  ctx.beginPath();
+  ctx.moveTo(X_LINE, MARGIN);
+  ctx.lineTo(X_LINE, graph_height + MARGIN);
+  ctx.lineTo(X_LINE+graph_width+20, graph_height + MARGIN);
+  ctx.stroke();
+
+  // Draw X tick marks.
+  const {step, tick_dist, num_ticks} = split_ticks(DURATION, px_per_sec, graph_width);
+  ctx.fillStyle = AXES_COLOR;
+  for (let n=0; n<num_ticks; n++) {
+    const x = X_LINE + ((n + 1) * tick_dist);
+    ctx.beginPath();
+    ctx.moveTo(x, canvas_height-Y_LINE);
+    ctx.lineTo(x, canvas_height-Y_LINE+5);
+    ctx.stroke();
+
+    ctx.fillText(`${(n+1) * step}s`, x, canvas_height - Y_LINE + 20);
+  }
+
+  // Draw vertical lines.
+  ctx.strokeStyle = GRID_COLOR;
+  ctx.setLineDash([2, 4]);
+  for (n=0; n<num_ticks; n++) {
+    const x = X_LINE + ((n + 1) * tick_dist);
+    ctx.beginPath();
+    ctx.moveTo(x, MARGIN);
+    ctx.lineTo(x, MARGIN+graph_height);
+    ctx.stroke();
+  }
+  ctx.strokeStyle = TEXT_COLOR;
+  ctx.setLineDash([]);
+  return {canvas_width, canvas_height, graph_width, graph_height, ctx, px_per_sec};
+}
+
+// Determine the spacing and number of ticks along an axis.
+function split_ticks(max_value, px_per_v, max_px) {
+  const max_ticks = Math.floor(max_px / MIN_TICK_DIST);
+  if (max_ticks <= 1) {
+    // Graph is too small for even 1 tick.
+    return {step: max_value, tick_dist: max_px, num_ticks: 1};
+  }
+  let step;
+  if (max_value <= max_ticks) {
+    step = 1;
+  } else if (max_value <= max_ticks * 2) {
+    step = 2;
+  } else if (max_value <= max_ticks * 4) {
+    step = 4;
+  } else if (max_value <= max_ticks * 5) {
+    step = 5;
+  } else {
+    step = 10;
+    let count = 0;
+    while (true) {
+      if (count > 100) {
+        throw Error("tick loop too long");
+      }
+      count += 1;
+      if (max_value <= max_ticks * step) {
+        break;
+      }
+      step += 10;
+    }
+  }
+  const tick_dist = px_per_v * step;
+  const num_ticks = Math.floor(max_value / step);
+  return {step, tick_dist, num_ticks};
+}
+
+function codegen_time(unit) {
+  if (unit.rmeta_time == null) {
+    return null;
+  }
+  let ctime = unit.duration - unit.rmeta_time;
+  return [unit.rmeta_time, ctime];
+}
+
+function roundedRect(ctx, x, y, width, height, r) {
+  r = Math.min(r, width, height);
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+width-r, y);
+  ctx.arc(x+width-r, y+r, r, 3*Math.PI/2, 0);
+  ctx.lineTo(x+width, y+height-r);
+  ctx.arc(x+width-r, y+height-r, r, 0, Math.PI/2);
+  ctx.lineTo(x+r, y+height);
+  ctx.arc(x+r, y+height-r, r, Math.PI/2, Math.PI);
+  ctx.lineTo(x, y-r);
+  ctx.arc(x+r, y+r, r, Math.PI, 3*Math.PI/2);
+  ctx.closePath();
+}
+
+function pipeline_mouse_hit(event) {
+  // This brute-force method can be optimized if needed.
+  for (let box of HIT_BOXES) {
+    if (event.offsetX >= box.x && event.offsetX <= box.x2 &&
+        event.offsetY >= box.y && event.offsetY <= box.y2) {
+      return box;
+    }
+  }
+}
+
+function pipeline_mousemove(event) {
+  // Highlight dependency lines on mouse hover.
+  let box = pipeline_mouse_hit(event);
+  if (box) {
+    if (box.i != LAST_HOVER) {
+      LAST_HOVER = box.i;
+      let g = document.getElementById('pipeline-graph-lines');
+      let ctx = g.getContext('2d');
+      ctx.clearRect(0, 0, g.width, g.height);
+      ctx.save();
+      ctx.translate(X_LINE, MARGIN);
+      ctx.lineWidth = 2;
+      draw_dep_lines(ctx, box.i, true);
+
+      if (box.i in REVERSE_UNIT_DEPS) {
+        const dep_unit = REVERSE_UNIT_DEPS[box.i];
+        if (dep_unit in UNIT_COORDS) {
+          const {x, y, rmeta_x} = UNIT_COORDS[dep_unit];
+          draw_one_dep_line(ctx, x, y, box.i, true);
+        }
+      }
+      if (box.i in REVERSE_UNIT_RMETA_DEPS) {
+        const dep_unit = REVERSE_UNIT_RMETA_DEPS[box.i];
+        if (dep_unit in UNIT_COORDS) {
+          const {x, y, rmeta_x} = UNIT_COORDS[dep_unit];
+          draw_one_dep_line(ctx, rmeta_x, y, box.i, true);
+        }
+      }
+      ctx.restore();
+    }
+  }
+}
+
+render_pipeline_graph();
+render_timing_graph();
+
+// Set up and handle controls.
+{
+  const range = document.getElementById('min-unit-time');
+  const time_output = document.getElementById('min-unit-time-output');
+  time_output.innerHTML = `${range.value}s`;
+  range.oninput = event => {
+    time_output.innerHTML = `${range.value}s`;
+    render_pipeline_graph();
+  };
+
+  const scale = document.getElementById('scale');
+  const scale_output = document.getElementById('scale-output');
+  scale_output.innerHTML = `${scale.value}`;
+  scale.oninput = event => {
+    scale_output.innerHTML = `${scale.value}`;
+    render_pipeline_graph();
+    render_timing_graph();
+  };
+}
+
+</script>
+</body>
+</html>
