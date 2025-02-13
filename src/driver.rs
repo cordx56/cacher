@@ -73,7 +73,7 @@ impl Callbacks for RustcCallback {}
 fn override_queries(_session: &rustc_session::Session, local: &mut Providers) {
     //local.analysis = analysis;
     local.mir_borrowck = mir_borrowck;
-    local.check_liveness = check_liveness;
+    //local.check_liveness = check_liveness;
     //local.typeck = typeck;
 }
 #[allow(unused)]
@@ -169,6 +169,7 @@ fn mir_borrowck<'tcx>(
     STAT_LOG.with(|f| f.borrow()(&format!("{def_id:?},no_cache")));
     result
 }
+#[allow(unused)]
 fn check_liveness<'tcx>(_tcx: TyCtxt<'tcx>, _def_id: LocalDefId) {}
 
 pub struct FustcCallback;
