@@ -11,7 +11,7 @@ fn main() {
     let mut args = vec![
         rustup.clone(),
         CString::new("run").unwrap(),
-        CString::new("nightly-2024-10-31").unwrap(),
+        CString::new("nightly-2025-02-12").unwrap(),
         CString::new("cargo").unwrap(),
         CString::new("fustc_driver").unwrap(),
     ];

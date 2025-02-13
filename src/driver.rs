@@ -14,7 +14,7 @@ pub extern crate rustc_session;
 pub extern crate rustc_span;
 pub extern crate smallvec;
 
-use rustc_driver::{Callbacks, Compilation, RunCompiler};
+use rustc_driver::{run_compiler, Callbacks, Compilation};
 use rustc_hir::{def_id::LocalDefId, hir_id::OwnerId};
 use rustc_interface::interface;
 use rustc_middle::{
@@ -31,7 +31,7 @@ use std::cell::RefCell;
 use std::collections::BTreeSet;
 use std::env;
 use std::path::PathBuf;
-use std::sync::{atomic::AtomicBool, Arc, LazyLock, RwLock};
+use std::sync::{atomic::AtomicBool, LazyLock, RwLock};
 use tokio::{
     fs::{File, OpenOptions},
     io::{AsyncReadExt, AsyncWriteExt},
@@ -67,6 +67,8 @@ thread_local! {
     );
 }
 
+static ATOMIC_TRUE: AtomicBool = AtomicBool::new(true);
+
 pub struct RustcCallback;
 impl Callbacks for RustcCallback {}
 
@@ -90,7 +92,6 @@ fn analysis<'tcx>(
     _tcx: TyCtxt<'tcx>,
     _key: queries::analysis::LocalKey,
 ) -> queries::analysis::ProvidedValue<'tcx> {
-    Ok(())
 }
 fn default_mir_borrowck<'tcx>(
     tcx: TyCtxt<'tcx>,
@@ -175,6 +176,7 @@ fn check_liveness<'tcx>(_tcx: TyCtxt<'tcx>, _def_id: LocalDefId) {}
 pub struct FustcCallback;
 impl Callbacks for FustcCallback {
     fn config(&mut self, config: &mut interface::Config) {
+        config.using_internal_features = &ATOMIC_TRUE;
         config.override_queries = Some(override_queries);
 
         TASKS.write().unwrap().spawn_on(
@@ -196,7 +198,7 @@ impl Callbacks for FustcCallback {
     fn after_expansion<'tcx>(
         &mut self,
         _compiler: &interface::Compiler,
-        _queries: &'tcx rustc_interface::Queries<'tcx>,
+        _tcx: TyCtxt<'tcx>,
     ) -> Compilation {
         HANDLE.block_on(async {
             while let Some(_) = { TASKS.write().unwrap().join_next() }.await {}
@@ -206,7 +208,7 @@ impl Callbacks for FustcCallback {
     fn after_analysis<'tcx>(
         &mut self,
         _compiler: &interface::Compiler,
-        _queries: &'tcx rustc_interface::Queries<'tcx>,
+        _tcx: TyCtxt<'tcx>,
     ) -> Compilation {
         TASKS.write().unwrap().spawn_on(
             async {
@@ -236,29 +238,22 @@ pub enum Compiler {
     Fast,
 }
 
-pub fn run_compiler(compiler: Compiler) -> i32 {
+pub fn run_fustc(compiler: Compiler) -> i32 {
     let ctxt = EarlyDiagCtxt::new(config::ErrorOutputType::default());
-    let args = rustc_driver::args::raw_args(&ctxt).unwrap();
+    let args = rustc_driver::args::raw_args(&ctxt);
     let args = &args[1..];
 
     let mut callback = RustcCallback;
-    let runner = RunCompiler::new(&args, &mut callback);
     if compiler == Compiler::Normal {
-        return rustc_driver::catch_with_exit_code(|| runner.run());
+        return rustc_driver::catch_with_exit_code(|| run_compiler(&args, &mut callback));
     }
     for arg in args {
         if arg == "-vV" || arg.starts_with("--print") {
-            return rustc_driver::catch_with_exit_code(|| runner.run());
+            return rustc_driver::catch_with_exit_code(|| run_compiler(&args, &mut callback));
         }
     }
     let mut callback = FustcCallback;
-    let mut runner = RunCompiler::new(&args, &mut callback);
-    runner.set_make_codegen_backend(None);
-    rustc_driver::catch_with_exit_code(|| {
-        runner
-            .set_using_internal_features(Arc::new(AtomicBool::new(true)))
-            .run()
-    })
+    rustc_driver::catch_with_exit_code(|| run_compiler(&args, &mut callback))
 }
 
 fn main() {
@@ -270,10 +265,10 @@ fn main() {
         .init()
         .unwrap();
 
-    let fast_result = std::panic::catch_unwind(|| run_compiler(Compiler::Fast));
+    let fast_result = std::panic::catch_unwind(|| run_fustc(Compiler::Fast));
     let code = match fast_result {
         Ok(0) => 0,
-        _ => run_compiler(Compiler::Normal),
+        _ => run_fustc(Compiler::Normal),
     };
 
     HANDLE.block_on(async { while let Some(_) = TASKS.write().unwrap().join_next().await {} });
