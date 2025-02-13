@@ -30,11 +30,11 @@ use rustc_session::{config, EarlyDiagCtxt};
 use std::cell::RefCell;
 use std::collections::BTreeSet;
 use std::env;
-use std::fs::{File, OpenOptions};
-use std::io::{Read, Write};
 use std::path::PathBuf;
 use std::sync::{atomic::AtomicBool, Arc, LazyLock, RwLock};
 use tokio::{
+    fs::{File, OpenOptions},
+    io::{AsyncReadExt, AsyncWriteExt},
     runtime::{Builder, Handle, Runtime},
     task::JoinSet,
 };
@@ -178,17 +178,16 @@ impl Callbacks for FustcCallback {
 
         TASKS.write().unwrap().spawn_on(
             async {
-                MIR_JSON_PATH.with(|json_path| {
-                    if let Ok(mut file) = File::open(json_path) {
-                        let mut json = Vec::with_capacity(1024);
-                        file.read_to_end(&mut json).unwrap();
-                        if let Ok(mut cache) = MIR_CACHE.write() {
-                            if let Ok(data) = serde_json::from_slice(&json) {
-                                *cache = data;
-                            }
+                let json_path = MIR_JSON_PATH.with(|json_path| json_path.clone());
+                if let Ok(mut file) = File::open(json_path).await {
+                    let mut json = Vec::with_capacity(1024);
+                    file.read_to_end(&mut json).await.ok();
+                    if let Ok(mut cache) = MIR_CACHE.write() {
+                        if let Ok(data) = serde_json::from_slice(&json) {
+                            *cache = data;
                         }
                     }
-                });
+                }
             },
             &HANDLE,
         );
@@ -198,7 +197,9 @@ impl Callbacks for FustcCallback {
         _compiler: &interface::Compiler,
         _queries: &'tcx rustc_interface::Queries<'tcx>,
     ) -> Compilation {
-        HANDLE.block_on(async { while let Some(_) = TASKS.write().unwrap().join_next().await {} });
+        HANDLE.block_on(async {
+            while let Some(_) = { TASKS.write().unwrap().join_next() }.await {}
+        });
         Compilation::Continue
     }
     fn after_analysis<'tcx>(
@@ -208,19 +209,19 @@ impl Callbacks for FustcCallback {
     ) -> Compilation {
         TASKS.write().unwrap().spawn_on(
             async {
-                MIR_JSON_PATH.with(|json_path| {
-                    if let Ok(mut file) = OpenOptions::new()
-                        .create(true)
-                        .write(true)
-                        .truncate(true)
-                        .open(json_path)
-                    {
-                        if let Ok(cache) = MIR_CACHE.read() {
-                            let json = serde_json::to_string(&*cache).unwrap();
-                            file.write_all(json.as_bytes()).unwrap();
-                        }
+                let json_path = MIR_JSON_PATH.with(|json_path| json_path.clone());
+                if let Ok(mut file) = OpenOptions::new()
+                    .create(true)
+                    .write(true)
+                    .truncate(true)
+                    .open(json_path)
+                    .await
+                {
+                    if let Some(cache) = { MIR_CACHE.read().map(|v| v.clone()).ok() } {
+                        let json = serde_json::to_string(&cache).unwrap();
+                        file.write_all(json.as_bytes()).await.unwrap();
                     }
-                });
+                }
             },
             &HANDLE,
         );
