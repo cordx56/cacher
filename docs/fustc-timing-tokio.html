@@ -1,0 +1,2857 @@
+
+<html>
+<head>
+  <title>Cargo Build Timings — tests-build 0.1.0, tests-integration 0.1.0, tokio 1.43.0, tokio-stream 0.1.17, tokio-test 0.4.4, tokio-util 0.7.13, tokio-macros 2.5.0</title>
+  <meta charset="utf-8">
+<style type="text/css">
+:root {
+  --error-text: #e80000;
+  --text: #000;
+  --background: #fff;
+  --h1-border-bottom: #c0c0c0;
+  --table-box-shadow: rgba(0, 0, 0, 0.1);
+  --table-th: #d5dde5;
+  --table-th-background: #1b1e24;
+  --table-th-border-bottom: #9ea7af;
+  --table-th-border-right: #343a45;
+  --table-tr-border-top: #c1c3d1;
+  --table-tr-border-bottom: #c1c3d1;
+  --table-tr-odd-background: #ebebeb;
+  --table-td-background: #ffffff;
+  --table-td-border-right: #C1C3D1;
+  --canvas-background: #f7f7f7;
+  --canvas-axes: #303030;
+  --canvas-grid: #e6e6e6;
+  --canvas-block: #aa95e8;
+  --canvas-custom-build: #f0b165;
+  --canvas-not-custom-build: #95cce8;
+  --canvas-dep-line: #ddd;
+  --canvas-dep-line-highlighted: #000;
+  --canvas-cpu: rgba(250, 119, 0, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --error-text: #e80000;
+    --text: #fff;
+    --background: #121212;
+    --h1-border-bottom: #444;
+    --table-box-shadow: rgba(255, 255, 255, 0.1);
+    --table-th: #a0a0a0;
+    --table-th-background: #2c2c2c;
+    --table-th-border-bottom: #555;
+    --table-th-border-right: #444;
+    --table-tr-border-top: #333;
+    --table-tr-border-bottom: #333;
+    --table-tr-odd-background: #1e1e1e;
+    --table-td-background: #262626;
+    --table-td-border-right: #333;
+    --canvas-background: #1a1a1a;
+    --canvas-axes: #b0b0b0;
+    --canvas-grid: #333;
+    --canvas-block: #aa95e8;
+    --canvas-custom-build: #f0b165;
+    --canvas-not-custom-build: #95cce8;
+    --canvas-dep-line: #444;
+    --canvas-dep-line-highlighted: #fff;
+    --canvas-cpu: rgba(250, 119, 0, 0.2);
+  }
+}
+
+html {
+  font-family: sans-serif;
+  color: var(--text);
+  background: var(--background);
+}
+
+.canvas-container {
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+h1 {
+  border-bottom: 1px solid var(--h1-border-bottom);
+}
+
+.graph {
+  display: block;
+}
+
+.my-table {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+  box-shadow: 0 5px 10px var(--table-box-shadow);
+}
+
+.my-table th {
+  color: var(--table-th);
+  background: var(--table-th-background);
+  border-bottom: 4px solid var(--table-th-border-bottom);
+  border-right: 1px solid var(--table-th-border-right);
+  font-size: 18px;
+  font-weight: 100;
+  padding: 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.my-table th:first-child {
+  border-top-left-radius: 3px;
+}
+
+.my-table th:last-child {
+  border-top-right-radius: 3px;
+  border-right:none;
+}
+
+.my-table tr {
+  border-top: 1px solid var(--table-tr-border-top);
+  border-bottom: 1px solid var(--table-tr-border-bottom);
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.my-table tr:first-child {
+  border-top:none;
+}
+
+.my-table tr:last-child {
+  border-bottom:none;
+}
+
+.my-table tr:nth-child(odd) td {
+  background: var(--table-tr-odd-background);
+}
+
+.my-table tr:last-child td:first-child {
+  border-bottom-left-radius:3px;
+}
+
+.my-table tr:last-child td:last-child {
+  border-bottom-right-radius:3px;
+}
+
+.my-table td {
+  background: var(--table-td-background);
+  padding: 10px;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: 300;
+  font-size: 14px;
+  border-right: 1px solid var(--table-td-border-right);
+}
+
+.my-table td:last-child {
+  border-right: 0px;
+}
+
+.summary-table td:first-child {
+  vertical-align: top;
+  text-align: right;
+}
+
+.input-table td {
+  text-align: center;
+}
+
+.error-text {
+  color: var(--error-text);
+}
+
+</style>
+</head>
+<body>
+
+<h1>Cargo Build Timings</h1>
+See <a href="https://doc.rust-lang.org/nightly/cargo/reference/timings.html">Documentation</a>
+
+<table class="my-table summary-table">
+  <tr>
+    <td>Targets:</td><td>tests-build 0.1.0 (lib)<br>tests-integration 0.1.0 (lib, bin "test-cat")<br>tokio 1.43.0 (lib)<br>tokio-stream 0.1.17 (lib)<br>tokio-test 0.4.4 (lib)<br>tokio-util 0.7.13 (lib)<br>tokio-macros 2.5.0 (lib)</td>
+  </tr>
+  <tr>
+    <td>Profile:</td><td>dev</td>
+  </tr>
+  <tr>
+    <td>Fresh units:</td><td>0</td>
+  </tr>
+  <tr>
+    <td>Dirty units:</td><td>52</td>
+  </tr>
+  <tr>
+    <td>Total units:</td><td>52</td>
+  </tr>
+  <tr>
+    <td>Max concurrency:</td><td>10 (jobs=10 ncpu=10)</td>
+  </tr>
+  <tr>
+    <td>Build start:</td><td>2025-02-13T08:46:39Z</td>
+  </tr>
+  <tr>
+    <td>Total time:</td><td>5.9s</td>
+  </tr>
+  <tr>
+    <td>rustc:</td><td>rustc 1.84.0-nightly (759e07f06 2024-10-30)<br>Host: aarch64-apple-darwin<br>Target: aarch64-apple-darwin</td>
+  </tr>
+
+</table>
+
+<table class="input-table">
+  <tr>
+    <td><label for="min-unit-time">Min unit time:</label></td>
+    <td><label for="scale">Scale:</label></td>
+  </tr>
+  <tr>
+    <td><input type="range" min="0" max="30" step="0.1" value="0" id="min-unit-time"></td>
+    <td><input type="range" min="1" max="50" value="20" id="scale"></td>
+  </tr>
+  <tr>
+    <td><output for="min-unit-time" id="min-unit-time-output"></output></td>
+    <td><output for="scale" id="scale-output"></output></td>
+  </tr>
+</table>
+
+<div id="pipeline-container" class="canvas-container">
+ <canvas id="pipeline-graph" class="graph" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+ <canvas id="pipeline-graph-lines" style="position: absolute; left: 0; top: 0; z-index: 1; pointer-events:none;"></canvas>
+</div>
+<div class="canvas-container">
+  <canvas id="timing-graph" class="graph"></canvas>
+</div>
+
+<table class="my-table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Unit</th>
+      <th>Total</th>
+      <th>Codegen</th>
+      <th>Features</th>
+    </tr>
+  </thead>
+  <tbody>
+
+<tr>
+  <td>1.</td>
+  <td>tokio v1.43.0</td>
+  <td>3.2s</td>
+  <td>0.9s (29%)</td>
+  <td>bytes, default, fs, full, io-std, io-util, libc, macros, mio, net, parking_lot, process, rt, rt-multi-thread, signal, signal-hook-registry, socket2, sync, test-util, time, tokio-macros</td>
+</tr>
+
+<tr>
+  <td>2.</td>
+  <td>futures-util v0.3.31</td>
+  <td>1.3s</td>
+  <td>0.1s (5%)</td>
+  <td>alloc, async-await, async-await-macro, channel, futures-channel, futures-io, futures-macro, futures-sink, io, memchr, sink, slab, std</td>
+</tr>
+
+<tr>
+  <td>3.</td>
+  <td>syn v2.0.98</td>
+  <td>1.2s</td>
+  <td>0.2s (17%)</td>
+  <td>clone-impls, default, derive, full, parsing, printing, proc-macro, visit-mut</td>
+</tr>
+
+<tr>
+  <td>4.</td>
+  <td>slab v0.4.9 build script (run)</td>
+  <td>0.7s</td>
+  <td></td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>5.</td>
+  <td>lock_api v0.4.12 build script (run)</td>
+  <td>0.6s</td>
+  <td></td>
+  <td>atomic_usize, default</td>
+</tr>
+
+<tr>
+  <td>6.</td>
+  <td>tokio-macros v2.5.0</td>
+  <td>0.4s</td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>7.</td>
+  <td>libc v0.2.169 build script (run)</td>
+  <td>0.4s</td>
+  <td></td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>8.</td>
+  <td>doc-comment v0.3.3 build script (run)</td>
+  <td>0.4s</td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>9.</td>
+  <td>bytes v1.10.0</td>
+  <td>0.4s</td>
+  <td>0.1s (14%)</td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>10.</td>
+  <td>memchr v2.7.4</td>
+  <td>0.3s</td>
+  <td>0.1s (25%)</td>
+  <td>alloc, default, std</td>
+</tr>
+
+<tr>
+  <td>11.</td>
+  <td>tokio-stream v0.1.17</td>
+  <td>0.3s</td>
+  <td>0.0s (14%)</td>
+  <td>default, time</td>
+</tr>
+
+<tr>
+  <td>12.</td>
+  <td>mio v1.0.3</td>
+  <td>0.3s</td>
+  <td>0.1s (28%)</td>
+  <td>net, os-ext, os-poll</td>
+</tr>
+
+<tr>
+  <td>13.</td>
+  <td>futures-macro v0.3.31</td>
+  <td>0.3s</td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>14.</td>
+  <td>proc-macro2 v1.0.93 build script (run)</td>
+  <td>0.3s</td>
+  <td></td>
+  <td>default, proc-macro</td>
+</tr>
+
+<tr>
+  <td>15.</td>
+  <td>autocfg v1.4.0</td>
+  <td>0.3s</td>
+  <td>0.1s (54%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>16.</td>
+  <td>async-stream v0.3.6</td>
+  <td>0.3s</td>
+  <td>0.0s (2%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>17.</td>
+  <td>tokio-test v0.4.4</td>
+  <td>0.2s</td>
+  <td>0.1s (43%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>18.</td>
+  <td>libc v0.2.169 build script</td>
+  <td>0.2s</td>
+  <td></td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>19.</td>
+  <td>proc-macro2 v1.0.93</td>
+  <td>0.2s</td>
+  <td>0.0s (21%)</td>
+  <td>default, proc-macro</td>
+</tr>
+
+<tr>
+  <td>20.</td>
+  <td>tokio-util v0.7.13</td>
+  <td>0.2s</td>
+  <td>0.1s (33%)</td>
+  <td>default</td>
+</tr>
+
+<tr>
+  <td>21.</td>
+  <td>socket2 v0.5.8</td>
+  <td>0.2s</td>
+  <td>0.1s (31%)</td>
+  <td>all</td>
+</tr>
+
+<tr>
+  <td>22.</td>
+  <td>proc-macro2 v1.0.93 build script</td>
+  <td>0.2s</td>
+  <td></td>
+  <td>default, proc-macro</td>
+</tr>
+
+<tr>
+  <td>23.</td>
+  <td>libc v0.2.169</td>
+  <td>0.2s</td>
+  <td>0.0s (4%)</td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>24.</td>
+  <td>async-stream-impl v0.3.6</td>
+  <td>0.2s</td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>25.</td>
+  <td>signal-hook-registry v1.4.2</td>
+  <td>0.2s</td>
+  <td>0.1s (49%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>26.</td>
+  <td>parking_lot v0.12.3</td>
+  <td>0.2s</td>
+  <td>0.1s (35%)</td>
+  <td>default</td>
+</tr>
+
+<tr>
+  <td>27.</td>
+  <td>parking_lot_core v0.9.10</td>
+  <td>0.2s</td>
+  <td>0.1s (35%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>28.</td>
+  <td>doc-comment v0.3.3 build script</td>
+  <td>0.2s</td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>29.</td>
+  <td>parking_lot_core v0.9.10 build script</td>
+  <td>0.2s</td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>30.</td>
+  <td>smallvec v1.13.2</td>
+  <td>0.2s</td>
+  <td>0.0s (9%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>31.</td>
+  <td>parking_lot_core v0.9.10 build script (run)</td>
+  <td>0.2s</td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>32.</td>
+  <td>futures-channel v0.3.31</td>
+  <td>0.1s</td>
+  <td>0.0s (14%)</td>
+  <td>alloc, futures-sink, sink, std</td>
+</tr>
+
+<tr>
+  <td>33.</td>
+  <td>futures-executor v0.3.31</td>
+  <td>0.1s</td>
+  <td>0.1s (43%)</td>
+  <td>std</td>
+</tr>
+
+<tr>
+  <td>34.</td>
+  <td>quote v1.0.38</td>
+  <td>0.1s</td>
+  <td>0.0s (26%)</td>
+  <td>default, proc-macro</td>
+</tr>
+
+<tr>
+  <td>35.</td>
+  <td>futures-task v0.3.31</td>
+  <td>0.1s</td>
+  <td>0.0s (28%)</td>
+  <td>alloc, std</td>
+</tr>
+
+<tr>
+  <td>36.</td>
+  <td>lock_api v0.4.12</td>
+  <td>0.1s</td>
+  <td>0.0s (6%)</td>
+  <td>atomic_usize, default</td>
+</tr>
+
+<tr>
+  <td>37.</td>
+  <td>slab v0.4.9 build script</td>
+  <td>0.1s</td>
+  <td></td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>38.</td>
+  <td>futures-io v0.3.31</td>
+  <td>0.1s</td>
+  <td>0.0s (26%)</td>
+  <td>std</td>
+</tr>
+
+<tr>
+  <td>39.</td>
+  <td>lock_api v0.4.12 build script</td>
+  <td>0.1s</td>
+  <td></td>
+  <td>atomic_usize, default</td>
+</tr>
+
+<tr>
+  <td>40.</td>
+  <td>tests-integration v0.1.0 bin "test-cat"</td>
+  <td>0.1s</td>
+  <td></td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>41.</td>
+  <td>futures-core v0.3.31</td>
+  <td>0.1s</td>
+  <td>0.0s (17%)</td>
+  <td>alloc, default, std</td>
+</tr>
+
+<tr>
+  <td>42.</td>
+  <td>futures-sink v0.3.31</td>
+  <td>0.1s</td>
+  <td>0.0s (12%)</td>
+  <td>alloc, default, std</td>
+</tr>
+
+<tr>
+  <td>43.</td>
+  <td>unicode-ident v1.0.16</td>
+  <td>0.1s</td>
+  <td>0.0s (11%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>44.</td>
+  <td>tests-build v0.1.0</td>
+  <td>0.1s</td>
+  <td>0.0s (30%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>45.</td>
+  <td>pin-utils v0.1.0</td>
+  <td>0.1s</td>
+  <td>0.0s (8%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>46.</td>
+  <td>scopeguard v1.2.0</td>
+  <td>0.1s</td>
+  <td>0.0s (16%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>47.</td>
+  <td>slab v0.4.9</td>
+  <td>0.1s</td>
+  <td>0.0s (6%)</td>
+  <td>default, std</td>
+</tr>
+
+<tr>
+  <td>48.</td>
+  <td>tests-integration v0.1.0</td>
+  <td>0.1s</td>
+  <td>0.0s (30%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>49.</td>
+  <td>pin-project-lite v0.2.16</td>
+  <td>0.1s</td>
+  <td>0.0s (9%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>50.</td>
+  <td>cfg-if v1.0.0</td>
+  <td>0.1s</td>
+  <td>0.0s (11%)</td>
+  <td></td>
+</tr>
+
+<tr>
+  <td>51.</td>
+  <td>futures v0.3.31</td>
+  <td>0.0s</td>
+  <td>0.0s (8%)</td>
+  <td>alloc, async-await, default, executor, futures-executor, std</td>
+</tr>
+
+<tr>
+  <td>52.</td>
+  <td>doc-comment v0.3.3</td>
+  <td>0.0s</td>
+  <td>0.0s (9%)</td>
+  <td></td>
+</tr>
+</tbody>
+</table>
+<script>
+DURATION = 6;
+const UNIT_DATA = [
+  {
+    "i": 0,
+    "name": "proc-macro2",
+    "version": "1.0.93",
+    "mode": "todo",
+    "target": " build script",
+    "start": 0.13,
+    "duration": 0.22,
+    "rmeta_time": null,
+    "unlocked_units": [
+      19
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 1,
+    "name": "libc",
+    "version": "0.2.169",
+    "mode": "todo",
+    "target": " build script",
+    "start": 0.13,
+    "duration": 0.23,
+    "rmeta_time": null,
+    "unlocked_units": [
+      21
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 2,
+    "name": "unicode-ident",
+    "version": "1.0.16",
+    "mode": "todo",
+    "target": "",
+    "start": 0.13,
+    "duration": 0.08,
+    "rmeta_time": 0.07,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 3,
+    "name": "pin-project-lite",
+    "version": "0.2.16",
+    "mode": "todo",
+    "target": "",
+    "start": 0.13,
+    "duration": 0.06,
+    "rmeta_time": 0.06,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 4,
+    "name": "autocfg",
+    "version": "1.4.0",
+    "mode": "todo",
+    "target": "",
+    "start": 0.13,
+    "duration": 0.26,
+    "rmeta_time": 0.12,
+    "unlocked_units": [
+      22,
+      23
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 5,
+    "name": "parking_lot_core",
+    "version": "0.9.10",
+    "mode": "todo",
+    "target": " build script",
+    "start": 0.13,
+    "duration": 0.16,
+    "rmeta_time": null,
+    "unlocked_units": [
+      17
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 6,
+    "name": "cfg-if",
+    "version": "1.0.0",
+    "mode": "todo",
+    "target": "",
+    "start": 0.13,
+    "duration": 0.06,
+    "rmeta_time": 0.06,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 7,
+    "name": "futures-core",
+    "version": "0.3.31",
+    "mode": "todo",
+    "target": "",
+    "start": 0.13,
+    "duration": 0.1,
+    "rmeta_time": 0.08,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 8,
+    "name": "smallvec",
+    "version": "1.13.2",
+    "mode": "todo",
+    "target": "",
+    "start": 0.13,
+    "duration": 0.16,
+    "rmeta_time": 0.14,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 9,
+    "name": "scopeguard",
+    "version": "1.2.0",
+    "mode": "todo",
+    "target": "",
+    "start": 0.13,
+    "duration": 0.08,
+    "rmeta_time": 0.06,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 10,
+    "name": "futures-sink",
+    "version": "0.3.31",
+    "mode": "todo",
+    "target": "",
+    "start": 0.2,
+    "duration": 0.09,
+    "rmeta_time": 0.08,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      15
+    ]
+  },
+  {
+    "i": 11,
+    "name": "bytes",
+    "version": "1.10.0",
+    "mode": "todo",
+    "target": "",
+    "start": 0.2,
+    "duration": 0.37,
+    "rmeta_time": 0.32,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 12,
+    "name": "futures-task",
+    "version": "0.3.31",
+    "mode": "todo",
+    "target": "",
+    "start": 0.21,
+    "duration": 0.13,
+    "rmeta_time": 0.1,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 13,
+    "name": "memchr",
+    "version": "2.7.4",
+    "mode": "todo",
+    "target": "",
+    "start": 0.21,
+    "duration": 0.32,
+    "rmeta_time": 0.24,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 14,
+    "name": "futures-io",
+    "version": "0.3.31",
+    "mode": "todo",
+    "target": "",
+    "start": 0.23,
+    "duration": 0.12,
+    "rmeta_time": 0.09,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 15,
+    "name": "futures-channel",
+    "version": "0.3.31",
+    "mode": "todo",
+    "target": "",
+    "start": 0.29,
+    "duration": 0.15,
+    "rmeta_time": 0.13,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 16,
+    "name": "pin-utils",
+    "version": "0.1.0",
+    "mode": "todo",
+    "target": "",
+    "start": 0.29,
+    "duration": 0.08,
+    "rmeta_time": 0.07,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 17,
+    "name": "parking_lot_core",
+    "version": "0.9.10",
+    "mode": "run-custom-build",
+    "target": " build script (run)",
+    "start": 0.29,
+    "duration": 0.16,
+    "rmeta_time": null,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 18,
+    "name": "doc-comment",
+    "version": "0.3.3",
+    "mode": "todo",
+    "target": " build script",
+    "start": 0.35,
+    "duration": 0.16,
+    "rmeta_time": null,
+    "unlocked_units": [
+      24
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 19,
+    "name": "proc-macro2",
+    "version": "1.0.93",
+    "mode": "run-custom-build",
+    "target": " build script (run)",
+    "start": 0.35,
+    "duration": 0.29,
+    "rmeta_time": null,
+    "unlocked_units": [
+      27
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 20,
+    "name": "tests-build",
+    "version": "0.1.0",
+    "mode": "todo",
+    "target": "",
+    "start": 0.36,
+    "duration": 0.08,
+    "rmeta_time": 0.06,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 21,
+    "name": "libc",
+    "version": "0.2.169",
+    "mode": "run-custom-build",
+    "target": " build script (run)",
+    "start": 0.36,
+    "duration": 0.38,
+    "rmeta_time": null,
+    "unlocked_units": [
+      28
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 22,
+    "name": "slab",
+    "version": "0.4.9",
+    "mode": "todo",
+    "target": " build script",
+    "start": 0.39,
+    "duration": 0.12,
+    "rmeta_time": null,
+    "unlocked_units": [
+      26
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 23,
+    "name": "lock_api",
+    "version": "0.4.12",
+    "mode": "todo",
+    "target": " build script",
+    "start": 0.39,
+    "duration": 0.12,
+    "rmeta_time": null,
+    "unlocked_units": [
+      25
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 24,
+    "name": "doc-comment",
+    "version": "0.3.3",
+    "mode": "run-custom-build",
+    "target": " build script (run)",
+    "start": 0.51,
+    "duration": 0.38,
+    "rmeta_time": null,
+    "unlocked_units": [
+      30
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 25,
+    "name": "lock_api",
+    "version": "0.4.12",
+    "mode": "run-custom-build",
+    "target": " build script (run)",
+    "start": 0.52,
+    "duration": 0.55,
+    "rmeta_time": null,
+    "unlocked_units": [
+      36
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 26,
+    "name": "slab",
+    "version": "0.4.9",
+    "mode": "run-custom-build",
+    "target": " build script (run)",
+    "start": 0.52,
+    "duration": 0.7,
+    "rmeta_time": null,
+    "unlocked_units": [
+      38
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 27,
+    "name": "proc-macro2",
+    "version": "1.0.93",
+    "mode": "todo",
+    "target": "",
+    "start": 0.63,
+    "duration": 0.23,
+    "rmeta_time": 0.18,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      29
+    ]
+  },
+  {
+    "i": 28,
+    "name": "libc",
+    "version": "0.2.169",
+    "mode": "todo",
+    "target": "",
+    "start": 0.75,
+    "duration": 0.22,
+    "rmeta_time": 0.21,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      33,
+      34,
+      35,
+      32
+    ]
+  },
+  {
+    "i": 29,
+    "name": "quote",
+    "version": "1.0.38",
+    "mode": "todo",
+    "target": "",
+    "start": 0.81,
+    "duration": 0.14,
+    "rmeta_time": 0.1,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      31
+    ]
+  },
+  {
+    "i": 30,
+    "name": "doc-comment",
+    "version": "0.3.3",
+    "mode": "todo",
+    "target": "",
+    "start": 0.89,
+    "duration": 0.04,
+    "rmeta_time": 0.04,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 31,
+    "name": "syn",
+    "version": "2.0.98",
+    "mode": "todo",
+    "target": "",
+    "start": 0.91,
+    "duration": 1.22,
+    "rmeta_time": 1.01,
+    "unlocked_units": [
+      39,
+      40,
+      41
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 32,
+    "name": "signal-hook-registry",
+    "version": "1.4.2",
+    "mode": "todo",
+    "target": "",
+    "start": 0.96,
+    "duration": 0.18,
+    "rmeta_time": 0.09,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 33,
+    "name": "parking_lot_core",
+    "version": "0.9.10",
+    "mode": "todo",
+    "target": "",
+    "start": 0.96,
+    "duration": 0.17,
+    "rmeta_time": 0.11,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 34,
+    "name": "socket2",
+    "version": "0.5.8",
+    "mode": "todo",
+    "target": "",
+    "start": 0.96,
+    "duration": 0.22,
+    "rmeta_time": 0.15,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 35,
+    "name": "mio",
+    "version": "1.0.3",
+    "mode": "todo",
+    "target": "",
+    "start": 0.96,
+    "duration": 0.29,
+    "rmeta_time": 0.21,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 36,
+    "name": "lock_api",
+    "version": "0.4.12",
+    "mode": "todo",
+    "target": "",
+    "start": 1.07,
+    "duration": 0.13,
+    "rmeta_time": 0.12,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      37
+    ]
+  },
+  {
+    "i": 37,
+    "name": "parking_lot",
+    "version": "0.12.3",
+    "mode": "todo",
+    "target": "",
+    "start": 1.19,
+    "duration": 0.17,
+    "rmeta_time": 0.11,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 38,
+    "name": "slab",
+    "version": "0.4.9",
+    "mode": "todo",
+    "target": "",
+    "start": 1.21,
+    "duration": 0.08,
+    "rmeta_time": 0.07,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 39,
+    "name": "tokio-macros",
+    "version": "2.5.0",
+    "mode": "todo",
+    "target": "",
+    "start": 2.13,
+    "duration": 0.4,
+    "rmeta_time": null,
+    "unlocked_units": [
+      44
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 40,
+    "name": "futures-macro",
+    "version": "0.3.31",
+    "mode": "todo",
+    "target": "",
+    "start": 2.13,
+    "duration": 0.29,
+    "rmeta_time": null,
+    "unlocked_units": [
+      43
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 41,
+    "name": "async-stream-impl",
+    "version": "0.3.6",
+    "mode": "todo",
+    "target": "",
+    "start": 2.13,
+    "duration": 0.19,
+    "rmeta_time": null,
+    "unlocked_units": [
+      42
+    ],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 42,
+    "name": "async-stream",
+    "version": "0.3.6",
+    "mode": "todo",
+    "target": "",
+    "start": 2.32,
+    "duration": 0.25,
+    "rmeta_time": 0.24,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 43,
+    "name": "futures-util",
+    "version": "0.3.31",
+    "mode": "todo",
+    "target": "",
+    "start": 2.42,
+    "duration": 1.29,
+    "rmeta_time": 1.23,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      45
+    ]
+  },
+  {
+    "i": 44,
+    "name": "tokio",
+    "version": "1.43.0",
+    "mode": "todo",
+    "target": "",
+    "start": 2.53,
+    "duration": 3.25,
+    "rmeta_time": 2.32,
+    "unlocked_units": [
+      51
+    ],
+    "unlocked_rmeta_units": [
+      48,
+      47,
+      49
+    ]
+  },
+  {
+    "i": 45,
+    "name": "futures-executor",
+    "version": "0.3.31",
+    "mode": "todo",
+    "target": "",
+    "start": 3.65,
+    "duration": 0.14,
+    "rmeta_time": 0.08,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      46
+    ]
+  },
+  {
+    "i": 46,
+    "name": "futures",
+    "version": "0.3.31",
+    "mode": "todo",
+    "target": "",
+    "start": 3.73,
+    "duration": 0.04,
+    "rmeta_time": 0.04,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 47,
+    "name": "tests-integration",
+    "version": "0.1.0",
+    "mode": "todo",
+    "target": "",
+    "start": 4.85,
+    "duration": 0.08,
+    "rmeta_time": 0.05,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 48,
+    "name": "tokio-stream",
+    "version": "0.1.17",
+    "mode": "todo",
+    "target": "",
+    "start": 4.85,
+    "duration": 0.3,
+    "rmeta_time": 0.26,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": [
+      50
+    ]
+  },
+  {
+    "i": 49,
+    "name": "tokio-util",
+    "version": "0.7.13",
+    "mode": "todo",
+    "target": "",
+    "start": 4.85,
+    "duration": 0.23,
+    "rmeta_time": 0.15,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 50,
+    "name": "tokio-test",
+    "version": "0.4.4",
+    "mode": "todo",
+    "target": "",
+    "start": 5.11,
+    "duration": 0.23,
+    "rmeta_time": 0.13,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  },
+  {
+    "i": 51,
+    "name": "tests-integration",
+    "version": "0.1.0",
+    "mode": "todo",
+    "target": " bin \"test-cat\"",
+    "start": 5.78,
+    "duration": 0.12,
+    "rmeta_time": null,
+    "unlocked_units": [],
+    "unlocked_rmeta_units": []
+  }
+];
+const CONCURRENCY_DATA = [
+  {
+    "t": 0.129503917,
+    "active": 10,
+    "waiting": 8,
+    "inactive": 34
+  },
+  {
+    "t": 0.129516125,
+    "active": 10,
+    "waiting": 8,
+    "inactive": 34
+  },
+  {
+    "t": 0.129601875,
+    "active": 10,
+    "waiting": 8,
+    "inactive": 34
+  },
+  {
+    "t": 0.12978875,
+    "active": 10,
+    "waiting": 8,
+    "inactive": 34
+  },
+  {
+    "t": 0.131650333,
+    "active": 10,
+    "waiting": 8,
+    "inactive": 34
+  },
+  {
+    "t": 0.185399708,
+    "active": 10,
+    "waiting": 8,
+    "inactive": 34
+  },
+  {
+    "t": 0.186664208,
+    "active": 10,
+    "waiting": 8,
+    "inactive": 34
+  },
+  {
+    "t": 0.192341375,
+    "active": 10,
+    "waiting": 6,
+    "inactive": 34
+  },
+  {
+    "t": 0.196431083,
+    "active": 10,
+    "waiting": 6,
+    "inactive": 34
+  },
+  {
+    "t": 0.204181,
+    "active": 10,
+    "waiting": 6,
+    "inactive": 34
+  },
+  {
+    "t": 0.209246542,
+    "active": 10,
+    "waiting": 5,
+    "inactive": 34
+  },
+  {
+    "t": 0.20957125,
+    "active": 10,
+    "waiting": 5,
+    "inactive": 34
+  },
+  {
+    "t": 0.212225375,
+    "active": 10,
+    "waiting": 5,
+    "inactive": 34
+  },
+  {
+    "t": 0.213517,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 34
+  },
+  {
+    "t": 0.213957958,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 34
+  },
+  {
+    "t": 0.229390292,
+    "active": 10,
+    "waiting": 3,
+    "inactive": 34
+  },
+  {
+    "t": 0.231488375,
+    "active": 10,
+    "waiting": 3,
+    "inactive": 34
+  },
+  {
+    "t": 0.250810958,
+    "active": 10,
+    "waiting": 3,
+    "inactive": 34
+  },
+  {
+    "t": 0.271363458,
+    "active": 10,
+    "waiting": 3,
+    "inactive": 34
+  },
+  {
+    "t": 0.27442225,
+    "active": 10,
+    "waiting": 4,
+    "inactive": 33
+  },
+  {
+    "t": 0.2856365,
+    "active": 10,
+    "waiting": 2,
+    "inactive": 33
+  },
+  {
+    "t": 0.2881175,
+    "active": 10,
+    "waiting": 2,
+    "inactive": 32
+  },
+  {
+    "t": 0.289110417,
+    "active": 10,
+    "waiting": 2,
+    "inactive": 32
+  },
+  {
+    "t": 0.306119542,
+    "active": 10,
+    "waiting": 2,
+    "inactive": 32
+  },
+  {
+    "t": 0.322533917,
+    "active": 10,
+    "waiting": 2,
+    "inactive": 32
+  },
+  {
+    "t": 0.344198708,
+    "active": 10,
+    "waiting": 1,
+    "inactive": 32
+  },
+  {
+    "t": 0.346658542,
+    "active": 10,
+    "waiting": 1,
+    "inactive": 32
+  },
+  {
+    "t": 0.347983708,
+    "active": 10,
+    "waiting": 1,
+    "inactive": 31
+  },
+  {
+    "t": 0.34816375,
+    "active": 10,
+    "waiting": 1,
+    "inactive": 31
+  },
+  {
+    "t": 0.355249625,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 31
+  },
+  {
+    "t": 0.355552708,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 31
+  },
+  {
+    "t": 0.359976792,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 31
+  },
+  {
+    "t": 0.3638085,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.363851958,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.366301042,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.366395917,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.371765375,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.371862833,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.371939625,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.372011292,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.372086,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.372199792,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.372409875,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.372502458,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.372522625,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.372808167,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.372938417,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 30
+  },
+  {
+    "t": 0.390578542,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 28
+  },
+  {
+    "t": 0.391932958,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 28
+  },
+  {
+    "t": 0.392140208,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 28
+  },
+  {
+    "t": 0.411538,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 28
+  },
+  {
+    "t": 0.41723075,
+    "active": 10,
+    "waiting": 0,
+    "inactive": 28
+  },
+  {
+    "t": 0.435236583,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 28
+  },
+  {
+    "t": 0.435301083,
+    "active": 9,
+    "waiting": 0,
+    "inactive": 28
+  },
+  {
+    "t": 0.437414917,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 28
+  },
+  {
+    "t": 0.444434417,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 28
+  },
+  {
+    "t": 0.456886542,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 28
+  },
+  {
+    "t": 0.507624333,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 27
+  },
+  {
+    "t": 0.507723208,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 27
+  },
+  {
+    "t": 0.51530775,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 26
+  },
+  {
+    "t": 0.515361583,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 26
+  },
+  {
+    "t": 0.515466708,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 26
+  },
+  {
+    "t": 0.516666417,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 25
+  },
+  {
+    "t": 0.5167405,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 25
+  },
+  {
+    "t": 0.535853292,
+    "active": 6,
+    "waiting": 0,
+    "inactive": 25
+  },
+  {
+    "t": 0.569096875,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 25
+  },
+  {
+    "t": 0.63449525,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 24
+  },
+  {
+    "t": 0.634515458,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 24
+  },
+  {
+    "t": 0.634551458,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 24
+  },
+  {
+    "t": 0.748229333,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 23
+  },
+  {
+    "t": 0.748273958,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 23
+  },
+  {
+    "t": 0.813730958,
+    "active": 5,
+    "waiting": 1,
+    "inactive": 22
+  },
+  {
+    "t": 0.813855125,
+    "active": 6,
+    "waiting": 0,
+    "inactive": 22
+  },
+  {
+    "t": 0.8139675,
+    "active": 6,
+    "waiting": 0,
+    "inactive": 22
+  },
+  {
+    "t": 0.862605083,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 22
+  },
+  {
+    "t": 0.8888105,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 21
+  },
+  {
+    "t": 0.888867458,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 21
+  },
+  {
+    "t": 0.913752583,
+    "active": 5,
+    "waiting": 1,
+    "inactive": 20
+  },
+  {
+    "t": 0.913837583,
+    "active": 6,
+    "waiting": 0,
+    "inactive": 20
+  },
+  {
+    "t": 0.913981208,
+    "active": 6,
+    "waiting": 0,
+    "inactive": 20
+  },
+  {
+    "t": 0.924591708,
+    "active": 6,
+    "waiting": 0,
+    "inactive": 20
+  },
+  {
+    "t": 0.928107208,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 20
+  },
+  {
+    "t": 0.949127333,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 20
+  },
+  {
+    "t": 0.955773208,
+    "active": 4,
+    "waiting": 4,
+    "inactive": 16
+  },
+  {
+    "t": 0.955917167,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 16
+  },
+  {
+    "t": 0.95595025,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 16
+  },
+  {
+    "t": 0.956055958,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 16
+  },
+  {
+    "t": 0.956130667,
+    "active": 8,
+    "waiting": 0,
+    "inactive": 16
+  },
+  {
+    "t": 0.965174,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 16
+  },
+  {
+    "t": 1.04725925,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 16
+  },
+  {
+    "t": 1.064110917,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 16
+  },
+  {
+    "t": 1.069663125,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 15
+  },
+  {
+    "t": 1.069811875,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 15
+  },
+  {
+    "t": 1.107323625,
+    "active": 7,
+    "waiting": 0,
+    "inactive": 15
+  },
+  {
+    "t": 1.123081833,
+    "active": 6,
+    "waiting": 0,
+    "inactive": 15
+  },
+  {
+    "t": 1.1361865,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 15
+  },
+  {
+    "t": 1.168448167,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 15
+  },
+  {
+    "t": 1.175299833,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 15
+  },
+  {
+    "t": 1.191360875,
+    "active": 4,
+    "waiting": 1,
+    "inactive": 14
+  },
+  {
+    "t": 1.191432375,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 14
+  },
+  {
+    "t": 1.191599333,
+    "active": 5,
+    "waiting": 0,
+    "inactive": 14
+  },
+  {
+    "t": 1.198459167,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 14
+  },
+  {
+    "t": 1.212983,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 13
+  },
+  {
+    "t": 1.2130475,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 13
+  },
+  {
+    "t": 1.250859167,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 13
+  },
+  {
+    "t": 1.284719125,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 13
+  },
+  {
+    "t": 1.289611833,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 13
+  },
+  {
+    "t": 1.302598167,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 13
+  },
+  {
+    "t": 1.3617415,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 13
+  },
+  {
+    "t": 1.8667750829999998,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 13
+  },
+  {
+    "t": 1.919994958,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 13
+  },
+  {
+    "t": 2.131449417,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 10
+  },
+  {
+    "t": 2.131555125,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 10
+  },
+  {
+    "t": 2.131574167,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 10
+  },
+  {
+    "t": 2.323550208,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 9
+  },
+  {
+    "t": 2.32363,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 9
+  },
+  {
+    "t": 2.421612,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 8
+  },
+  {
+    "t": 2.42169025,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 8
+  },
+  {
+    "t": 2.530679208,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 7
+  },
+  {
+    "t": 2.5307515,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 7
+  },
+  {
+    "t": 2.56828425,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 7
+  },
+  {
+    "t": 2.574390167,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 7
+  },
+  {
+    "t": 3.079481875,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 7
+  },
+  {
+    "t": 3.584589667,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 7
+  },
+  {
+    "t": 3.6510320419999998,
+    "active": 2,
+    "waiting": 1,
+    "inactive": 6
+  },
+  {
+    "t": 3.651099458,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 6
+  },
+  {
+    "t": 3.651170458,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 6
+  },
+  {
+    "t": 3.7109794579999997,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 6
+  },
+  {
+    "t": 3.728024042,
+    "active": 2,
+    "waiting": 1,
+    "inactive": 5
+  },
+  {
+    "t": 3.728105417,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 5
+  },
+  {
+    "t": 3.728264875,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 5
+  },
+  {
+    "t": 3.768381292,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 5
+  },
+  {
+    "t": 3.771949667,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 5
+  },
+  {
+    "t": 3.786724125,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 5
+  },
+  {
+    "t": 4.269383917,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 5
+  },
+  {
+    "t": 4.774449958,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 5
+  },
+  {
+    "t": 4.848431667,
+    "active": 1,
+    "waiting": 3,
+    "inactive": 2
+  },
+  {
+    "t": 4.84855425,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 2
+  },
+  {
+    "t": 4.848620042,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 2
+  },
+  {
+    "t": 4.848625708,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 2
+  },
+  {
+    "t": 4.90139025,
+    "active": 4,
+    "waiting": 0,
+    "inactive": 2
+  },
+  {
+    "t": 4.923636333,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 2
+  },
+  {
+    "t": 5.000934083,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 2
+  },
+  {
+    "t": 5.076609958,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 2
+  },
+  {
+    "t": 5.106124875,
+    "active": 2,
+    "waiting": 1,
+    "inactive": 1
+  },
+  {
+    "t": 5.106180042,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 1
+  },
+  {
+    "t": 5.106247708,
+    "active": 3,
+    "waiting": 0,
+    "inactive": 1
+  },
+  {
+    "t": 5.146779917,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 1
+  },
+  {
+    "t": 5.239496708,
+    "active": 2,
+    "waiting": 0,
+    "inactive": 1
+  },
+  {
+    "t": 5.3407554170000004,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 1
+  },
+  {
+    "t": 5.7796545,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 0
+  },
+  {
+    "t": 5.779737458,
+    "active": 1,
+    "waiting": 0,
+    "inactive": 0
+  },
+  {
+    "t": 5.89978775,
+    "active": 0,
+    "waiting": 0,
+    "inactive": 0
+  }
+];
+const CPU_USAGE = [
+  [
+    0.229391458,
+    89.52380952380952
+  ],
+  [
+    0.344198958,
+    100.0
+  ],
+  [
+    0.444434583,
+    97.93814432989691
+  ],
+  [
+    0.569097042,
+    77.41935483870968
+  ],
+  [
+    0.748231292,
+    45.30386740331491
+  ],
+  [
+    0.862606958,
+    67.52136752136752
+  ],
+  [
+    0.965176042,
+    71.42857142857143
+  ],
+  [
+    1.069663208,
+    85.71428571428572
+  ],
+  [
+    1.175299958,
+    94.33962264150944
+  ],
+  [
+    1.284719417,
+    70.64220183486239
+  ],
+  [
+    1.866775333,
+    21.612349914236702
+  ],
+  [
+    2.131449625,
+    44.6969696969697
+  ],
+  [
+    2.3235523750000002,
+    49.73821989528796
+  ],
+  [
+    2.53068175,
+    71.15384615384616
+  ],
+  [
+    3.079482208,
+    35.10054844606947
+  ],
+  [
+    3.584590042,
+    24.2544731610338
+  ],
+  [
+    3.710982125,
+    44.96124031007752
+  ],
+  [
+    4.269384167,
+    18.39285714285714
+  ],
+  [
+    4.774450167,
+    17.330677290836647
+  ],
+  [
+    4.901391292,
+    30.645161290322577
+  ],
+  [
+    5.076610167,
+    81.81818181818181
+  ],
+  [
+    5.239496875,
+    76.3975155279503
+  ],
+  [
+    5.340755583,
+    79.6116504854369
+  ],
+  [
+    5.779654667,
+    46.01366742596811
+  ]
+];
+// Position of the vertical axis.
+const X_LINE = 50;
+// General-use margin size.
+const MARGIN = 5;
+// Position of the horizontal axis, relative to the bottom.
+const Y_LINE = 35;
+// Minimum distance between time tick labels.
+const MIN_TICK_DIST = 50;
+// Radius for rounded rectangle corners.
+const RADIUS = 3;
+// Height of unit boxes.
+const BOX_HEIGHT = 25;
+// Distance between Y tick marks on the unit graph.
+const Y_TICK_DIST = BOX_HEIGHT + 2;
+// Rects used for mouseover detection.
+// Objects of {x, y, x2, y2, i} where `i` is the index into UNIT_DATA.
+let HIT_BOXES = [];
+// Index into UNIT_DATA of the last unit hovered over by mouse.
+let LAST_HOVER = null;
+// Key is unit index, value is {x, y, width, rmeta_x} of the box.
+let UNIT_COORDS = {};
+// Map of unit index to the index it was unlocked by.
+let REVERSE_UNIT_DEPS = {};
+let REVERSE_UNIT_RMETA_DEPS = {};
+
+// Colors from css
+const getCssColor = name => getComputedStyle(document.body).getPropertyValue(name);
+const TEXT_COLOR = getCssColor('--text');
+const BG_COLOR = getCssColor('--background');
+const CANVAS_BG = getCssColor('--canvas-background');
+const AXES_COLOR = getCssColor('--canvas-axes');
+const GRID_COLOR = getCssColor('--canvas-grid');
+const BLOCK_COLOR = getCssColor('--canvas-block');
+const CUSTOM_BUILD_COLOR = getCssColor('--canvas-custom-build');
+const NOT_CUSTOM_BUILD_COLOR = getCssColor('--canvas-not-custom-build');
+const DEP_LINE_COLOR = getCssColor('--canvas-dep-line');
+const DEP_LINE_HIGHLIGHTED_COLOR = getCssColor('--canvas-dep-line-highlighted');
+const CPU_COLOR = getCssColor('--canvas-cpu');
+
+for (let n=0; n<UNIT_DATA.length; n++) {
+  let unit = UNIT_DATA[n];
+  for (let unlocked of unit.unlocked_units) {
+    REVERSE_UNIT_DEPS[unlocked] = n;
+  }
+  for (let unlocked of unit.unlocked_rmeta_units) {
+    REVERSE_UNIT_RMETA_DEPS[unlocked] = n;
+  }
+}
+
+function render_pipeline_graph() {
+  if (UNIT_DATA.length == 0) {
+    return;
+  }
+  let g = document.getElementById('pipeline-graph');
+  HIT_BOXES.length = 0;
+  g.onmousemove = pipeline_mousemove;
+  const min_time = document.getElementById('min-unit-time').valueAsNumber;
+
+  const units = UNIT_DATA.filter(unit => unit.duration >= min_time);
+
+  const graph_height = Y_TICK_DIST * units.length;
+  const {ctx, graph_width, canvas_width, canvas_height, px_per_sec} = draw_graph_axes('pipeline-graph', graph_height);
+  const container = document.getElementById('pipeline-container');
+  container.style.width = canvas_width;
+  container.style.height = canvas_height;
+
+  // Canvas for hover highlights. This is a separate layer to improve performance.
+  const linectx = setup_canvas('pipeline-graph-lines', canvas_width, canvas_height);
+  linectx.clearRect(0, 0, canvas_width, canvas_height);
+  ctx.strokeStyle = AXES_COLOR;
+  // Draw Y tick marks.
+  for (let n=1; n<units.length; n++) {
+    const y = MARGIN + Y_TICK_DIST * n;
+    ctx.beginPath();
+    ctx.moveTo(X_LINE, y);
+    ctx.lineTo(X_LINE-5, y);
+    ctx.stroke();
+  }
+
+  // Draw Y labels.
+  ctx.textAlign = 'end';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = AXES_COLOR;
+  for (let n=0; n<units.length; n++) {
+    let y = MARGIN + Y_TICK_DIST * n + Y_TICK_DIST / 2;
+    ctx.fillText(n+1, X_LINE-4, y);
+  }
+
+  // Draw the graph.
+  ctx.save();
+  ctx.translate(X_LINE, MARGIN);
+
+  // Compute x,y coordinate of each block.
+  // We also populate a map with the count of each unit name to disambiguate if necessary
+  const unitCount = new Map();
+  UNIT_COORDS = {};
+  for (i=0; i<units.length; i++) {
+    let unit = units[i];
+    let y = i * Y_TICK_DIST + 1;
+    let x = px_per_sec * unit.start;
+    let rmeta_x = null;
+    if (unit.rmeta_time != null) {
+      rmeta_x = x + px_per_sec * unit.rmeta_time;
+    }
+    let width = Math.max(px_per_sec * unit.duration, 1.0);
+    UNIT_COORDS[unit.i] = {x, y, width, rmeta_x};
+
+    const count = unitCount.get(unit.name) || 0;
+    unitCount.set(unit.name, count + 1);
+  }
+
+  // Draw the blocks.
+  for (i=0; i<units.length; i++) {
+    let unit = units[i];
+    let {x, y, width, rmeta_x} = UNIT_COORDS[unit.i];
+
+    HIT_BOXES.push({x: X_LINE+x, y:MARGIN+y, x2: X_LINE+x+width, y2: MARGIN+y+BOX_HEIGHT, i: unit.i});
+
+    ctx.beginPath();
+    ctx.fillStyle = unit.mode == 'run-custom-build' ? CUSTOM_BUILD_COLOR : NOT_CUSTOM_BUILD_COLOR;
+    roundedRect(ctx, x, y, width, BOX_HEIGHT, RADIUS);
+    ctx.fill();
+
+    if (unit.rmeta_time != null) {
+      ctx.beginPath();
+      ctx.fillStyle = BLOCK_COLOR;
+      let ctime = unit.duration - unit.rmeta_time;
+      roundedRect(ctx, rmeta_x, y, px_per_sec * ctime, BOX_HEIGHT, RADIUS);
+      ctx.fill();
+    }
+    ctx.fillStyle = TEXT_COLOR;
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'middle';
+    ctx.font = '14px sans-serif';
+
+    const labelName = (unitCount.get(unit.name) || 0) > 1 ? `${unit.name} (v${unit.version})${unit.target}` : `${unit.name}${unit.target}`;
+    const label = `${labelName}: ${unit.duration}s`;
+
+    const text_info = ctx.measureText(label);
+    const label_x = Math.min(x + 5.0, canvas_width - text_info.width - X_LINE);
+    ctx.fillText(label, label_x, y + BOX_HEIGHT / 2);
+    draw_dep_lines(ctx, unit.i, false);
+  }
+  ctx.restore();
+}
+
+// Draws lines from the given unit to the units it unlocks.
+function draw_dep_lines(ctx, unit_idx, highlighted) {
+  const unit = UNIT_DATA[unit_idx];
+  const {x, y, rmeta_x} = UNIT_COORDS[unit_idx];
+  ctx.save();
+  for (const unlocked of unit.unlocked_units) {
+    draw_one_dep_line(ctx, x, y, unlocked, highlighted);
+  }
+  for (const unlocked of unit.unlocked_rmeta_units) {
+    draw_one_dep_line(ctx, rmeta_x, y, unlocked, highlighted);
+  }
+  ctx.restore();
+}
+
+function draw_one_dep_line(ctx, from_x, from_y, to_unit, highlighted) {
+  if (to_unit in UNIT_COORDS) {
+    let {x: u_x, y: u_y} = UNIT_COORDS[to_unit];
+    ctx.strokeStyle = highlighted ? DEP_LINE_HIGHLIGHTED_COLOR: DEP_LINE_COLOR;
+    ctx.setLineDash([2]);
+    ctx.beginPath();
+    ctx.moveTo(from_x, from_y+BOX_HEIGHT/2);
+    ctx.lineTo(from_x-5, from_y+BOX_HEIGHT/2);
+    ctx.lineTo(from_x-5, u_y+BOX_HEIGHT/2);
+    ctx.lineTo(u_x, u_y+BOX_HEIGHT/2);
+    ctx.stroke();
+  }
+}
+
+function render_timing_graph() {
+  if (CONCURRENCY_DATA.length == 0) {
+    return;
+  }
+  const HEIGHT = 400;
+  const AXIS_HEIGHT = HEIGHT - MARGIN - Y_LINE;
+  const TOP_MARGIN = 10;
+  const GRAPH_HEIGHT = AXIS_HEIGHT - TOP_MARGIN;
+
+  const {canvas_width, graph_width, ctx} = draw_graph_axes('timing-graph', AXIS_HEIGHT);
+
+  // Draw Y tick marks and labels.
+  let max_v = 0;
+  for (c of CONCURRENCY_DATA) {
+    max_v = Math.max(max_v, c.active, c.waiting, c.inactive);
+  }
+  const px_per_v = GRAPH_HEIGHT / max_v;
+  const {step, tick_dist, num_ticks} = split_ticks(max_v, px_per_v, GRAPH_HEIGHT);
+  ctx.textAlign = 'end';
+  for (n=0; n<num_ticks; n++) {
+    let y = HEIGHT - Y_LINE - ((n + 1) * tick_dist);
+    ctx.beginPath();
+    ctx.moveTo(X_LINE, y);
+    ctx.lineTo(X_LINE-5, y);
+    ctx.stroke();
+    ctx.fillText((n+1) * step, X_LINE-10, y+5);
+  }
+
+  // Label the Y axis.
+  let label_y = (HEIGHT - Y_LINE) / 2;
+  ctx.save();
+  ctx.translate(15, label_y);
+  ctx.rotate(3*Math.PI/2);
+  ctx.textAlign = 'center';
+  ctx.fillText('# Units', 0, 0);
+  ctx.restore();
+
+  // Draw the graph.
+  ctx.save();
+  ctx.translate(X_LINE, MARGIN);
+
+  function coord(t, v) {
+    return {
+      x: graph_width * (t/DURATION),
+      y: TOP_MARGIN + GRAPH_HEIGHT * (1.0 - (v / max_v))
+    };
+  }
+
+  const cpuFillStyle = CPU_COLOR;
+  if (CPU_USAGE.length > 1) {
+    ctx.beginPath();
+    ctx.fillStyle = cpuFillStyle;
+    let bottomLeft = coord(CPU_USAGE[0][0], 0);
+    ctx.moveTo(bottomLeft.x, bottomLeft.y);
+    for (let i=0; i < CPU_USAGE.length; i++) {
+      let [time, usage] = CPU_USAGE[i];
+      let {x, y} = coord(time, usage / 100.0 * max_v);
+      ctx.lineTo(x, y);
+    }
+    let bottomRight = coord(CPU_USAGE[CPU_USAGE.length - 1][0], 0);
+    ctx.lineTo(bottomRight.x, bottomRight.y);
+    ctx.fill();
+  }
+
+  function draw_line(style, key) {
+    let first = CONCURRENCY_DATA[0];
+    let last = coord(first.t, key(first));
+    ctx.strokeStyle = style;
+    ctx.beginPath();
+    ctx.moveTo(last.x, last.y);
+    for (let i=1; i<CONCURRENCY_DATA.length; i++) {
+      let c = CONCURRENCY_DATA[i];
+      let {x, y} = coord(c.t, key(c));
+      ctx.lineTo(x, last.y);
+      ctx.lineTo(x, y);
+      last = {x, y};
+    }
+    ctx.stroke();
+  }
+
+  draw_line('blue', function(c) {return c.inactive;});
+  draw_line('red', function(c) {return c.waiting;});
+  draw_line('green', function(c) {return c.active;});
+
+  // Draw a legend.
+  ctx.restore();
+  ctx.save();
+  ctx.translate(canvas_width-200, MARGIN);
+  // background
+  ctx.fillStyle = BG_COLOR;
+  ctx.strokeStyle = TEXT_COLOR;
+  ctx.lineWidth = 1;
+  ctx.textBaseline = 'middle'
+  ctx.textAlign = 'start';
+  ctx.beginPath();
+  ctx.rect(0, 0, 150, 82);
+  ctx.stroke();
+  ctx.fill();
+
+  ctx.fillStyle = TEXT_COLOR;
+  ctx.beginPath();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = 'red';
+  ctx.moveTo(5, 10);
+  ctx.lineTo(50, 10);
+  ctx.stroke();
+  ctx.fillText('Waiting', 54, 11);
+
+  ctx.beginPath();
+  ctx.strokeStyle = 'blue';
+  ctx.moveTo(5, 30);
+  ctx.lineTo(50, 30);
+  ctx.stroke();
+  ctx.fillText('Inactive', 54, 31);
+
+  ctx.beginPath();
+  ctx.strokeStyle = 'green';
+  ctx.moveTo(5, 50);
+  ctx.lineTo(50, 50);
+  ctx.stroke();
+  ctx.fillText('Active', 54, 51);
+
+  ctx.beginPath();
+  ctx.fillStyle = cpuFillStyle
+  ctx.fillRect(15, 60, 30, 15);
+  ctx.fill();
+  ctx.fillStyle = TEXT_COLOR;
+  ctx.fillText('CPU Usage', 54, 71);
+
+  ctx.restore();
+}
+
+function setup_canvas(id, width, height) {
+  let g = document.getElementById(id);
+  let dpr = window.devicePixelRatio || 1;
+  g.width = width * dpr;
+  g.height = height * dpr;
+  g.style.width = width;
+  g.style.height = height;
+  let ctx = g.getContext('2d');
+  ctx.scale(dpr, dpr);
+  return ctx;
+}
+
+function draw_graph_axes(id, graph_height) {
+  const scale = document.getElementById('scale').valueAsNumber;
+  // Cap the size of the graph. It is hard to view if it is too large, and
+  // browsers may not render a large graph because it takes too much memory.
+  // 4096 is still ridiculously large, and probably won't render on mobile
+  // browsers, but should be ok for many desktop environments.
+  const graph_width = Math.min(scale * DURATION, 4096);
+  const px_per_sec = graph_width / DURATION;
+  const canvas_width = Math.max(graph_width + X_LINE + 30, X_LINE + 250);
+  const canvas_height = graph_height + MARGIN + Y_LINE;
+  let ctx = setup_canvas(id, canvas_width, canvas_height);
+  ctx.fillStyle = CANVAS_BG;
+  ctx.fillRect(0, 0, canvas_width, canvas_height);
+
+  ctx.lineWidth = 2;
+  ctx.font = '16px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.strokeStyle = AXES_COLOR;
+
+  // Draw main axes.
+  ctx.beginPath();
+  ctx.moveTo(X_LINE, MARGIN);
+  ctx.lineTo(X_LINE, graph_height + MARGIN);
+  ctx.lineTo(X_LINE+graph_width+20, graph_height + MARGIN);
+  ctx.stroke();
+
+  // Draw X tick marks.
+  const {step, tick_dist, num_ticks} = split_ticks(DURATION, px_per_sec, graph_width);
+  ctx.fillStyle = AXES_COLOR;
+  for (let n=0; n<num_ticks; n++) {
+    const x = X_LINE + ((n + 1) * tick_dist);
+    ctx.beginPath();
+    ctx.moveTo(x, canvas_height-Y_LINE);
+    ctx.lineTo(x, canvas_height-Y_LINE+5);
+    ctx.stroke();
+
+    ctx.fillText(`${(n+1) * step}s`, x, canvas_height - Y_LINE + 20);
+  }
+
+  // Draw vertical lines.
+  ctx.strokeStyle = GRID_COLOR;
+  ctx.setLineDash([2, 4]);
+  for (n=0; n<num_ticks; n++) {
+    const x = X_LINE + ((n + 1) * tick_dist);
+    ctx.beginPath();
+    ctx.moveTo(x, MARGIN);
+    ctx.lineTo(x, MARGIN+graph_height);
+    ctx.stroke();
+  }
+  ctx.strokeStyle = TEXT_COLOR;
+  ctx.setLineDash([]);
+  return {canvas_width, canvas_height, graph_width, graph_height, ctx, px_per_sec};
+}
+
+// Determine the spacing and number of ticks along an axis.
+function split_ticks(max_value, px_per_v, max_px) {
+  const max_ticks = Math.floor(max_px / MIN_TICK_DIST);
+  if (max_ticks <= 1) {
+    // Graph is too small for even 1 tick.
+    return {step: max_value, tick_dist: max_px, num_ticks: 1};
+  }
+  let step;
+  if (max_value <= max_ticks) {
+    step = 1;
+  } else if (max_value <= max_ticks * 2) {
+    step = 2;
+  } else if (max_value <= max_ticks * 4) {
+    step = 4;
+  } else if (max_value <= max_ticks * 5) {
+    step = 5;
+  } else {
+    step = 10;
+    let count = 0;
+    while (true) {
+      if (count > 100) {
+        throw Error("tick loop too long");
+      }
+      count += 1;
+      if (max_value <= max_ticks * step) {
+        break;
+      }
+      step += 10;
+    }
+  }
+  const tick_dist = px_per_v * step;
+  const num_ticks = Math.floor(max_value / step);
+  return {step, tick_dist, num_ticks};
+}
+
+function codegen_time(unit) {
+  if (unit.rmeta_time == null) {
+    return null;
+  }
+  let ctime = unit.duration - unit.rmeta_time;
+  return [unit.rmeta_time, ctime];
+}
+
+function roundedRect(ctx, x, y, width, height, r) {
+  r = Math.min(r, width, height);
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+width-r, y);
+  ctx.arc(x+width-r, y+r, r, 3*Math.PI/2, 0);
+  ctx.lineTo(x+width, y+height-r);
+  ctx.arc(x+width-r, y+height-r, r, 0, Math.PI/2);
+  ctx.lineTo(x+r, y+height);
+  ctx.arc(x+r, y+height-r, r, Math.PI/2, Math.PI);
+  ctx.lineTo(x, y-r);
+  ctx.arc(x+r, y+r, r, Math.PI, 3*Math.PI/2);
+  ctx.closePath();
+}
+
+function pipeline_mouse_hit(event) {
+  // This brute-force method can be optimized if needed.
+  for (let box of HIT_BOXES) {
+    if (event.offsetX >= box.x && event.offsetX <= box.x2 &&
+        event.offsetY >= box.y && event.offsetY <= box.y2) {
+      return box;
+    }
+  }
+}
+
+function pipeline_mousemove(event) {
+  // Highlight dependency lines on mouse hover.
+  let box = pipeline_mouse_hit(event);
+  if (box) {
+    if (box.i != LAST_HOVER) {
+      LAST_HOVER = box.i;
+      let g = document.getElementById('pipeline-graph-lines');
+      let ctx = g.getContext('2d');
+      ctx.clearRect(0, 0, g.width, g.height);
+      ctx.save();
+      ctx.translate(X_LINE, MARGIN);
+      ctx.lineWidth = 2;
+      draw_dep_lines(ctx, box.i, true);
+
+      if (box.i in REVERSE_UNIT_DEPS) {
+        const dep_unit = REVERSE_UNIT_DEPS[box.i];
+        if (dep_unit in UNIT_COORDS) {
+          const {x, y, rmeta_x} = UNIT_COORDS[dep_unit];
+          draw_one_dep_line(ctx, x, y, box.i, true);
+        }
+      }
+      if (box.i in REVERSE_UNIT_RMETA_DEPS) {
+        const dep_unit = REVERSE_UNIT_RMETA_DEPS[box.i];
+        if (dep_unit in UNIT_COORDS) {
+          const {x, y, rmeta_x} = UNIT_COORDS[dep_unit];
+          draw_one_dep_line(ctx, rmeta_x, y, box.i, true);
+        }
+      }
+      ctx.restore();
+    }
+  }
+}
+
+render_pipeline_graph();
+render_timing_graph();
+
+// Set up and handle controls.
+{
+  const range = document.getElementById('min-unit-time');
+  const time_output = document.getElementById('min-unit-time-output');
+  time_output.innerHTML = `${range.value}s`;
+  range.oninput = event => {
+    time_output.innerHTML = `${range.value}s`;
+    render_pipeline_graph();
+  };
+
+  const scale = document.getElementById('scale');
+  const scale_output = document.getElementById('scale-output');
+  scale_output.innerHTML = `${scale.value}`;
+  scale.oninput = event => {
+    scale_output.innerHTML = `${scale.value}`;
+    render_pipeline_graph();
+    render_timing_graph();
+  };
+}
+
+</script>
+</body>
+</html>
