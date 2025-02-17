@@ -14,6 +14,10 @@ pub extern crate rustc_session;
 pub extern crate rustc_span;
 pub extern crate smallvec;
 
+pub extern crate rustc_hir_typeck;
+
+pub use fustc_analyzer;
+
 use rustc_driver::{run_compiler, Callbacks, Compilation};
 use rustc_hir::{def_id::LocalDefId, hir_id::OwnerId};
 use rustc_interface::interface;
@@ -39,14 +43,15 @@ use tokio::{
     task::JoinSet,
 };
 
+use rustc_hir::{hir_id::HirId, intravisit::Visitor};
+
 thread_local! {
     static MIR_JSON_PATH: PathBuf = env::var("FUSTC_CWD")
         .map(|v| PathBuf::from(v))
         .unwrap_or(env::current_dir().unwrap())
         .join(".mir.json");
 }
-static MIR_CACHE: LazyLock<RwLock<HashSet<String>>> =
-    LazyLock::new(|| RwLock::new(HashSet::new()));
+static MIR_CACHE: LazyLock<RwLock<HashSet<String>>> = LazyLock::new(|| RwLock::new(HashSet::new()));
 static RUNTIME: LazyLock<RwLock<Runtime>> =
     LazyLock::new(|| RwLock::new(Builder::new_multi_thread().enable_all().build().unwrap()));
 static HANDLE: LazyLock<Handle> = LazyLock::new(|| RUNTIME.read().unwrap().handle().clone());
@@ -76,16 +81,24 @@ fn override_queries(_session: &rustc_session::Session, local: &mut Providers) {
     //local.analysis = analysis;
     local.mir_borrowck = mir_borrowck;
     //local.check_liveness = check_liveness;
-    //local.typeck = typeck;
+    local.typeck = typeck;
 }
 #[allow(unused)]
 fn typeck<'tcx>(
     tcx: TyCtxt<'tcx>,
     key: queries::typeck::LocalKey<'tcx>,
 ) -> queries::typeck::ProvidedValue<'tcx> {
-    let results = TypeckResults::new(OwnerId { def_id: key });
+    let mut visitor = fustc_analyzer::HirFnVisitor::new(tcx);
+    let node = tcx.hir_node_by_def_id(key);
+    if let Some(body_id) = node.body_id() {
+        visitor.visit_nested_body(body_id);
+    }
+    let mut providers = Providers::default();
+    rustc_hir_typeck::provide(&mut providers);
+    (providers.typeck)(tcx, key)
+    //let results = TypeckResults::new(OwnerId { def_id: key });
 
-    tcx.arena.alloc(results)
+    //tcx.arena.alloc(results)
 }
 #[allow(unused)]
 fn analysis<'tcx>(
@@ -107,7 +120,7 @@ fn mir_borrowck<'tcx>(
 ) -> queries::mir_borrowck::ProvidedValue<'tcx> {
     //let key = tcx.def_path_str(def_id.to_def_id());
 
-    log::info!("start borrowck of {def_id:?}");
+    //log::info!("start borrowck of {def_id:?}");
     //STAT_LOG.with(|f| f.borrow()(&format!("{key},start")));
 
     if tcx.hir().body_const_context(def_id.to_def_id()).is_some() {
@@ -143,7 +156,7 @@ fn mir_borrowck<'tcx>(
             //compiling_hash = format!("{:x}", md5::compute(&compiling_mir));
             if let Ok(cache) = MIR_CACHE.read() {
                 if cache.contains(&compiling_mir_str) {
-                    log::info!("{def_id:?} cache hit");
+                    //log::info!("{def_id:?} cache hit");
                     //STAT_LOG.with(|f| f.borrow()(&format!("{key},cache_hit")));
                     return tcx.arena.alloc(empty_result);
                 }
@@ -151,7 +164,7 @@ fn mir_borrowck<'tcx>(
         }
     }
 
-    log::info!("{def_id:?} no cache; start mir_borrowck");
+    //log::info!("{def_id:?} no cache; start mir_borrowck");
 
     let result = default_mir_borrowck(tcx, def_id);
     let can_cache = result.concrete_opaque_types.is_empty()
@@ -165,9 +178,9 @@ fn mir_borrowck<'tcx>(
             //STAT_LOG.with(|f| f.borrow()(&format!("{key},cached")));
         }
     } else {
-        log::info!("{def_id:?} cannot be cached due to its mir_borrowck result")
+        //log::info!("{def_id:?} cannot be cached due to its mir_borrowck result")
     }
-    STAT_LOG.with(|f| f.borrow()(&format!("{def_id:?},no_cache")));
+    //STAT_LOG.with(|f| f.borrow()(&format!("{def_id:?},no_cache")));
     result
 }
 #[allow(unused)]

@@ -79,11 +79,19 @@ dependencies = [
 name = "fustc"
 version = "0.1.0"
 dependencies = [
+ "fustc-analyzer",
  "log",
  "nix",
  "serde_json",
  "simple_logger",
  "tokio",
+]
+
+[[package]]
+name = "fustc-analyzer"
+version = "0.1.0"
+dependencies = [
+ "serde",
 ]
 
 [[package]]
