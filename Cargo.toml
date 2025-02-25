@@ -1,18 +1,12 @@
-[workspace]
-member = [".", "fustc-analyzer"]
-
-[workspace.dependencies]
-serde = { version = "1.0.217", features = ["derive"] }
-
 [package]
 name = "fustc"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
-fustc-analyzer = { path = "./fustc-analyzer" }
 log = "0.4.25"
 nix = { version = "0.29.0", features = ["process"] }
+serde = { version = "1.0.217", features = ["derive"] }
 serde_json = "1.0.138"
 simple_logger = { version = "5.0.0", features = ["stderr", "colored"] }
 tokio = { version = "1.43.0", features = ["rt", "macros", "rt-multi-thread", "fs", "io-util"] }

@@ -7,6 +7,8 @@ pub extern crate rustc_driver;
 pub extern crate rustc_errors;
 pub extern crate rustc_hash;
 pub extern crate rustc_hir;
+pub extern crate rustc_hir_pretty;
+pub extern crate rustc_hir_typeck;
 pub extern crate rustc_index;
 pub extern crate rustc_interface;
 pub extern crate rustc_middle;
@@ -14,28 +16,26 @@ pub extern crate rustc_session;
 pub extern crate rustc_span;
 pub extern crate smallvec;
 
-pub extern crate rustc_hir_typeck;
+mod analyzer;
 
-pub use fustc_analyzer;
-
-use rustc_driver::{run_compiler, Callbacks, Compilation};
+use rustc_driver::{Callbacks, Compilation, run_compiler};
 use rustc_hir::{def_id::LocalDefId, hir_id::OwnerId};
 use rustc_interface::interface;
 use rustc_middle::{
     mir::{
-        pretty::{write_mir_fn, PrettyPrintMirOptions},
         BorrowCheckResult,
+        pretty::{PrettyPrintMirOptions, write_mir_fn},
     },
     query::queries,
     ty::{TyCtxt, TypeckResults},
     util::Providers,
 };
-use rustc_session::{config, EarlyDiagCtxt};
+use rustc_session::{EarlyDiagCtxt, config};
 use std::cell::RefCell;
 use std::collections::HashSet;
 use std::env;
 use std::path::PathBuf;
-use std::sync::{atomic::AtomicBool, LazyLock, RwLock};
+use std::sync::{LazyLock, RwLock, atomic::AtomicBool};
 use tokio::{
     fs::{File, OpenOptions},
     io::{AsyncReadExt, AsyncWriteExt},
@@ -88,7 +88,7 @@ fn typeck<'tcx>(
     tcx: TyCtxt<'tcx>,
     key: queries::typeck::LocalKey<'tcx>,
 ) -> queries::typeck::ProvidedValue<'tcx> {
-    let mut visitor = fustc_analyzer::HirFnVisitor::new(tcx);
+    let mut visitor = analyzer::HirFnVisitor::new(tcx);
     let node = tcx.hir_node_by_def_id(key);
     if let Some(body_id) = node.body_id() {
         visitor.visit_nested_body(body_id);
@@ -123,7 +123,7 @@ fn mir_borrowck<'tcx>(
     //log::info!("start borrowck of {def_id:?}");
     //STAT_LOG.with(|f| f.borrow()(&format!("{key},start")));
 
-    if tcx.hir().body_const_context(def_id.to_def_id()).is_some() {
+    if tcx.hir_body_const_context(def_id.to_def_id()).is_some() {
         let result = default_mir_borrowck(tcx, def_id);
         //STAT_LOG.with(|f| f.borrow()(&format!("{key},no_cache")));
         return result;
@@ -167,11 +167,11 @@ fn mir_borrowck<'tcx>(
     //log::info!("{def_id:?} no cache; start mir_borrowck");
 
     let result = default_mir_borrowck(tcx, def_id);
-    let can_cache = result.concrete_opaque_types.is_empty()
-        && result.closure_requirements.is_none()
-        && result.used_mut_upvars.is_empty()
-        && result.tainted_by_errors.is_none()
-        && 0 < compiling_mir_str.len();
+    let can_cache = //result.concrete_opaque_types.is_empty()
+        // && result.closure_requirements.is_none()
+        // && result.used_mut_upvars.is_empty()
+        // && result.tainted_by_errors.is_none()
+        0 < compiling_mir_str.len();
     if can_cache {
         if let Ok(mut cache) = MIR_CACHE.write() {
             cache.insert(compiling_mir_str);
@@ -214,7 +214,7 @@ impl Callbacks for FustcCallback {
         _tcx: TyCtxt<'tcx>,
     ) -> Compilation {
         HANDLE.block_on(async {
-            while let Some(_) = { TASKS.write().unwrap().join_next() }.await {}
+            while let Some(_) = { TASKS.write().unwrap().join_next().await } {}
         });
         Compilation::Continue
     }
