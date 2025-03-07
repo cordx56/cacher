@@ -1,4 +1,5 @@
 use memfile::MemFile;
+use shared_memory::ShmemConf;
 use std::collections::HashSet;
 use std::env;
 use std::ffi::CString;
@@ -6,6 +7,7 @@ use std::fs::File;
 use std::io::{Read, Write};
 use std::os::fd::AsRawFd;
 use std::path::PathBuf;
+use std::sync::{RwLock, Arc};
 
 fn main() {
     if env::var("FUSTC_CWD").is_err() {
@@ -14,16 +16,17 @@ fn main() {
         }
     }
     if let Some(cache) = read_cache() {
-        let mut mfile = MemFile::create_default("MIR_CACHE").unwrap();
-        mfile.write_all(cache.as_bytes()).unwrap();
-        //mfile.flush().unwrap();
-        nix::unistd::dup2(mfile.as_fd().as_raw_fd(), 5000);
+        let sm = ShmemConf::new()
+            .size(std::mem::size_of::<RwLock<HashSet<String>>>())
+            .create()
+            .unwrap();
+        let smptr = sm.as_ptr();
         unsafe {
-            env::set_var("MIR_CACHE_FD", 5000.to_string());
+            let ptr = smptr as *mut RwLock<HashSet<String>>;
+            *ptr = RwLock::new(cache_str_to_map(&cache));
+            env::set_var("MIR_CACHE", sm.get_os_id());
         }
-    use std::io::{Seek, SeekFrom};
-        //mfile.seek(SeekFrom::Start(0)).unwrap();
-        std::mem::forget(mfile);
+        std::mem::forget(sm);
     }
 
     let rustup = CString::new("rustup").unwrap();
@@ -46,7 +49,7 @@ fn main() {
     cmd.spawn().unwrap().wait().unwrap();
 }
 
-fn cache_str_to_map(s: String) -> HashSet<String> {
+fn cache_str_to_map(s: &str) -> HashSet<String> {
     s.split("\n\n\n").map(|v| v.to_owned()).collect()
 }
 fn read_cache() -> Option<String> {

@@ -45,8 +45,16 @@ thread_local! {
         .unwrap_or(env::current_dir().unwrap())
         .join(".mirs");
 }
-static MIR_CACHE: LazyLock<RwLock<HashSet<String>>> =
-    LazyLock::new(|| RwLock::new(read_cache().unwrap_or(HashSet::new())));
+thread_local! {
+static MIR_CACHE: *mut RwLock<HashSet<String>> ={
+    let sm = shared_memory::ShmemConf::new()
+        .os_id(&env::var("MIR_CACHE").unwrap())
+        .open()
+        .unwrap();
+        let smptr = sm.as_ptr() as *mut RwLock<HashSet<String>>;
+        smptr
+    }
+}
 
 thread_local! {
     static STAT_LOG: RefCell<Box<dyn Fn(&str)>> = RefCell::new(
@@ -175,12 +183,16 @@ fn mir_borrowck<'tcx>(
             compiling_mir_str = unsafe { String::from_utf8_unchecked(compiling_mir) }
                 .trim()
                 .to_owned();
-            if let Ok(cache) = MIR_CACHE.read() {
+            if MIR_CACHE.with(|p| { if let Ok(cache) = unsafe { &**p }.read() {
+                log::info!("unsafe deref");
                 if cache.contains(&compiling_mir_str) {
                     log::info!("{def_id:?} cache hit");
                     //STAT_LOG.with(|f| f.borrow()(&format!("{key},cache_hit")));
-                    return tcx.arena.alloc(empty_result);
+                    return true
                 }
+            } false
+            }) {
+                return tcx.arena.alloc(empty_result);
             }
         }
     }
@@ -194,7 +206,7 @@ fn mir_borrowck<'tcx>(
         result.tainted_by_errors.is_none()
         && 0 < compiling_mir_str.len();
     if can_cache {
-        if let Ok(mut cache) = MIR_CACHE.write() {
+        if let Ok(mut cache) = MIR_CACHE.with(|p| unsafe { &**p }.write()) {
             cache.insert(compiling_mir_str.to_owned());
             //STAT_LOG.with(|f| f.borrow()(&format!("{key},cached")));
         }
@@ -226,7 +238,12 @@ impl Callbacks for FustcCallback {
             .open(cache_path)
         //.await
         {
-            if let Some(cache) = { MIR_CACHE.read().map(|v| v.clone()).ok() } {
+            if let Some(cache) = {
+                MIR_CACHE
+                    .with(|p| unsafe { &**p }.read())
+                    .map(|v| v.clone())
+                    .ok()
+            } {
                 let cache_str = cache
                     .into_iter()
                     .map(|v| v.trim().to_string())
