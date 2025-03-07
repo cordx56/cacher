@@ -3,6 +3,7 @@
 pub extern crate indexmap;
 pub extern crate polonius_engine;
 pub extern crate rustc_borrowck;
+pub extern crate rustc_data_structures;
 pub extern crate rustc_driver;
 pub extern crate rustc_errors;
 pub extern crate rustc_hash;
@@ -18,13 +19,14 @@ pub extern crate smallvec;
 
 mod analyzer;
 
-use rustc_driver::{Callbacks, Compilation, run_compiler};
+use rustc_data_structures::steal::Steal;
+use rustc_driver::{run_compiler, Callbacks, Compilation};
 use rustc_hir::{def_id::LocalDefId, hir_id::OwnerId};
 use rustc_interface::interface;
 use rustc_middle::{
     mir::{
-        BorrowCheckResult,
-        pretty::{PrettyPrintMirOptions, write_mir_fn},
+        pretty::{write_mir_fn, PrettyPrintMirOptions},
+        Body, BorrowCheckResult,
     },
     query::queries,
     ty::{TyCtxt, TypeckResults},
@@ -32,8 +34,11 @@ use rustc_middle::{
 };
 use rustc_session::{EarlyDiagCtxt, config};
 use std::cell::RefCell;
-use std::collections::HashSet;
+use std::collections::{BTreeSet, HashSet};
 use std::env;
+use std::fs::{File, OpenOptions};
+use std::io::{Read, Write};
+use std::os::fd::FromRawFd;
 use std::path::PathBuf;
 use std::sync::{LazyLock, RwLock, atomic::AtomicBool};
 use tokio::{
@@ -46,16 +51,18 @@ use tokio::{
 use rustc_hir::{hir_id::HirId, intravisit::Visitor};
 
 thread_local! {
-    static MIR_JSON_PATH: PathBuf = env::var("FUSTC_CWD")
+    static MIR_CACHE_PATH: PathBuf = env::var("FUSTC_CWD")
         .map(|v| PathBuf::from(v))
         .unwrap_or(env::current_dir().unwrap())
-        .join(".mir.json");
+        .join(".mirs");
 }
-static MIR_CACHE: LazyLock<RwLock<HashSet<String>>> = LazyLock::new(|| RwLock::new(HashSet::new()));
+//static MIR_CACHE: LazyLock<RwLock<HashSet<String>>> = LazyLock::new(|| RwLock::new(HashSet::new()));
 static RUNTIME: LazyLock<RwLock<Runtime>> =
     LazyLock::new(|| RwLock::new(Builder::new_multi_thread().enable_all().build().unwrap()));
 static HANDLE: LazyLock<Handle> = LazyLock::new(|| RUNTIME.read().unwrap().handle().clone());
 static TASKS: LazyLock<RwLock<JoinSet<()>>> = LazyLock::new(|| RwLock::new(JoinSet::new()));
+static MIR_CACHE: LazyLock<RwLock<HashSet<String>>> =
+    LazyLock::new(|| RwLock::new(read_cache().unwrap_or(HashSet::new())));
 
 thread_local! {
     static STAT_LOG: RefCell<Box<dyn Fn(&str)>> = RefCell::new(
@@ -77,12 +84,49 @@ static ATOMIC_TRUE: AtomicBool = AtomicBool::new(true);
 pub struct RustcCallback;
 impl Callbacks for RustcCallback {}
 
+fn open_memfile() -> Option<memfile::MemFile> {
+    use std::io::{Seek, SeekFrom};
+    if let Ok(Ok(raw_fd)) = env::var("MIR_CACHE_FD").map(|v| v.parse()) {
+        if let Ok(mut mfile) =
+            unsafe { memfile::MemFile::from_fd(std::os::fd::FromRawFd::from_raw_fd(raw_fd)) }
+        {
+            //mfile.seek(SeekFrom::Start(0)).unwrap();
+            return Some(mfile);
+        }
+    }
+    log::warn!("no cache FD");
+    None
+}
+fn cache_str_to_map(s: String) -> HashSet<String> {
+    s.split("\n\n\n").map(|v| v.trim().to_owned()).collect()
+}
+fn read_cache() -> Option<HashSet<String>> {
+    if let Some(mut mfile) = open_memfile() {
+        let mut cache_str = Vec::with_capacity(1024000);
+        let size = mfile.read(&mut cache_str).unwrap();
+        println!("{size}");
+        let cache = unsafe { String::from_utf8_unchecked(cache_str[..size].to_vec()) };
+        let map = cache_str_to_map(cache);
+        log::info!("cache size: {}", map.len());
+        return Some(map);
+    }
+    log::warn!("failed to read memfile");
+    None
+}
+
 fn override_queries(_session: &rustc_session::Session, local: &mut Providers) {
     //local.analysis = analysis;
     local.mir_borrowck = mir_borrowck;
     //local.check_liveness = check_liveness;
-    local.typeck = typeck;
+    //local.typeck = typeck;
+    //local.mir_built = mir_built;
 }
+/*
+fn mir_built<'tcx>(tcx: TyCtxt<'tcx>, id: LocalDefId) -> &Steal<Body<'tcx>> {
+    let hir_id = tcx.local_def_id_to_hir_id(id);
+    let pretty = rustc_hir_pretty::id_to_string(&tcx.hir(), hir_id);
+}
+*/
 #[allow(unused)]
 fn typeck<'tcx>(
     tcx: TyCtxt<'tcx>,
@@ -152,8 +196,9 @@ fn mir_borrowck<'tcx>(
         .unwrap();
 
         if 0 < compiling_mir.len() {
-            compiling_mir_str = String::from_utf8(compiling_mir).unwrap();
-            //compiling_hash = format!("{:x}", md5::compute(&compiling_mir));
+            compiling_mir_str = unsafe { String::from_utf8_unchecked(compiling_mir) }
+                .trim()
+                .to_owned();
             if let Ok(cache) = MIR_CACHE.read() {
                 if cache.contains(&compiling_mir_str) {
                     //log::info!("{def_id:?} cache hit");
@@ -170,11 +215,11 @@ fn mir_borrowck<'tcx>(
     let can_cache = //result.concrete_opaque_types.is_empty()
         // && result.closure_requirements.is_none()
         // && result.used_mut_upvars.is_empty()
-        // && result.tainted_by_errors.is_none()
-        0 < compiling_mir_str.len();
+        result.tainted_by_errors.is_none()
+        && 0 < compiling_mir_str.len();
     if can_cache {
         if let Ok(mut cache) = MIR_CACHE.write() {
-            cache.insert(compiling_mir_str);
+            cache.insert(compiling_mir_str.to_owned());
             //STAT_LOG.with(|f| f.borrow()(&format!("{key},cached")));
         }
     } else {
@@ -192,6 +237,7 @@ impl Callbacks for FustcCallback {
         config.using_internal_features = &ATOMIC_TRUE;
         config.override_queries = Some(override_queries);
 
+        /*
         TASKS.write().unwrap().spawn_on(
             async {
                 let json_path = MIR_JSON_PATH.with(|json_path| json_path.clone());
@@ -207,7 +253,9 @@ impl Callbacks for FustcCallback {
             },
             &HANDLE,
         );
+        */
     }
+    /*
     fn after_expansion<'tcx>(
         &mut self,
         _compiler: &interface::Compiler,
@@ -218,29 +266,32 @@ impl Callbacks for FustcCallback {
         });
         Compilation::Continue
     }
+    */
     fn after_analysis<'tcx>(
         &mut self,
         _compiler: &interface::Compiler,
         _tcx: TyCtxt<'tcx>,
     ) -> Compilation {
-        TASKS.write().unwrap().spawn_on(
-            async {
-                let json_path = MIR_JSON_PATH.with(|json_path| json_path.clone());
-                if let Ok(mut file) = OpenOptions::new()
-                    .create(true)
-                    .write(true)
-                    .truncate(true)
-                    .open(json_path)
-                    .await
-                {
-                    if let Some(cache) = { MIR_CACHE.read().map(|v| v.clone()).ok() } {
-                        let json = serde_json::to_string(&cache).unwrap();
-                        file.write_all(json.as_bytes()).await.unwrap();
-                    }
-                }
-            },
-            &HANDLE,
-        );
+        let cache_path = MIR_CACHE_PATH.with(|cache_path| cache_path.clone());
+        if let Ok(mut file) = OpenOptions::new()
+            .create(true)
+            .append(true)
+            //.truncate(true)
+            .open(cache_path)
+        //.await
+        {
+            if let Some(cache) = { MIR_CACHE.read().map(|v| v.clone()).ok() } {
+                let cache_str = cache
+                    .into_iter()
+                    .map(|v| v.trim().to_string())
+                    .collect::<Vec<String>>()
+                    .join("\n\n\n");
+                file.write_all(cache_str.as_bytes()).unwrap();
+                file.write_all(b"\n\n\n").unwrap();
+            }
+        } else {
+            log::warn!("write cache file failed");
+        }
         Compilation::Continue
     }
 }
@@ -284,7 +335,7 @@ fn main() {
         _ => run_fustc(Compiler::Normal),
     };
 
-    HANDLE.block_on(async { while let Some(_) = TASKS.write().unwrap().join_next().await {} });
+    //HANDLE.block_on(async { while let Some(_) = TASKS.lock().unwrap().join_next().await {} });
 
     std::process::exit(code);
 }
