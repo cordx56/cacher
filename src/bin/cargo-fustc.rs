@@ -1,5 +1,6 @@
 use fustc::server;
 use std::env;
+use std::path::PathBuf;
 use tokio::process::Command;
 
 #[tokio::main]
@@ -12,18 +13,25 @@ async fn main() {
         .unwrap();
 
     unsafe {
-        env::set_var("FUSTC_CWD", env::current_dir().unwrap());
-        env::set_var("RUSTC_WRAPPER", "fustc");
+        env::set_var(
+            "CARGO_TARGET_DIR",
+            env::var("CARGO_TARGET_DIR")
+                .map(|v| PathBuf::from(v))
+                .unwrap_or(PathBuf::from(env::current_dir().unwrap()).join("target")),
+        );
+        env::set_var("RUSTC", "fustc");
     }
     let args = env::args().skip(2);
 
+    /*
     tokio::spawn(async move {
         server::serve().await;
     });
+    */
 
     let mut child = Command::new("cargo")
         .args(args)
-        .stdout(std::process::Stdio::piped())
+        //.stdout(std::process::Stdio::piped())
         .spawn()
         .unwrap();
     child.wait().await.unwrap();
@@ -53,5 +61,5 @@ async fn main() {
     println!("borrowck: {borrowck}ns, TcpIO: {tcpio}ns");
     */
 
-    server::save_cache().await;
+    //server::save_cache().await;
 }

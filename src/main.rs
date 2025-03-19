@@ -1,3 +1,4 @@
+use fustc::models::*;
 use memfile::MemFile;
 use std::collections::HashSet;
 use std::env;
@@ -6,7 +7,6 @@ use std::fs::File;
 use std::io::{Read, Write};
 use std::os::fd::AsRawFd;
 use std::path::PathBuf;
-use fustc::models::*;
 
 fn main() {
     /*
@@ -38,7 +38,7 @@ fn main() {
         .into_iter()
         .map(|v| v.to_owned())
         .collect();
-    args.extend(env::args().skip(2).collect::<Vec<_>>());
+    args.extend(env::args().skip(1));
     let mut cmd = std::process::Command::new("rustup");
     cmd.args(args);
     cmd.spawn().unwrap().wait().unwrap();

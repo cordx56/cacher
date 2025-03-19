@@ -21,13 +21,13 @@ features = ['unprefixed_malloc_on_supported_platforms']
 [package.metadata.rust-analyzer]
 rustc_private = true
 
-#[[bin]]
-#name = "cargo-fustc_driver"
-#path = "src/driver.rs"
+[[bin]]
+name = "cargo-fustc_driver"
+path = "src/driver.rs"
 
 [[bin]]
 name = "fustc"
-path = "src/driver.rs"
+path = "src/main.rs"
 
 [[bin]]
 name = "cargo-fustc"

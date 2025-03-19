@@ -37,7 +37,7 @@ use rustc_session::{EarlyDiagCtxt, config};
 use std::cell::RefCell;
 use std::collections::{BTreeSet, HashSet};
 use std::env;
-use std::fs::{File, OpenOptions};
+use std::fs::{File, OpenOptions, create_dir_all};
 use std::io::{Read, Write};
 use std::net::{Shutdown, TcpStream};
 use std::os::fd::FromRawFd;
@@ -60,17 +60,14 @@ use tikv_jemallocator::Jemalloc;
 static GLOBAL: Jemalloc = tikv_jemallocator::Jemalloc;
 */
 
+/*
 static MIR_CACHE_PATH: LazyLock<PathBuf> = LazyLock::new(|| {
     env::var("FUSTC_CWD")
         .map(|v| PathBuf::from(v))
         .unwrap_or(env::current_dir().unwrap())
         .join(".mirs")
 });
-static MIR_CACHE: LazyLock<RwLock<HashSet<String>>> = LazyLock::new(|| RwLock::new(HashSet::new()));
-//static MIR_CACHE: LazyLock<RwLock<HashSet<String>>> = LazyLock::new(|| RwLock::new(HashSet::new()));
-static RUNTIME: LazyLock<RwLock<Runtime>> =
-    LazyLock::new(|| RwLock::new(Builder::new_multi_thread().enable_all().build().unwrap()));
-static HANDLE: LazyLock<Handle> = LazyLock::new(|| RUNTIME.read().unwrap().handle().clone());
+*/
 /*
 static TASKS: LazyLock<RwLock<JoinSet<()>>> = LazyLock::new(|| RwLock::new(JoinSet::new()));
 static MIR_CACHE: LazyLock<RwLock<HashSet<&'static str>>> =
@@ -175,6 +172,46 @@ fn request(req: FustcRequest) -> Option<WrapperResponse> {
     }
 }
 
+static MIR_CACHE: LazyLock<RwLock<HashSet<String>>> = LazyLock::new(|| RwLock::new(HashSet::new()));
+static MIR_CACHE_PATH: LazyLock<PathBuf> = LazyLock::new(|| {
+    let target_dir = PathBuf::from(env::var("CARGO_TARGET_DIR").unwrap().trim());
+    let cache_dir = target_dir.join("fustc");
+    create_dir_all(&cache_dir).unwrap();
+    let crate_name = env::var("CARGO_CRATE_NAME").unwrap();
+    let file_name = format!("{}.mir", crate_name.trim());
+    cache_dir.join(file_name)
+});
+static RUNTIME: LazyLock<RwLock<Runtime>> =
+    LazyLock::new(|| RwLock::new(Builder::new_multi_thread().enable_all().build().unwrap()));
+static HANDLE: LazyLock<Handle> = LazyLock::new(|| RUNTIME.read().unwrap().handle().clone());
+
+fn setup_cache<'tcx>() {
+    HANDLE.spawn(async move {
+        if let Ok(mut f) = File::open(&*MIR_CACHE_PATH) {
+            let mut buf = Vec::with_capacity(1000_000);
+            f.read_to_end(&mut buf).unwrap();
+            *MIR_CACHE.write().unwrap() = serde_json::from_slice(&buf).unwrap_or(HashSet::new());
+        }
+    });
+}
+fn is_cached(mir: &str) -> bool {
+    MIR_CACHE.read().unwrap().contains(mir)
+}
+fn add_cache(mir: String) {
+    MIR_CACHE.write().unwrap().insert(mir);
+}
+fn save_cache() {
+    if let Ok(mut f) = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open(&*MIR_CACHE_PATH)
+    {
+        f.write_all(&serde_json::to_vec(&*MIR_CACHE.read().unwrap()).unwrap())
+            .unwrap();
+    }
+}
+
 #[inline]
 fn override_queries(_session: &rustc_session::Session, local: &mut Providers) {
     //local.analysis = analysis;
@@ -271,10 +308,12 @@ fn mir_borrowck<'tcx>(
             //let start = SystemTime::now();
             //let mut conn = TcpStream::connect("127.0.0.1:9081").unwrap();
 
+            /*
             let resp = request(FustcRequest::CacheCheck {
                 mir: compiling_mir_string.clone(),
             })
             .unwrap();
+            */
 
             //log::info!("{resp:?}");
             /*
@@ -292,7 +331,8 @@ fn mir_borrowck<'tcx>(
             */
 
             //if MIR_CACHE.read().unwrap().contains(&compiling_mir_string) {
-            if let WrapperResponse::CacheStatus { cached: true } = resp {
+            if is_cached(&compiling_mir_string) {
+                //if let WrapperResponse::CacheStatus { cached: true } = resp {
                 log::debug!("{def_id:?} cache hit");
 
                 /*
@@ -337,6 +377,9 @@ fn mir_borrowck<'tcx>(
         && 0 < compiling_mir_string.len();
     if can_cache {
         //let start = SystemTime::now();
+        add_cache(compiling_mir_string);
+        log::info!("{def_id:?} cache saved");
+        /*
         RUNTIME.write().unwrap().spawn(async {
             //let mut conn = TcpStream::connect("127.0.0.1:9081").unwrap();
 
@@ -346,6 +389,7 @@ fn mir_borrowck<'tcx>(
             log::info!("cache save");
             //conn.write_all(&req).unwrap();
         });
+        */
         /*
         tcpio_start += SystemTime::now()
             .duration_since(start)
@@ -394,6 +438,8 @@ impl Callbacks for FustcCallback {
         config.using_internal_features = &ATOMIC_TRUE;
         config.override_queries = Some(override_queries);
 
+        setup_cache();
+
         /*
         if let Ok(mut file) = OpenOptions::new()
             .read(true)
@@ -440,11 +486,16 @@ impl Callbacks for FustcCallback {
         });
         Compilation::Continue
     }
+    */
     fn after_analysis<'tcx>(
         &mut self,
         _compiler: &interface::Compiler,
         _tcx: TyCtxt<'tcx>,
     ) -> Compilation {
+        save_cache();
+        Compilation::Continue
+    }
+    /*
         if let Ok(mut file) = OpenOptions::new()
             .write(true)
             .create(true)
