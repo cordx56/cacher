@@ -1,4 +1,9 @@
-# fustc: Faster Rust Compiler
+<div align="center">
+  <h1>
+    fustc<br>
+    <small>⚡️ Faster Rust Compiler ⚡️</small>
+  </h1>
+</div>
 
 fustc is a faster Rust compiler that utilize per-function caching of checking results.
 
