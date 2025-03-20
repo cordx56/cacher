@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [package]
 name = "fustc"
 version = "0.1.0"
@@ -22,8 +23,13 @@ path = "src/driver.rs"
 [[bin]]
 name = "fustc"
 path = "src/main.rs"
+=======
+[workspace]
+members = ["fustc", "cargo-fustc", "fustc-utils"]
+resolver = "3"
+>>>>>>> wip
 
 [profile.release]
 opt-level = 3
-lto = "fat"
+lto = true
 codegen-units = 1
