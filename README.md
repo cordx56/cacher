@@ -1,8 +1,6 @@
 <div align="center">
-  <h1>
-    fustc<br>
-    <small>⚡️ Faster Rust Compiler ⚡️</small>
-  </h1>
+  <h1>fustc</h1>
+  ⚡️ Faster Rust Compiler ⚡️
 </div>
 
 fustc is a faster Rust compiler that utilize per-function caching of checking results.
