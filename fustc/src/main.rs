@@ -47,19 +47,19 @@ fn override_queries(_session: &rustc_session::Session, local: &mut Providers) {
 }
 
 #[inline]
-fn default_mir_borrowck<'tcx>(
-    tcx: TyCtxt<'tcx>,
+fn default_mir_borrowck(
+    tcx: TyCtxt<'_>,
     def_id: LocalDefId,
-) -> queries::mir_borrowck::ProvidedValue<'tcx> {
+) -> queries::mir_borrowck::ProvidedValue<'_> {
     let mut providers = Providers::default();
     rustc_borrowck::provide(&mut providers);
     (providers.mir_borrowck)(tcx, def_id)
 }
 #[inline]
-fn mir_borrowck<'tcx>(
-    tcx: TyCtxt<'tcx>,
+fn mir_borrowck(
+    tcx: TyCtxt<'_>,
     def_id: LocalDefId,
-) -> queries::mir_borrowck::ProvidedValue<'tcx> {
+) -> queries::mir_borrowck::ProvidedValue<'_> {
     // skip const context
     if tcx.hir_body_const_context(def_id.to_def_id()).is_some() {
         let result = default_mir_borrowck(tcx, def_id);
@@ -73,13 +73,13 @@ fn mir_borrowck<'tcx>(
         tainted_by_errors: None,
     };
 
-    let mut compiling_mir = Vec::with_capacity(1000_000);
+    let mut compiling_mir = Vec::with_capacity(1_000_000);
     let mut compiling_mir_string = String::new();
     let body = tcx.mir_built(def_id);
     if !body.is_stolen() {
         write_mir_fn(
             tcx,
-            &*body.borrow(),
+            &body.borrow(),
             &mut |_, _| Ok(()),
             &mut compiling_mir,
             PrettyPrintMirOptions {
@@ -88,7 +88,7 @@ fn mir_borrowck<'tcx>(
         )
         .unwrap();
 
-        if 0 < compiling_mir.len() {
+        if !compiling_mir.is_empty() {
             compiling_mir_string = unsafe { String::from_utf8_unchecked(compiling_mir) };
             if is_cached(&compiling_mir_string) {
                 log::debug!("{def_id:?} cache hit");
@@ -104,7 +104,7 @@ fn mir_borrowck<'tcx>(
         && result.closure_requirements.is_none()
         && result.used_mut_upvars.is_empty()
         && result.tainted_by_errors.is_none()
-        && 0 < compiling_mir_string.len();
+        && !compiling_mir_string.is_empty();
     if can_cache {
         add_cache(compiling_mir_string);
         log::debug!("{def_id:?} cache saved");
@@ -114,7 +114,7 @@ fn mir_borrowck<'tcx>(
     result
 }
 #[allow(unused)]
-fn check_liveness<'tcx>(_tcx: TyCtxt<'tcx>, _def_id: LocalDefId) {}
+fn check_liveness(_tcx: TyCtxt<'_>, _def_id: LocalDefId) {}
 
 pub struct FustcCallback;
 impl Callbacks for FustcCallback {
@@ -124,10 +124,10 @@ impl Callbacks for FustcCallback {
 
         setup_cache();
     }
-    fn after_analysis<'tcx>(
+    fn after_analysis(
         &mut self,
         _compiler: &interface::Compiler,
-        _tcx: TyCtxt<'tcx>,
+        _tcx: TyCtxt<'_>,
     ) -> Compilation {
         save_cache();
         Compilation::Continue

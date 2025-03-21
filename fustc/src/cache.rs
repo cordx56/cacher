@@ -19,7 +19,7 @@ static HANDLE: LazyLock<Handle> = LazyLock::new(|| RUNTIME.read().unwrap().handl
 pub fn setup_cache() {
     HANDLE.spawn(async move {
         if let Ok(mut f) = File::open(&*MIR_CACHE_PATH) {
-            let mut buf = Vec::with_capacity(1000_000);
+            let mut buf = Vec::with_capacity(1_000_000);
             f.read_to_end(&mut buf).unwrap();
             *MIR_CACHE.write().unwrap() = serde_json::from_slice(&buf).unwrap_or(HashSet::new());
         }

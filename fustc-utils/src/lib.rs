@@ -6,7 +6,7 @@ use std::process::{Command, Stdio};
 pub fn get_fustc_target_dir() -> PathBuf {
     let fustc_dir = env::var("FUSTC_TARGET_DIR")
         .ok()
-        .map(|v| PathBuf::from(v))
+        .map(PathBuf::from)
         .or(env::var("CARGO_TARGET_DIR")
             .ok()
             .map(|v| PathBuf::from(v).join("fustc")))
@@ -24,10 +24,9 @@ pub fn get_target_dir_from_cargo() -> Option<PathBuf> {
     let metadata = cargo.output().unwrap().stdout;
     serde_json::from_slice::<serde_json::Value>(&metadata)
         .ok()
-        .map(|v| {
+        .and_then(|v| {
             v.get("target_directory")
                 .map(|v| v.as_str().map(|v| PathBuf::from(v.trim())))
         })
-        .flatten()
         .flatten()
 }
