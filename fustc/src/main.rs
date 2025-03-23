@@ -34,12 +34,22 @@ use rustc_middle::{
 };
 use rustc_session::{EarlyDiagCtxt, config};
 use std::env;
-use std::sync::atomic::AtomicBool;
+use std::sync::{LazyLock, atomic::AtomicBool};
 
 static ATOMIC_TRUE: AtomicBool = AtomicBool::new(true);
 
 pub struct RustcCallback;
 impl Callbacks for RustcCallback {}
+
+//
+// fustc cache code
+//
+
+static IGNORE_CACHE: LazyLock<bool> = LazyLock::new(|| {
+    env::var("FUSTC_IGNORE_CACHE")
+        .map(|v| v == "true" || v == "1")
+        .unwrap_or(false)
+});
 
 #[inline]
 fn override_queries(_session: &rustc_session::Session, local: &mut Providers) {
@@ -56,14 +66,13 @@ fn default_mir_borrowck(
     (providers.mir_borrowck)(tcx, def_id)
 }
 #[inline]
-fn mir_borrowck(
-    tcx: TyCtxt<'_>,
-    def_id: LocalDefId,
-) -> queries::mir_borrowck::ProvidedValue<'_> {
+fn mir_borrowck(tcx: TyCtxt<'_>, def_id: LocalDefId) -> queries::mir_borrowck::ProvidedValue<'_> {
+    if *IGNORE_CACHE {
+        return default_mir_borrowck(tcx, def_id);
+    }
     // skip const context
     if tcx.hir_body_const_context(def_id.to_def_id()).is_some() {
-        let result = default_mir_borrowck(tcx, def_id);
-        return result;
+        return default_mir_borrowck(tcx, def_id);
     }
 
     let empty_result = BorrowCheckResult {
@@ -124,11 +133,7 @@ impl Callbacks for FustcCallback {
 
         setup_cache();
     }
-    fn after_analysis(
-        &mut self,
-        _compiler: &interface::Compiler,
-        _tcx: TyCtxt<'_>,
-    ) -> Compilation {
+    fn after_analysis(&mut self, _compiler: &interface::Compiler, _tcx: TyCtxt<'_>) -> Compilation {
         save_cache();
         Compilation::Continue
     }
