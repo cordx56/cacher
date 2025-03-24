@@ -34,7 +34,15 @@ use rustc_middle::{
 };
 use rustc_session::{EarlyDiagCtxt, config};
 use std::env;
-use std::sync::{LazyLock, atomic::AtomicBool};
+use std::sync::{LazyLock, RwLock, atomic::AtomicBool};
+use tokio::{
+    runtime::{Builder, Handle, Runtime},
+    task::JoinHandle,
+};
+
+pub static RUNTIME: LazyLock<RwLock<Runtime>> =
+    LazyLock::new(|| RwLock::new(Builder::new_multi_thread().enable_all().build().unwrap()));
+pub static HANDLE: LazyLock<Handle> = LazyLock::new(|| RUNTIME.read().unwrap().handle().clone());
 
 static ATOMIC_TRUE: AtomicBool = AtomicBool::new(true);
 
@@ -125,16 +133,38 @@ fn mir_borrowck(tcx: TyCtxt<'_>, def_id: LocalDefId) -> queries::mir_borrowck::P
 #[allow(unused)]
 fn check_liveness(_tcx: TyCtxt<'_>, _def_id: LocalDefId) {}
 
-pub struct FustcCallback;
+pub struct FustcCallback {
+    join: Vec<JoinHandle<()>>,
+}
+impl FustcCallback {
+    pub fn new() -> Self {
+        Self { join: Vec::new() }
+    }
+    pub fn join_all(&mut self) {
+        let mut new_join = Vec::new();
+        std::mem::swap(&mut self.join, &mut new_join);
+        for join in new_join {
+            let _ = HANDLE.block_on(join);
+        }
+    }
+}
 impl Callbacks for FustcCallback {
     fn config(&mut self, config: &mut interface::Config) {
         config.using_internal_features = &ATOMIC_TRUE;
         config.override_queries = Some(override_queries);
 
-        setup_cache();
+        self.join.push(setup_cache());
+    }
+    fn after_expansion<'tcx>(
+        &mut self,
+        _compiler: &interface::Compiler,
+        _tcx: TyCtxt<'tcx>,
+    ) -> Compilation {
+        self.join_all();
+        Compilation::Continue
     }
     fn after_analysis(&mut self, _compiler: &interface::Compiler, _tcx: TyCtxt<'_>) -> Compilation {
-        save_cache();
+        self.join.push(save_cache());
         Compilation::Continue
     }
 }
@@ -158,7 +188,11 @@ pub fn run_fustc(compiler: Compiler) -> i32 {
         }
     }
 
-    rustc_driver::catch_with_exit_code(|| run_compiler(&args, &mut FustcCallback))
+    let mut callback = FustcCallback::new();
+    rustc_driver::catch_with_exit_code(|| {
+        run_compiler(&args, &mut callback);
+        callback.join_all();
+    })
 }
 
 fn main() {
