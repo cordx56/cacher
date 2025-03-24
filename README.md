@@ -21,37 +21,44 @@ How fast (in sec):
   <tbody>
     <tr>
       <td>syn 2.0.100</td>
-      <td>1.150</td>
-      <td>1.228</td>
-      <td>1.071</td>
-      <td>7%</td>
+      <td>1.070</td>
+      <td>1.187</td>
+      <td>1.029</td>
+      <td>4%</td>
     </tr>
     <tr>
       <td>regex 1.11.1</td>
-      <td>2.937</td>
-      <td>3.058</td>
-      <td>2.789</td>
-      <td>5%</td>
+      <td>2.876</td>
+      <td>3.040</td>
+      <td>2.773</td>
+      <td>4%</td>
     </tr>
     <tr>
       <td>tokio 1.44.1</td>
-      <td>3.998</td>
-      <td>4.256</td>
-      <td>3.662</td>
-      <td>8%</td>
+      <td>3.815</td>
+      <td>4.213</td>
+      <td>3.610</td>
+      <td>5%</td>
     </tr>
     <tr>
       <td>axum 0.8.2</td>
-      <td>4.534</td>
-      <td>4.908</td>
-      <td>4.140</td>
-      <td>9%</td>
+      <td>4.348</td>
+      <td>4.882</td>
+      <td>4.129</td>
+      <td>5%</td>
     </tr>
     <tr>
       <td>actix-web 4.10.2</td>
-      <td>7.546</td>
-      <td>8.026</td>
-      <td>7.065</td>
+      <td>7.296</td>
+      <td>8.090</td>
+      <td>7.170</td>
+      <td>2%</td>
+    </tr>
+    <tr>
+      <td>tree-sitter v0.25.3</td>
+      <td>8.252</td>
+      <td>8.854</td>
+      <td>7.787</td>
       <td>6%</td>
     </tr>
   </tbody>
