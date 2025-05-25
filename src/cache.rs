@@ -11,7 +11,7 @@ use tokio::{
 
 static MIR_CACHE: LazyLock<RwLock<HashSet<String>>> = LazyLock::new(|| RwLock::new(HashSet::new()));
 static MIR_CACHE_PATH: LazyLock<PathBuf> = LazyLock::new(|| {
-    let cache_dir = crate::cargo::get_fustc_target_dir();
+    let cache_dir = crate::cargo::get_cacher_target_dir();
     let crate_name = env::var("CARGO_CRATE_NAME").unwrap();
     let file_name = format!("{}.mir", crate_name.trim());
     cache_dir.join(file_name)

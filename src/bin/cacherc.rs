@@ -39,10 +39,6 @@ static ATOMIC_TRUE: AtomicBool = AtomicBool::new(true);
 pub struct RustcCallback;
 impl Callbacks for RustcCallback {}
 
-//
-// fustc cache code
-//
-
 #[inline]
 fn override_queries(_session: &rustc_session::Session, local: &mut Providers) {
     local.mir_borrowck = mir_borrowck;
@@ -112,10 +108,10 @@ fn mir_borrowck(tcx: TyCtxt<'_>, def_id: LocalDefId) -> queries::mir_borrowck::P
     result
 }
 
-pub struct FustcCallback {
+pub struct CacherCallback {
     join: Vec<tokio::task::JoinHandle<()>>,
 }
-impl FustcCallback {
+impl CacherCallback {
     pub fn new() -> Self {
         Self { join: Vec::new() }
     }
@@ -127,7 +123,7 @@ impl FustcCallback {
         }
     }
 }
-impl Callbacks for FustcCallback {
+impl Callbacks for CacherCallback {
     fn config(&mut self, config: &mut interface::Config) {
         config.using_internal_features = &ATOMIC_TRUE;
         config.override_queries = Some(override_queries);
@@ -154,7 +150,7 @@ pub enum Compiler {
     Fast,
 }
 
-pub fn run_fustc(compiler: Compiler) -> i32 {
+pub fn run_cacher(compiler: Compiler) -> i32 {
     let ctxt = EarlyDiagCtxt::new(config::ErrorOutputType::default());
     let args = rustc_driver::args::raw_args(&ctxt);
 
@@ -167,7 +163,7 @@ pub fn run_fustc(compiler: Compiler) -> i32 {
         }
     }
 
-    let mut callback = FustcCallback::new();
+    let mut callback = CacherCallback::new();
     rustc_driver::catch_with_exit_code(|| {
         run_compiler(&args, &mut callback);
         callback.join_all();
@@ -209,19 +205,19 @@ fn main() {
     }
 
     simple_logger::SimpleLogger::new()
-        .with_level(env::var("FUSTC_LOG").map_or(log::LevelFilter::Error, |v| {
-            v.parse().unwrap_or(log::LevelFilter::Error)
+        .with_level(env::var("CACHER_LOG").map_or(log::LevelFilter::Warn, |v| {
+            v.parse().unwrap_or(log::LevelFilter::Warn)
         }))
         .with_colors(true)
         .init()
         .unwrap();
 
-    let fast_result = std::panic::catch_unwind(|| run_fustc(Compiler::Fast));
+    let fast_result = std::panic::catch_unwind(|| run_cacher(Compiler::Fast));
     let code = match fast_result {
         Ok(0) => 0,
         _ => {
             log::error!("fallback normal rustc");
-            run_fustc(Compiler::Normal)
+            run_cacher(Compiler::Normal)
         }
     };
 

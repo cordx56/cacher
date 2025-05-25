@@ -2,17 +2,17 @@ use std::env;
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
 
-pub fn get_fustc_target_dir() -> PathBuf {
-    let fustc_dir = env::var("FUSTC_TARGET_DIR")
+pub fn get_cacher_target_dir() -> PathBuf {
+    let cacher_dir = env::var("CACHER_TARGET_DIR")
         .ok()
         .map(PathBuf::from)
-        .or(get_target_dir_from_cargo().map(|v| v.join("fustc")))
+        .or(get_target_dir_from_cargo().map(|v| v.join("cacher")))
         .or(env::var("CARGO_TARGET_DIR")
             .ok()
-            .map(|v| PathBuf::from(v).join("fustc")))
-        .unwrap_or(env::current_dir().unwrap().join("target").join("fustc"));
-    std::fs::create_dir_all(&fustc_dir).unwrap();
-    fustc_dir
+            .map(|v| PathBuf::from(v).join("cacher")))
+        .unwrap_or(env::current_dir().unwrap().join("target").join("cacher"));
+    std::fs::create_dir_all(&cacher_dir).unwrap();
+    cacher_dir
 }
 
 pub fn get_target_dir_from_cargo() -> Option<PathBuf> {
