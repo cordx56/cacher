@@ -17,9 +17,7 @@ pub extern crate rustc_session;
 pub extern crate rustc_span;
 pub extern crate smallvec;
 
-mod cache;
-
-use cache::*;
+use cacher::cache::*;
 use rustc_driver::{Callbacks, Compilation, run_compiler};
 use rustc_hir::def_id::LocalDefId;
 use rustc_interface::interface;
@@ -34,15 +32,7 @@ use rustc_middle::{
 };
 use rustc_session::{EarlyDiagCtxt, config};
 use std::env;
-use std::sync::{LazyLock, RwLock, atomic::AtomicBool};
-use tokio::{
-    runtime::{Builder, Handle, Runtime},
-    task::JoinHandle,
-};
-
-pub static RUNTIME: LazyLock<RwLock<Runtime>> =
-    LazyLock::new(|| RwLock::new(Builder::new_multi_thread().enable_all().build().unwrap()));
-pub static HANDLE: LazyLock<Handle> = LazyLock::new(|| RUNTIME.read().unwrap().handle().clone());
+use std::sync::atomic::AtomicBool;
 
 static ATOMIC_TRUE: AtomicBool = AtomicBool::new(true);
 
@@ -52,12 +42,6 @@ impl Callbacks for RustcCallback {}
 //
 // fustc cache code
 //
-
-static IGNORE_CACHE: LazyLock<bool> = LazyLock::new(|| {
-    env::var("FUSTC_IGNORE_CACHE")
-        .map(|v| v == "true" || v == "1")
-        .unwrap_or(false)
-});
 
 #[inline]
 fn override_queries(_session: &rustc_session::Session, local: &mut Providers) {
@@ -75,9 +59,6 @@ fn default_mir_borrowck(
 }
 #[inline]
 fn mir_borrowck(tcx: TyCtxt<'_>, def_id: LocalDefId) -> queries::mir_borrowck::ProvidedValue<'_> {
-    if *IGNORE_CACHE {
-        return default_mir_borrowck(tcx, def_id);
-    }
     // skip const context
     if tcx.hir_body_const_context(def_id.to_def_id()).is_some() {
         return default_mir_borrowck(tcx, def_id);
@@ -108,13 +89,13 @@ fn mir_borrowck(tcx: TyCtxt<'_>, def_id: LocalDefId) -> queries::mir_borrowck::P
         if !compiling_mir.is_empty() {
             compiling_mir_string = unsafe { String::from_utf8_unchecked(compiling_mir) };
             if is_cached(&compiling_mir_string) {
-                log::debug!("{def_id:?} cache hit");
+                log::info!("{def_id:?} cache hit");
                 return tcx.arena.alloc(empty_result);
             }
         }
     }
 
-    log::debug!("{def_id:?} no cache; start mir_borrowck");
+    log::info!("{def_id:?} no cache; start mir_borrowck");
 
     let result = default_mir_borrowck(tcx, def_id);
     let can_cache = result.concrete_opaque_types.is_empty()
@@ -124,17 +105,15 @@ fn mir_borrowck(tcx: TyCtxt<'_>, def_id: LocalDefId) -> queries::mir_borrowck::P
         && !compiling_mir_string.is_empty();
     if can_cache {
         add_cache(compiling_mir_string);
-        log::debug!("{def_id:?} cache saved");
+        log::info!("{def_id:?} cache saved");
     } else {
-        log::debug!("{def_id:?} cannot be cached due to its mir_borrowck result")
+        log::info!("{def_id:?} cannot be cached due to its mir_borrowck result")
     }
     result
 }
-#[allow(unused)]
-fn check_liveness(_tcx: TyCtxt<'_>, _def_id: LocalDefId) {}
 
 pub struct FustcCallback {
-    join: Vec<JoinHandle<()>>,
+    join: Vec<tokio::task::JoinHandle<()>>,
 }
 impl FustcCallback {
     pub fn new() -> Self {
@@ -198,7 +177,7 @@ pub fn run_fustc(compiler: Compiler) -> i32 {
 fn main() {
     // jemalloc
     // cited from rustc
-    #[cfg(not(target_env = "msvc"))]
+    #[cfg(all(feature = "jemalloc", not(target_env = "msvc")))]
     {
         use std::os::raw::{c_int, c_void};
 

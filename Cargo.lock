@@ -33,10 +33,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "cargo-fustc"
+name = "cacher"
 version = "0.1.0"
 dependencies = [
- "fustc-utils",
+ "log",
+ "serde_json",
+ "simple_logger",
+ "tikv-jemalloc-sys",
+ "tokio",
 ]
 
 [[package]]
@@ -71,25 +75,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9c9e6a11ca8224451684bc0d7d5a7adbf8f2fd6887261a1cfc3c0432f9d4068e"
 dependencies = [
  "powerfmt",
-]
-
-[[package]]
-name = "fustc"
-version = "0.1.0"
-dependencies = [
- "fustc-utils",
- "log",
- "serde_json",
- "simple_logger",
- "tikv-jemalloc-sys",
- "tokio",
-]
-
-[[package]]
-name = "fustc-utils"
-version = "0.1.0"
-dependencies = [
- "serde_json",
 ]
 
 [[package]]

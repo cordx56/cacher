@@ -1,7 +1,0 @@
-[package]
-name = "cargo-fustc"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-fustc-utils = { path = "../fustc-utils" }
